@@ -1,0 +1,67 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+}
+
+:root {
+  font-size: 16px;
+  --bg-primary-color: #f5f5f5;
+  --bg-secondary-color: #ffffff;
+  --bg-nav-color: #dbdbdb88;
+  --border-radius: 0.6rem;
+  --border-medium-radius: 0.4rem;
+  --border-small-radius: 0.2rem;
+  --box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  --text-color: #282828;
+  --text-secondary-color: #4f4f4f;
+  --text-nav-color: #6d6d6d;
+  --text-large-size: 1.5rem;
+  --text-medium-size: 1rem;
+  --text-small-size: 0.8rem;
+}
+
+/* 📱 手机屏幕（≤ 480px） */
+@media screen and (max-width: 480px) {
+  :root {
+    font-size: 14px; /* 缩小整个 rem 系统 */
+
+    --text-large-size: 1.1rem; /* ≈ 15.4px */
+    --text-medium-size: 0.95rem; /* ≈ 13.3px */
+    --text-small-size: 0.8rem; /* ≈ 11.2px */
+  }
+}
+
+/* 📱 平板（481px ～ 768px） */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  :root {
+    font-size: 15px;
+
+    --text-large-size: 1.15rem;
+    --text-medium-size: 1rem;
+    --text-small-size: 0.85rem;
+  }
+}
+
+/* 💻 桌面高清屏（≥ 1440px） */
+@media screen and (min-width: 1440px) {
+  :root {
+    font-size: 18px;
+
+    --text-large-size: 1.3rem;
+    --text-medium-size: 1.1rem;
+    --text-small-size: 1rem;
+  }
+}
+
+html,
+body {
+  width: 100vw;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  font-family: "DM Sans", sans-serif;
+  background-color: var(--bg-primary-color);
+}
