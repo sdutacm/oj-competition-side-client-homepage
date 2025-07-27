@@ -1,6 +1,6 @@
 <template>
 <footer class="footer">
-
+<p>© 2008-2025 SDUT ACM. All rights reserved.</p>
 </footer>
 </template>
 
@@ -11,9 +11,14 @@
 <style scoped lang="less">
 .footer {
     width: 100%;
-    height: 30vh;
+    height: 10vh;
     display: flex;
-    background-color: red;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--text-medium-size);
+    color: var(--text-secondary-color);
+    background-color: var(--bg-primary-color);
+    // background-color: red;
 }
 
 </style>

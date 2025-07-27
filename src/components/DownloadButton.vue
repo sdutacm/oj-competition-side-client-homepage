@@ -7,7 +7,7 @@
       width="24"
       height="24"
       stroke="var(--bg-secondary-color)"
-        fill="var(--bg-secondary-color)"
+      fill="var(--bg-secondary-color)"
       class="icon"
     >
       <path
@@ -25,43 +25,43 @@
 const props = defineProps({
   downloadUrl: {
     type: String,
-    default: 'https://oj.sdutacm.cn/onlinejudge3/',
+    default: "https://oj.sdutacm.cn/onlinejudge3/",
   },
   desc: {
     type: String,
-    default: '下载',
+    default: "下载",
   },
 });
 </script>
 
 <style scoped lang="less">
 .dl-btn {
-    appearance: none;
-    border: none;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    background-color: transparent;
-    cursor: pointer;
-    border-radius: var(--border-medium-radius);
-    background-color: var(--text-color);
-    user-select: none;
-    transition: background-color 0.5s ease;
+  appearance: none;
+  border: none;
+  width: 95%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: var(--border-medium-radius);
+  background-color: var(--text-color);
+  user-select: none;
+  transition: background-color 0.5s ease, box-shadow 0.5s ease;
+  &:hover {
+    background-color: var(--text-secondary-color);
+    box-shadow: var(--box-shadow);
+  }
 
-    &:hover {
-        background-color: var(--text-secondary-color);
-    }
+  & .icon {
+    stroke: var(--bg-secondary-color);
+  }
 
-    & .icon {
-        stroke: var(--bg-secondary-color);
-    }
-
-    & span {
-        color: var(--bg-secondary-color);
-        font-size: var(--text-medium-size);
-    }
+  & span {
+    color: var(--bg-secondary-color);
+    font-size: var(--text-medium-size);
+  }
 }
 </style>
