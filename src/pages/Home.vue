@@ -9,7 +9,8 @@ import Footer from "@/components/Footer.vue";
     <div class="content">
       <div class="content-mask">
         <div class="content-mask-real"></div>
-        <img src="../assets/images/light-home.png" class="light-home" alt="" />
+        <img src="../assets/images/light-home.png" class="light-home" id="light-home" alt="" />
+        <img src="../assets/images/dark-home.png" class="light-home" id="dark-home" alt="" />
       </div>
       <div class="content-main">
         <img src="../assets/images/favicon.png" class="logo" alt="" />
@@ -37,7 +38,8 @@ import Footer from "@/components/Footer.vue";
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/ui.png" alt="">
+            <img src="../assets/images/function/ui.png" id="dark-home" alt="">
+            <img src="../assets/images/function/ui-light.png" id="light-home" alt="">
           </div>
           <div class="release-container-desc-box-info">
             <p>统一现代化 UI 体验</p>
@@ -45,28 +47,36 @@ import Footer from "@/components/Footer.vue";
             </div>
         </div>
         <div class="release-container-desc-box">
-          <div class="release-container-desc-box-icon"></div>
+          <div class="release-container-desc-box-icon">
+            <img src="../assets/images/function/baimingdan.png" alt="">
+          </div>
           <div class="release-container-desc-box-info">
             <p>可配置白名单机制</p>
             <small>灵活配置访问白名单，全面控制外部链接与资源加载权限。</small>
           </div>
         </div>
         <div class="release-container-desc-box">
-          <div class="release-container-desc-box-icon"></div>
+          <div class="release-container-desc-box-icon">
+            <img src="../assets/images/function/navigate.png" alt="">
+          </div>
           <div class="release-container-desc-box-info">
             <p>强大且易用的导航系统</p>
             <small>支持多层级导航、历史记录与高亮状态，助力用户高效操作。</small>
           </div>
         </div>
         <div class="release-container-desc-box">
-          <div class="release-container-desc-box-icon"></div>
+          <div class="release-container-desc-box-icon">
+            <img src="../assets/images/function/safe.png" alt="">
+          </div>
           <div class="release-container-desc-box-info">
             <p>隐私与数据安全保障</p>
             <small>内建隐私保护逻辑，有效防止敏感数据泄露与非法访问。</small>
           </div>
         </div>
         <div class="release-container-desc-box">
-          <div class="release-container-desc-box-icon"></div>
+          <div class="release-container-desc-box-icon">
+            <img src="../assets/images/function/develop.png" alt="">
+          </div>
           <div class="release-container-desc-box-info">
             <p>开发者友好与快速集成</p>
             <small>模块化架构与清晰文档，助力快速上手与定制化开发。</small>
@@ -99,9 +109,6 @@ import Footer from "@/components/Footer.vue";
       aspect-ratio: 3/2;
     }
 
-    // height: 50% !important;
-    // aspect-ratio: 3/1;
-    // background-color: red;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -138,7 +145,6 @@ import Footer from "@/components/Footer.vue";
     &-main {
       width: 50%;
       height: 90%;
-      // background-color: green;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -170,14 +176,11 @@ import Footer from "@/components/Footer.vue";
           justify-content: center;
           align-items: center;
           color: var(--text-nav-color);
-          & .success {
-          }
         }
       }
 
       & .desc {
         width: 100%;
-        // background-color: black;
         height: 2rem;
         font-size: var(--text-small-size);
         color: var(--text-nav-color);
@@ -198,7 +201,6 @@ import Footer from "@/components/Footer.vue";
   &-title {
     width: 60%;
     height: 4rem;
-    // background-color: red;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -210,12 +212,11 @@ import Footer from "@/components/Footer.vue";
   &-desc {
     width: 60%;
     aspect-ratio: 5/2;
-    // background-color: red;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    grid-column-gap: 1rem;
-    grid-row-gap: 1rem;
+    grid-column-gap: 2rem;
+    grid-row-gap: 2rem;
     margin-top: 2rem;
     &-box {
       border-radius: var(--border-radius);
@@ -225,6 +226,9 @@ import Footer from "@/components/Footer.vue";
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      box-shadow: var(--box-shadow);
+      user-select: none;
+      cursor: pointer;
       &:hover {
         .release-container-desc-box-icon {
           & img {

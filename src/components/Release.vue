@@ -74,6 +74,7 @@ function genDesc(version, sys) {
     border-bottom: none;
     font-size: var(--text-large-size);
     height: 4rem;
+    position: relative;
   }
   ::v-deep(.el-collapse-item__wrap) {
     border-bottom: none;
@@ -92,7 +93,8 @@ function genDesc(version, sys) {
 
 .release-items {
   width: 100%;
-  height: 300px;
+  aspect-ratio: 3/1;
+  // height: 15rem;
   display: flex;
   justify-content: space-around;
   align-items: center;

@@ -16,25 +16,30 @@
       >
     </div>
     <div class="tools">
-      <a href="https://github.com/sdutacm/oj-competition-side-client" target="_blank" class="btn">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="var(--text-color)"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-github-icon lucide-github"
+      <div class="btn">
+        <a
+          href="https://github.com/sdutacm/oj-competition-side-client"
+          target="_blank"
         >
-          <path
-            d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
-          />
-          <path d="M9 18c-4.51 2-5-2-7-2" />
-        </svg>
-      </a>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="var(--text-color)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="lucide lucide-github-icon lucide-github"
+          >
+            <path
+              d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
+            />
+            <path d="M9 18c-4.51 2-5-2-7-2" />
+          </svg>
+        </a>
+      </div>
 
       <div class="btn">
         <DownloadButton desc="下载" />
@@ -64,7 +69,6 @@ onMounted(() => {
 
   window.addEventListener("scroll", handleScroll);
 
-  // 👇 页面卸载时移除监听器，避免内存泄漏
   onUnmounted(() => {
     window.removeEventListener("scroll", handleScroll);
   });
@@ -86,7 +90,7 @@ onMounted(() => {
   border-radius: var(--border-radius);
   transition: background-color 0.5s ease, box-shadow 0.5s ease;
   overflow: hidden;
-  z-index: 4;
+  z-index: 10;
   & .logo {
     flex-basis: 30%;
     height: 100%;
@@ -162,6 +166,18 @@ onMounted(() => {
       user-select: none;
       justify-content: center;
       align-items: center;
+      position: relative;
+
+      & a {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 3;
+        border-radius: var(--border-medium-radius);
+        background-color: var(--bg-secondary-color);
+      }
       &:nth-child(1) {
         flex-basis: 10%;
         background-color: var(--bg-secondary-color);
