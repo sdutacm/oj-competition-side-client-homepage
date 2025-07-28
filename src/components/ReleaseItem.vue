@@ -129,6 +129,7 @@ const props = defineProps({
       background-color: var(--bg-secondary-color);
       transition: background-color 0.3s ease;
       padding: .5rem;
+      color: var(--text-color);
       &:hover {
         background-color: var(--bg-primary-color);
       }

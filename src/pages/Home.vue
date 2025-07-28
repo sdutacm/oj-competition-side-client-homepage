@@ -138,7 +138,6 @@ import Footer from "@/components/Footer.vue";
         width: 80%;
         z-index: 1;
         transform: translateY(40%);
-        mix-blend-mode: multiply;
       }
     }
 
