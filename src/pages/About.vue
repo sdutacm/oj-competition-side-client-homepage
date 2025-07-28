@@ -1,7 +1,7 @@
 <script setup>
 import AboutIndex from '@/components/about/AboutIndex.vue';
 import CrossPlatform from '@/components/about/CrossPlatform.vue';
-
+import Custom from '@/components/about/Custom.vue';
 </script>
 
 <template>
@@ -11,6 +11,12 @@ import CrossPlatform from '@/components/about/CrossPlatform.vue';
     </section>
     <section>
       <CrossPlatform />
+    </section>
+    <section>
+      <Custom />
+    </section>
+    <section>
+      <CrossPlatform/>
     </section>
   </div>
 </template>
@@ -28,6 +34,7 @@ import CrossPlatform from '@/components/about/CrossPlatform.vue';
     position: relative;
     display: flex;
     justify-content: center;
+    overflow: visible;
   }
 }
 </style>

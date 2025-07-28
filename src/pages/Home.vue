@@ -9,8 +9,18 @@ import Footer from "@/components/Footer.vue";
     <div class="content">
       <div class="content-mask">
         <div class="content-mask-real"></div>
-        <img src="../assets/images/light-home.png" class="light-home" id="light-home" alt="" />
-        <img src="../assets/images/dark-home.png" class="light-home" id="dark-home" alt="" />
+        <img
+          src="../assets/images/light-home.png"
+          class="light-home"
+          id="light-home"
+          alt=""
+        />
+        <img
+          src="../assets/images/dark-home.png"
+          class="light-home"
+          id="dark-home"
+          alt=""
+        />
       </div>
       <div class="content-main">
         <img src="../assets/images/favicon.png" class="logo" alt="" />
@@ -26,7 +36,7 @@ import Footer from "@/components/Footer.vue";
       <div class="release-container-desc">
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/oses.avif" alt="">
+            <img src="../assets/images/function/oses.avif" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>跨平台桌面应用支持</p>
@@ -38,17 +48,21 @@ import Footer from "@/components/Footer.vue";
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/ui.png" id="dark-home" alt="">
-            <img src="../assets/images/function/ui-light.png" id="light-home" alt="">
+            <img src="../assets/images/function/ui.png" id="dark-home" alt="" />
+            <img
+              src="../assets/images/function/ui-light.png"
+              id="light-home"
+              alt=""
+            />
           </div>
           <div class="release-container-desc-box-info">
             <p>统一现代化 UI 体验</p>
             <small>采用现代设计风格，带来简洁一致且响应灵敏的用户界面。</small>
-            </div>
+          </div>
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/baimingdan.png" alt="">
+            <img src="../assets/images/function/baimingdan.png" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>可配置白名单机制</p>
@@ -57,16 +71,18 @@ import Footer from "@/components/Footer.vue";
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/navigate.png" alt="">
+            <img src="../assets/images/function/navigate.png" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>强大且易用的导航系统</p>
-            <small>支持多层级导航、历史记录与高亮状态，助力用户高效操作。</small>
+            <small
+              >支持多层级导航、历史记录与高亮状态，助力用户高效操作。</small
+            >
           </div>
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/safe.png" alt="">
+            <img src="../assets/images/function/safe.png" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>隐私与数据安全保障</p>
@@ -75,7 +91,7 @@ import Footer from "@/components/Footer.vue";
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/develop.png" alt="">
+            <img src="../assets/images/function/develop.png" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>开发者友好与快速集成</p>
