@@ -13,7 +13,6 @@ onMounted(async () => {
 });
 
 function initAnimations() {
-  // 创建主时间轴
   let mainTl = gsap.timeline({
     scrollTrigger: {
       trigger: ".ct-container",
@@ -23,7 +22,6 @@ function initAnimations() {
       pin: ".ct-container",
       pinSpacing: true,
       anticipatePin: 1,
-      // 不再手动设置left/transform，交给ScrollTrigger自动还原
     },
   });
 
