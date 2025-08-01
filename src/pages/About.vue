@@ -1,24 +1,36 @@
 <script setup>
+import ScrollTrigger from 'gsap/src/ScrollTrigger';
+import { onBeforeUnmount } from 'vue';
 import AboutIndex from '@/components/about/AboutIndex.vue';
 import CrossPlatform from '@/components/about/CrossPlatform.vue';
 import Custom from '@/components/about/Custom.vue';
+import Expand from '@/components/about/Expand.vue';
+import Safe from '@/components/about/Safe.vue';
+
+onBeforeUnmount(() => {
+  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+});
+
 </script>
 
 <template>
-  <div class="container">
-    <section>
+  <main class="container">
+    <section class="container-section">
       <AboutIndex />
     </section>
-    <section>
+    <section class="container-section">
       <CrossPlatform />
     </section>
-    <section>
+    <section class="container-section">
       <Custom />
     </section>
-    <section>
-      <CrossPlatform/>
+    <section class="container-section">
+      <Expand />
     </section>
-  </div>
+    <section class="container-section">
+      <Safe />
+    </section>
+  </main>
 </template>
 
 
@@ -32,9 +44,10 @@ import Custom from '@/components/about/Custom.vue';
     height: auto;
     background-color: var(--bg-primary-color);
     position: relative;
+    overflow: visible;
     display: flex;
     justify-content: center;
-    overflow: visible;
+    align-items: center;
   }
 }
 </style>

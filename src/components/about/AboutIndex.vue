@@ -1,13 +1,27 @@
 <script setup>
 import gsap from "gsap";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
-import { onMounted } from "vue";
+import { onMounted, nextTick, onBeforeUnmount, setTransitionHooks } from "vue";
 
 gsap.registerPlugin(ScrollTrigger);
-onMounted(() => {
+
+onMounted(async () => {
+  // 等待DOM完全渲染
+  await nextTick();
+  setTimeout(() => {
+    initAnimations();
+  }, 0);
+});
+
+
+
+function initAnimations() {
   let duration = 1;
   let triggerEnd = "bottom center";
   let triggerStart = "top top";
+
+  // 刷新ScrollTrigger以重新计算位置
+  ScrollTrigger.refresh();
 
   gsap.set(".scrollBox", { x: "10%" });
   gsap.set(".scrollItem2", { y: "30%" });
@@ -19,6 +33,7 @@ onMounted(() => {
       start: triggerStart,
       end: triggerEnd,
       scrub: 1,
+      refreshPriority: -1, // 确保在其他ScrollTrigger之后刷新
     },
   });
 
@@ -28,6 +43,7 @@ onMounted(() => {
       start: triggerStart,
       end: triggerEnd,
       scrub: 1,
+      refreshPriority: -1,
     },
   });
 
@@ -37,6 +53,7 @@ onMounted(() => {
       start: triggerStart,
       end: triggerEnd,
       scrub: 1,
+      refreshPriority: -1,
     },
   });
 
@@ -69,7 +86,7 @@ onMounted(() => {
     },
     0
   );
-});
+}
 </script>
 
 <template>
