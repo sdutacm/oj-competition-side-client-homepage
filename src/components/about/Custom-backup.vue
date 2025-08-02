@@ -24,8 +24,6 @@ onUnmounted(() => {
     headerTL.scrollTrigger?.kill();
     headerTL.kill();
   }
-  // 清理所有ScrollTrigger实例
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 });
 
 function initAnimations() {
@@ -37,15 +35,7 @@ function initAnimations() {
   // 设置emoji初始状态 - 在图片中心位置
   gsap.set(".emoji-outer", {
     opacity: 0,
-    scale: 0,
-    x: 0,
-    y: 0,
-    rotation: 0
-  });
-
-  // 设置后面元素的初始状态
-  gsap.set(".ct-content-small", {
-    opacity: 0 // 初始状态为隐藏
+    scale: 0
   });
 
   mainTl = gsap.timeline({
@@ -88,7 +78,7 @@ function initAnimations() {
   // 创建一个对象来控制进度
   let progressObj = { value: 0 };
 
-  // 主动画序列（包含emoji）
+  // 主动画序列
   mainTl
     .to(".ct-content", {
       duration: 1,
@@ -97,37 +87,23 @@ function initAnimations() {
       force3D: true,
     })
     .to(".ct-content .img1", {
-      duration: 0.8,
-      scale: 0.7,
-      rotation: -5,
-      x: 30,
-      y: -20,
+      duration: 0.5,
+      scale: 2,
       ease: "power2.inOut",
       force3D: true,
     })
     .to(".ct-content .img1", {
-      duration: 1.2,
-      scale: 0.4,
-      rotation: 15,
-      x: -40,
-      y: "-250%",
-      opacity: 0.6,
+      duration: 1,
+      y: "-200%",
       ease: "power2.inOut",
       force3D: true,
     })
-    // img1向上移动时同时显示后面的元素
-    .to(".ct-content-small", {
-      duration: 1.2, // 与img1移动时间同步
-      opacity: 1,
-      ease: "power2.out",
-      force3D: true,
-    }, "-=1.2") // 与img1向上移动同时开始
     .to(".ct-content-small .img2", {
       duration: 1,
       y: "-200%",
       ease: "power2.inOut",
       force3D: true,
-    }, "-=0.3") // 稍微调整重叠时间
+    })
     .to(progressObj, {
       duration: 1,
       value: 100,
@@ -138,39 +114,42 @@ function initAnimations() {
         });
       }
     }, "-=1")
-    // 添加emoji爆炸动画到主timeline
+    // 添加emoji爆炸动画，跟随滚动
     .to(".emoji-outer", {
-      duration: 0.3,
+      duration: 0.5,
       opacity: 1,
       scale: 1,
       ease: "back.out(1.7)",
-      stagger: 0.03,
+      stagger: 0.05, // 错开出现时间
       force3D: true,
     })
     .to(".emoji-outer", {
       duration: 1.5,
-      x: (index) => {
-        const positions = [400, 350, -380, -420, 450, -300, 200, -480];
-        return positions[index] || 200;
+      motionPath: {
+        path: function(index) {
+          // 计算每个emoji的迸发方向
+          const angles = [0, 45, 90, 135, 180, 225, 270, 315]; // 8个方向
+          const angle = angles[index % 8];
+          const radian = (angle * Math.PI) / 180;
+          const distance = 200 + Math.random() * 100; // 随机距离
+          
+          const targetX = Math.cos(radian) * distance;
+          const targetY = Math.sin(radian) * distance;
+          
+          return `M0,0 Q${targetX/2},${targetY/2} ${targetX},${targetY}`;
+        }
       },
-      y: (index) => {
-        const positions = [-250, 320, -300, 280, 100, 400, -420, -150];
-        return positions[index] || -200;
-      },
-      rotation: (index) => {
-        const rotations = [360, -360, 270, -270, 180, -180, 450, -450];
-        return rotations[index] || 180;
-      },
+      rotation: "360_short",
       ease: "power2.out",
-      stagger: 0.03,
+      stagger: 0.05,
       force3D: true,
-    }, "-=0.2")
+    }, "-=0.3")
     .to(".emoji-outer", {
-      duration: 0.8,
+      duration: 0.5,
       opacity: 0,
-      scale: 0.2,
+      scale: 0.5,
       ease: "power2.in",
-      stagger: 0.03,
+      stagger: 0.05,
     }, "-=0.5");
 }
 </script>
@@ -179,7 +158,7 @@ function initAnimations() {
   <div class="ct-container">
     <header class="ct-title">随心定制，跟随系统主题</header>
     <div class="ct-content">
-      <img src="../../assets/images/dark-enter.png" class="img1" alt="" />
+      <img src="../../assets/images/dark-home.png" class="img1" alt="" />
       <div class="ct-content-small">
         <img src="../../assets/images/dark-home.png" class="img2" alt="" />
         <img src="../../assets/images/light-home.png" class="img3" alt="" />
@@ -226,28 +205,27 @@ function initAnimations() {
 
 /* Emoji 外围容器 - 覆盖整个视口 */
 .emoji-outer-container {
-  position: absolute; /* 改回absolute，相对于ct-content定位 */
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 20; /* 提高z-index确保在最上层 */
+  z-index: 10; /* 在所有元素之上 */
 }
 
 .emoji-outer {
   position: absolute;
-  font-size: 3rem; /* 增大字体确保可见 */
+  font-size: 2.5rem;
   opacity: 0;
   transform: scale(0);
   will-change: transform, opacity;
   
-  /* 初始位置在容器中心 */
+  /* 初始位置在屏幕中心（图片中心位置） */
   top: 50%;
   left: 50%;
   transform-origin: center center;
-  margin-left: -1.5rem; /* 居中偏移 */
-  margin-top: -1.5rem;
 }
 
 .ct-container {
