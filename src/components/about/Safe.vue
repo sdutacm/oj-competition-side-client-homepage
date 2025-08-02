@@ -131,7 +131,11 @@ onUnmounted(() => {
 <template>
   <div class="sf-container">
     <header class="sf-header">
-      <p>我们注重保护您的隐私</p>
+      <p>我们注重保护您的
+        <div class="sf-header-safe">隐私
+        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q97-30 162-118.5T718-480H480v-315l-240 90v207q0 7 2 18h238v316Z"/></svg>
+        </div>
+      </p>
     </header>
     <div class="sf-content">
       <div class="sf-content-media">
@@ -213,6 +217,8 @@ onUnmounted(() => {
 </template>
 
 <style scoped lang="less">
+@import url(../../assets/css/inline-style.less);
+
 .sf-content {
   width: 100%;
   height: 90%;
@@ -353,9 +359,16 @@ onUnmounted(() => {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: bold;
   color: var(--text-color);
+
+  &-safe {
+    .inline-style(
+      var(--yellow-bg-color),
+      var(--yellow-font-color)
+    );
+  }
 }
 
 .sf-container {

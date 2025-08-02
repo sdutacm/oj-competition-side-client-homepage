@@ -5,6 +5,7 @@ import Custom from '@/components/about/Custom.vue';
 import Expand from '@/components/about/Expand.vue';
 import Focus from '@/components/about/Focus.vue';
 import Safe from '@/components/about/Safe.vue';
+import Development from '@/components/about/Development.vue';
 
 </script>
 
@@ -29,7 +30,7 @@ import Safe from '@/components/about/Safe.vue';
       <Safe />
     </section>
     <section class="container-section">
-      <CrossPlatform />
+      <Development />
     </section>
   </main>
 </template>

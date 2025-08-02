@@ -177,7 +177,11 @@ function initAnimations() {
 
 <template>
   <div class="ct-container">
-    <header class="ct-title">随心定制，跟随系统主题</header>
+    <header class="ct-title">随心
+      <div class="ct-title-custom">定制
+    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-80q-33 0-56.5-23.5T360-160v-160H240q-33 0-56.5-23.5T160-400v-280q0-66 47-113t113-47h480v440q0 33-23.5 56.5T720-320H600v160q0 33-23.5 56.5T520-80h-80ZM240-560h480v-200h-40v160h-80v-160h-40v80h-80v-80H320q-33 0-56.5 23.5T240-680v120Zm0 160h480v-80H240v80Zm0 0v-80 80Z"/></svg>
+      </div>
+      ，跟随系统主题</header>
     <div class="ct-content">
       <img src="../../assets/images/dark-enter.png" class="img1" alt="" />
       <div class="ct-content-small">
@@ -203,6 +207,7 @@ function initAnimations() {
 </template>
 
 <style scoped lang="less">
+@import url(../../assets/css/inline-style.less);
 .ct-content-mask {
   position: absolute;
   width: 100%;
@@ -269,7 +274,7 @@ function initAnimations() {
     width: 100%;
     height: 60px;
     min-height: 60px;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -277,6 +282,13 @@ function initAnimations() {
     color: var(--text-color);
     box-sizing: border-box;
     will-change: opacity;
+
+    &-custom {
+      .inline-style(
+        var(--pink-bg-color),
+        var(--pink-font-color),
+      );
+    }
   }
 
   & .ct-content {

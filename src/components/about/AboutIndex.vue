@@ -119,7 +119,6 @@ function initAnimations() {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
     font-weight: blod;
     gap: 1rem;
     margin-bottom: 1rem;
