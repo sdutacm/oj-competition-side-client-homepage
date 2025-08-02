@@ -1,15 +1,10 @@
 <script setup>
-import ScrollTrigger from 'gsap/src/ScrollTrigger';
-import { onBeforeUnmount } from 'vue';
 import AboutIndex from '@/components/about/AboutIndex.vue';
 import CrossPlatform from '@/components/about/CrossPlatform.vue';
 import Custom from '@/components/about/Custom.vue';
 import Expand from '@/components/about/Expand.vue';
+import Focus from '@/components/about/Focus.vue';
 import Safe from '@/components/about/Safe.vue';
-
-onBeforeUnmount(() => {
-  ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-});
 
 </script>
 
@@ -28,7 +23,13 @@ onBeforeUnmount(() => {
       <Expand />
     </section>
     <section class="container-section">
+      <Focus />
+    </section>
+    <section class="container-section">
       <Safe />
+    </section>
+    <section class="container-section">
+      <CrossPlatform />
     </section>
   </main>
 </template>

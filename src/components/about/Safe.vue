@@ -1,657 +1,375 @@
 <script setup>
-import { onMounted } from "vue";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/src/ScrollTrigger";
+import { onMounted, onUnmounted } from "vue";
+
+gsap.registerPlugin(ScrollTrigger);
+
+let mainTimeline;
 
 onMounted(() => {
-  const whiteRoute = document.querySelector(".w-d");
-  let whiteRouteHide = false;
-  const WhiteHeaderAndText = [...document.querySelectorAll(".w-h")];
-  const WhiteRouteIndicators = document.querySelectorAll(
-    ".white-route-indicator"
-  );
-  const whiteRouteDescription = document.querySelector(
-    ".white-route-description"
-  );
-  whiteRoute.addEventListener("click", () => {
-    if (whiteRouteHide) {
-      WhiteHeaderAndText.forEach((item) => {
-        item.classList.remove("header-text-fade");
-      });
-      WhiteRouteIndicators.forEach((item) => {
-        item.classList.remove("white-route-indicator-fade");
-      });
-      setTimeout(() => {
-        whiteRouteDescription.classList.remove("white-route-description-show");
-      }, 100);
-      whiteRouteHide = false;
-    } else {
-      whiteRouteDescription.classList.add("white-route-description-show");
+  // 设置初始状态，只设置一次
+  gsap.set(".sf-content", { 
+    x: "22.6%", 
+    scale: 1.1,
+    force3D: true
+  });
+  gsap.set(".sf-content-desc", { 
+    opacity: 0,
+    force3D: true
+  });
+  gsap.set(".sf-content-desc-footer", { 
+    y: "100%",
+    force3D: true
+  });
+  gsap.set(".cookie", { 
+    left: "50%", 
+    top: "5%",
+    opacity: 1,
+    force3D: true
+  });
+  gsap.set(".storage", { 
+    left: "10%", 
+    top: "50%",
+    opacity: 1,
+    force3D: true
+  });
+  gsap.set(".logout", { 
+    right: "10%", 
+    bottom: "10%",
+    opacity: 1,
+    force3D: true
+  });
+  gsap.set(".sf-content-desc-footer-bg-main-text", { 
+    opacity: 0,
+    force3D: true
+  });
 
-      setTimeout(() => {
-        WhiteHeaderAndText.forEach((item) => {
-          item.classList.add("header-text-fade");
-        });
-        WhiteRouteIndicators.forEach((item) => {
-          item.classList.add("white-route-indicator-fade");
-        });
-      }, 0);
-      whiteRouteHide = true;
-    }
-  });
-  const RedirectRoute = document.querySelector(".redirect-route");
-  let redirectRouteHide = false;
-  const ReidrectHeaderAndText = [...document.querySelectorAll(".r-h")];
-  const RedirectFooter = document.querySelector(".r-f");
-  const RedirectRouteDescription = document.querySelector(
-    ".redirect-route-description"
-  );
-  RedirectRoute.addEventListener("click", () => {
-    if (redirectRouteHide) {
-      ReidrectHeaderAndText.forEach((item) => {
-        item.classList.remove("header-text-fade");
-      });
-      RedirectFooter.classList.remove("white-route-indicator-fade");
-      setTimeout(() => {
-        RedirectRouteDescription.classList.remove(
-          "white-route-description-show"
-        );
-      }, 100);
-      redirectRouteHide = false;
-    } else {
-      setTimeout(() => {
-        ReidrectHeaderAndText.forEach((item) => {
-          item.classList.add("header-text-fade");
-        });
-        RedirectFooter.classList.add("white-route-indicator-fade");
-      }, 100);
-      RedirectRouteDescription.classList.add("white-route-description-show");
-      redirectRouteHide = true;
-    }
-  });
-  const titleObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("sf-header-show");
-      } else {
-        entry.target.classList.remove("sf-header-show");
+  // 创建主时间轴，平衡抖动和布局问题
+  mainTimeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: ".sf-container",
+      start: "top 30%",
+      end: "top -150%",
+      scrub: 1,
+      pin: ".sf-container",
+      pinSpacing: true, // 改回true，保持正常布局
+      anticipatePin: 0, // 保持0，减少预测导致的抖动
+      normalizeScroll: false,
+      ignoreMobileResize: true,
+      pinReparent: false,
+      refreshPriority: -1, // 降低刷新优先级
+      onRefreshInit: () => {
+        // 在刷新初始化时确保状态正确
+        gsap.set(".sf-container", { clearProps: "transform" });
       }
-    });
+    },
   });
-  const title = document.querySelector(".sf-header");
-  if (title) titleObserver.observe(title);
+
+  // 使用更稳定的动画配置
+  mainTimeline
+    .to(".sf-content-desc", {
+      duration: 1.2,
+      opacity: 1,
+      ease: "none", // 改回none，配合scrub更稳定
+      force3D: true
+    }, 0)
+    .to(".sf-content", {
+      duration: 1.2,
+      x: "0%",
+      scale: 1,
+      ease: "none", // 改回none，减少抖动
+      force3D: true
+    }, 0)
+    .to(".sf-content-desc-footer", {
+      duration: 0.8,
+      y: "0%",
+      ease: "none",
+      force3D: true
+    }, 0.6)
+    .to(".cookie", {
+      duration: 0.6,
+      opacity: 0,
+      left: "50%",
+      top: "0%",
+      ease: "none",
+      force3D: true
+    }, 1.2)
+    .to(".storage", {
+      duration: 0.6,
+      opacity: 0,
+      left: "0%",
+      top: "50%",
+      ease: "none",
+      force3D: true
+    }, 1.4)
+    .to(".logout", {
+      duration: 0.6,
+      opacity: 0,
+      right: "0%",
+      bottom: "0%",
+      ease: "none",
+      force3D: true
+    }, 1.6)
+    .to(".sf-content-desc-footer-bg-main-text", {
+      duration: 0.6,
+      opacity: 1,
+      ease: "none",
+      force3D: true
+    }, 1.8);
+});
+
+// 组件卸载时清理
+onUnmounted(() => {
+  if (mainTimeline) {
+    mainTimeline.scrollTrigger?.kill();
+    mainTimeline.kill();
+  }
 });
 </script>
 
 <template>
   <div class="sf-container">
-    <header class="sf-header">为您提供更加专注的比赛环境</header>
+    <header class="sf-header">
+      <p>我们注重保护您的隐私</p>
+    </header>
     <div class="sf-content">
-      <div class="sf-content-desc w-d" style="color: #fff;">
-        <header class="sf-content-desc-header w-h">路由白名单拦截</header>
-        <div class="sf-content-desc-text w-h">
+      <div class="sf-content-media">
+        <video
+          src="../../assets/video/safe.mov"
+          autoplay
+          loop
+          muted
+          class="sf-content-media-video"
+        ></video>
+      </div>
+      <div class="sf-content-desc">
+        <header class="sf-content-desc-header">
+          <p>重置你的应用</p>
+        </header>
+        <div class="sf-content-desc-content">
           <p>
-            我们采取白名单拦截机制，让您更加专注于比赛内容，避免被无关页面干扰。
+            我们重视你的隐私和数据安全
+            🛡，当比赛结束之后，点击右上角的系统重置按钮，我们会清空本地的所有数据，并且会为您同步登出
+            🤗
           </p>
         </div>
-        <div class="sf-content-desc-footer white-route w-c">
-          <div class="white-route-container">
-            <div class="white-route-indicator">✅ https://www.example.com</div>
-            <div class="white-route-indicator">✅ https://www.example.com</div>
-            <div class="white-route-indicator white-route-indicator-large">
-              <p>🚫 https://www.example.com</p>
-              <img src="../../assets/images/cursor.png" alt="" />
-            </div>
-          </div>
-        </div>
-        <div class="white-route-description">
-          <header class="white-route-description-header">
-            <div class="white-route-description-header-title">
-              比赛模式已开启，请专心答题！
-            </div>
-            <div class="white-route-description-header-subtitle">
-              <div class="white-route-description-header-subtitle-text">
-                访问限制：https://www.example.com
-              </div>
-              <div class="white-route-description-header-subtitle-text">
-                限制说明：该域名不在允许访问范围
-              </div>
-            </div>
-            <div class="white-route-description-header-divider">
-              专注比赛才能发挥更佳水平！
-            </div>
-            <div class="white-route-description-header-button">
-              了解，继续答题！
-            </div>
-          </header>
-          <main class="white-route-description-main">
-            <p>
-              当用户点击了非白名单链接时，将会触发弹窗拦截机制，用户可以简单地点击确认按钮来关闭弹窗，避免被无关页面干扰。
-            </p>
-          </main>
-        </div>
-      </div>
-      <div class="sf-content-desc redirect-route" style="color: #000;">
-        <header class="sf-content-desc-header r-h" >重定向拦截</header>
-        <div class="sf-content-desc-text r-h">
-          <p>拦截非法的重定向跳转，但您仍可以在合法页面尽情探索！</p>
-        </div>
-        <div class="sf-content-desc-footer redirect-route r-f">
-          <div class="redirect-route-container">
-            <div class="redirect-route-container-indicator">
-              🚫 https://www.example.com
-            </div>
-            <div class="redirect-route-container-indicator">
-              ✅ https://www.example.com
-            </div>
-            <img
-              src="../../assets/images/redirect.png"
-              class="redirect-route-container-icon"
-              alt=""
-            />
-          </div>
-        </div>
-        <div class="redirect-route-description">
-          <header class="redirect-route-description-header">
-            <div class="redirect-route-description-header-title">
+        <footer class="sf-content-desc-footer">
+          <div class="sf-content-desc-footer-bg">
+            <header class="sf-content-desc-footer-bg-header">
               <div class="red"></div>
               <div class="yellow"></div>
               <div class="green"></div>
-            </div>
-            <div class="redirect-route-description-header-content">
-              <main class="redirect-route-description-header-content-main">
-                <header
-                  class="redirect-route-description-header-content-main-title"
+            </header>
+            <main class="sf-content-desc-footer-bg-main">
+              <div class="sf-content-desc-footer-bg-main-text">
+                🤤系统从未如此通畅～
+              </div>
+              <div class="sf-content-desc-footer-bg-main-icon cookie">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="auto"
+                  viewBox="0 -960 960 960"
+                  width="auto"
+                  fill="#1f1f1f"
                 >
-                  页面重定向被拦截，保护你的比赛环境！
-                </header>
-                <div
-                  class="redirect-route-description-header-content-main-subtitle"
+                  <path
+                    d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-75 29-147t81-128.5q52-56.5 125-91T475-881q21 0 43 2t45 7q-9 45 6 85t45 66.5q30 26.5 71.5 36.5t85.5-5q-26 59 7.5 113t99.5 56q1 11 1.5 20.5t.5 20.5q0 82-31.5 154.5t-85.5 127q-54 54.5-127 86T480-80Zm-60-480q25 0 42.5-17.5T480-620q0-25-17.5-42.5T420-680q-25 0-42.5 17.5T360-620q0 25 17.5 42.5T420-560Zm-80 200q25 0 42.5-17.5T400-420q0-25-17.5-42.5T340-480q-25 0-42.5 17.5T280-420q0 25 17.5 42.5T340-360Zm260 40q17 0 28.5-11.5T640-360q0-17-11.5-28.5T600-400q-17 0-28.5 11.5T560-360q0 17 11.5 28.5T600-320ZM480-160q122 0 216.5-84T800-458q-50-22-78.5-60T683-603q-77-11-132-66t-68-132q-80-2-140.5 29t-101 79.5Q201-644 180.5-587T160-480q0 133 93.5 226.5T480-160Zm0-324Z"
+                  />
+                </svg>
+              </div>
+              <div class="sf-content-desc-footer-bg-main-icon storage">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="auto"
+                  viewBox="0 -960 960 960"
+                  width="auto"
+                  fill="#1f1f1f"
                 >
-                  <p>
-                    检测到页面发生重定向，目标网站：oj.sdutacm.cn 已被系统拦截！
-                  </p>
-                  <p>原因：非法重定向拦截，已自动回退主页。</p>
-                </div>
-                <aside
-                  class="redirect-route-description-header-content-main-aside"
+                  <path
+                    d="M120-160v-160h720v160H120Zm80-40h80v-80h-80v80Zm-80-440v-160h720v160H120Zm80-40h80v-80h-80v80Zm-80 280v-160h720v160H120Zm80-40h80v-80h-80v80Z"
+                  />
+                </svg>
+              </div>
+              <div class="sf-content-desc-footer-bg-main-icon logout">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="auto"
+                  viewBox="0 -960 960 960"
+                  width="auto"
+                  fill="#1f1f1f"
                 >
-                  <p>比赛期间请勿访问非指定网站，祝你取得好成绩！</p>
-                </aside>
-                <div
-                  class="redirect-route-description-header-content-main-button"
-                >
-                  <p>收到，加油比赛！</p>
-                </div>
-              </main>
-            </div>
-          </header>
-          <main class="redirect-route-description-main">
-            <p>
-              当选手不小心触发了重定向的网页后，不用担心，我们仍然会为你拦截非法的重定向跳转，但是会保留跳转之前的合法连接，您可以尽情浏览任何在白名单内的网页！
-            </p>
-          </main>
-        </div>
+                  <path
+                    d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h280v80H200Zm440-160-55-58 102-102H360v-80h327L585-622l55-58 200 200-200 200Z"
+                  />
+                </svg>
+              </div>
+            </main>
+          </div>
+        </footer>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped lang="less">
-.redirect-route-description {
+.sf-content {
   width: 100%;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  top: 0;
+  height: 90%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: start;
   gap: 1rem;
-  transform: translateY(5rem);
-  opacity: 0;
-  transition: all 0.5s ease;
-  &-header {
-    width: 60%;
-    height: 50%;
+  padding-top: 2rem;
+
+  &-media {
+    width: 40%;
+    aspect-ratio: 16/9;
+
+    &-video {
+      width: 100%;
+      height: 100%;
+      border-radius: var(--border-radius);
+      object-fit: cover;
+      box-shadow: var(--box-shadow);
+    }
+  }
+  &-desc {
+    width: 40%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
     border-radius: var(--border-radius);
+    background-color: var(--yellow-font-color);
     display: flex;
     flex-direction: column;
-    justify-content: start;
-    align-items: center;
-    position: relative;
-    background-color: var(--bg-primary-color);
-
-    &::after {
-      content: "😲";
-      position: absolute;
-      right: 0;
-      top: 0;
-      font-size: 3rem;
-      transform: translateX(50%);
-    }
-    &-title {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    &-header {
       width: 100%;
-      height: 10%;
+      height: 20%;
       display: flex;
       justify-content: start;
       align-items: center;
-      gap: 0.2rem;
-      padding-left: 0.5rem;
-      border-top-left-radius: var(--border-radius);
-      border-top-right-radius: var(--border-radius);
-      & div {
-        height: 40%;
-        aspect-ratio: 1;
-        border-radius: 50%;
-        &.red {
-          background-color: #ff5f57;
-        }
-        &.yellow {
-          background-color: #f3bc2e;
-        }
-        &.green {
-          background-color: #28c840;
-        }
-      }
+      font-size: var(--text-medium-size);
+      color: var(--text-secondary-color);
     }
 
     &-content {
       width: 100%;
-      height: 90%;
+      height: 30%;
+      display: flex;
+      justify-content: start;
+      color: var(--text-color);
+      line-height: 1.5;
+      font-weight: bold;
+      font-size: var(--text-large-size);
+    }
+
+    &-footer {
+      width: 100%;
+      height: 50%;
+      position: relative;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: end;
 
-      &-main {
-        width: 80%;
-        aspect-ratio: 4/3;
-        color: var(--text-color);
-        border-radius: var(--border-radius);
+      &-bg {
+        width: 60%;
+        height: 90%;
+        background-color: var(--text-color);
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        &-title {
+        border-top-left-radius: var(--border-radius);
+        border-top-right-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+
+        &-header {
           width: 100%;
           height: 20%;
           display: flex;
           justify-content: start;
           align-items: center;
-          font-size: var(--text-medium-size);
-        }
+          padding-left: 0.5rem;
+          gap: 0.5rem;
 
-        &-subtitle {
-          width: 100%;
-          height: 40%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          & p {
-            width: 100%;
-            height: fit-content;
-            display: flex;
-            justify-content: start;
-            font-size: var(--text-small-size);
+          & .red {
+            width: 0.5rem;
+            aspect-ratio: 1;
+            background-color: red;
+            border-radius: 50%;
+          }
+
+          & .yellow {
+            width: 0.5rem;
+            aspect-ratio: 1;
+            background-color: yellow;
+            border-radius: 50%;
+          }
+          & .green {
+            width: 0.5rem;
+            aspect-ratio: 1;
+            background-color: green;
+            border-radius: 50%;
           }
         }
 
-        &-aside {
+        &-main {
           width: 100%;
-          height: 20%;
+          height: 80%;
           display: flex;
           justify-content: center;
           align-items: center;
-          font-size: var(--text-small-size);
+          position: relative;
+          &-text {
+            font-size: var(--text-large-size);
+            width: fit-content;
+            height: fit-content;
+            position: relative;
+            color: var(--bg-primary-color);
+          }
+          &-icon {
+            width: 2rem;
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            border-radius: 50%;
+
+            & svg {
+              fill: var(--bg-primary-color);
+              width: 90% !important;
+            }
+          }
         }
-
-        &-button {
-          width: 70%;
-          height: 20%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background-color: var(--blue-font-color);
-          color: #fff;
-          font-size: var(--text-small-size);
-          border-radius: 3rem;
-          margin-top: 1rem;
-        }
       }
     }
   }
-
-  &-main {
-    width: 60%;
-    height: fit-content;
-    line-height: 1.5;
-    color: #000;
-    font-size: var(--text-medium-size);
-  }
-}
-
-.redirect-route-container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  color: #000;
-
-  &-icon {
-    position: absolute;
-    width: 20%;
-    left: 10%;
-    top: 5%;
-    transition: transform 0.5s ease;
-    transform-origin: center center;
-  }
-
-  &-indicator {
-    width: 60%;
-    height: 25%;
-    position: absolute;
-    border-radius: var(--border-radius);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #000;
-    &:nth-child(1) {
-      background-color: white;
-      transform: translate(-10%, 20%) scale(1);
-      z-index: 1;
-      box-shadow: var(--box-shadow);
-      transition: all 0.5s ease;
-      &::after {
-        content: "😵‍💫";
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        font-size: 3rem;
-        transform: translate(20%, 50%) rotate(10deg);
-      }
-    }
-    &:nth-child(2) {
-      background-color: rgba(227, 227, 227, 0.837);
-
-      transform: translate(10%, -50%);
-    }
-  }
-}
-
-.white-route-description {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: var(--text-color);
-  font-size: var(--text-medium-size);
-  left: 0;
-  top: 0;
-  gap: 2rem;
-  opacity: 0;
-  transform: translateY(5rem);
-  transition: all 0.5s ease;
-
-  &-header {
-    width: 65%;
-    aspect-ratio: 4/3;
-    background-color: var(--blue-bg-color);
-    border-radius: var(--border-radius);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    padding-left: 1rem;
-    &-title {
-      width: 100%;
-      height: 20%;
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      font-size: var(--text-medium-size);
-      font-weight: 700;
-      color: #000;
-    }
-
-    &-subtitle {
-      width: 100%;
-      height: 20%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      &-text {
-        width: 100%;
-        height: fit-content;
-        display: flex;
-        justify-content: start;
-        color: #000;
-        font-size: var(--text-small-size);
-      }
-    }
-
-    &-divider {
-      width: 100%;
-      height: 10%;
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      font-size: var(--text-small-size);
-      color: #000;
-    }
-
-    &-button {
-      width: 70%;
-      height: 10%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: var(--blue-font-color);
-      color: #fff;
-      font-size: var(--text-small-size);
-      border-radius: 3rem;
-      margin-top: 2rem;
-    }
-  }
-
-  &-main {
-    width: 65%;
-    height: fit-content;
-    font-size: var(--text-medium-size);
-    line-height: 1.5;
-  }
-}
-
-.white-route {
-  position: relative;
-  color: #000;
-  -webkit-user-drag: none;
-
-  &-container {
-    width: 100%;
-    position: absolute;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-    padding-left: 3rem;
-    gap: 1rem;
-  }
-
-  &-indicator {
-    width: 55%;
-    aspect-ratio: 4/1;
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: var(--border-radius);
-    transition: all 0.5s ease;
-    &:nth-child(1) {
-      transition-delay: 0.2s;
-    }
-    &:nth-child(2) {
-      transition-delay: 0.1s;
-    }
-    &-large {
-      width: 60%;
-      aspect-ratio: 3/1;
-      position: absolute;
-      top: 45%;
-      left: 30%;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-
-      & img {
-        display: block;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        width: 20%;
-        transform: translate(20%, 50%) scale(1);
-        transform-origin: center center;
-        transition: transform 0.5s ease;
-      }
-
-      &::before {
-        content: "🤫";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        display: block;
-        width: fit-content;
-        height: fit-content;
-        font-size: 3rem;
-        transform: translate(-40%, 30%) rotate(-10deg);
-        transform-origin: center center;
-      }
-    }
-  }
-}
-
-.header-text-fade {
-  opacity: 0;
-  transform: translateY(-5rem);
-}
-
-.white-route-indicator-fade {
-  opacity: 0;
-  transform: translateY(10rem);
-}
-
-.white-route-description-show {
-  opacity: 1 !important;
-  transform: translateY(0) !important;
-}
-
-.sf-container {
-  width: 100%;
-  height: 70vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  background-color: var(--bg-primary-color);
 }
 
 .sf-header {
   width: 100%;
   height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-size: 2rem;
-  font-weight: 700;
-  display: flex;
+  font-weight: bold;
   color: var(--text-color);
-  justify-content: center;
-  align-items: center;
-  transform: translateY(2rem);
-  opacity: 0;
-  transition: all 0.5s ease;
 }
 
-.sf-header-show {
-  transform: translateY(0) !important;
-  opacity: 1 !important;
-}
-
-.sf-content {
-  width: 80%;
-  height: 90%;
+.sf-container {
+  width: 100%;
+  height: 60vh;
   display: flex;
   justify-content: center;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 2rem;
-
-  &-desc {
-    height: 90%;
-    aspect-ratio: 1;
-    padding: 1rem;
-    user-select: none;
-    cursor: pointer;
-    overflow: hidden;
-    position: relative;
-
-    &:nth-child(1) {
-      color: var(--bg-primary-color);
-      background-color: var(--blue-font-color);
-
-      &:hover {
-        .white-route-indicator-large img {
-          transform: translate(20%, 50%) scale(1.2);
-        }
-      }
-    }
-
-    &:nth-child(2) {
-      color: var(--text-color);
-      background-color: var(--blue-bg-color);
-
-      &:hover {
-        .redirect-route-container-icon {
-          transform: rotate(-10deg) scale(1.1);
-        }
-
-        .redirect-route-container {
-          &-indicator:nth-child(1) {
-            transform: scale(1.1) translate(-10%, 20%);
-            // background-color: var(--blue-bg-color);
-          }
-        }
-      }
-    }
-    border-radius: var(--border-radius);
-
-    &-header {
-      font-size: var(--text-medium-size);
-      width: 100%;
-      height: 10%;
-      display: flex;
-      justify-content: start;
-      align-items: center;
-      transition: all 0.5s ease;
-    }
-
-    &-text {
-      font-size: var(--text-large-size);
-      width: 100%;
-      height: 30%;
-      line-height: 1.5;
-      font-weight: 700;
-      transition: all 0.5s ease;
-      transition-delay: 0.1s;
-    }
-
-    &-footer {
-      width: 100%;
-      height: 60%;
-      display: flex;
-      transition: all 0.5s ease;
-      // background-color: red;
-    }
-  }
+  margin-top: 4rem;
+  position: relative;
+  z-index: 1;
+  contain: layout; /* 限制布局影响范围 */
+  isolation: isolate; /* 创建新的堆叠上下文 */
 }
 </style>

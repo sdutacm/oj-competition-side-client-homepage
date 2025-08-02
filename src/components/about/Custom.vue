@@ -1,9 +1,11 @@
 <script setup>
 import gsap from "gsap";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
-import { onMounted, nextTick } from "vue";
+import { onMounted, onUnmounted, nextTick } from "vue";
 
 gsap.registerPlugin(ScrollTrigger);
+
+let mainTl, headerTL;
 
 onMounted(async () => {
   await nextTick();
@@ -12,8 +14,20 @@ onMounted(async () => {
   }, 0);
 });
 
+// 组件卸载时清理
+onUnmounted(() => {
+  if (mainTl) {
+    mainTl.scrollTrigger?.kill();
+    mainTl.kill();
+  }
+  if (headerTL) {
+    headerTL.scrollTrigger?.kill();
+    headerTL.kill();
+  }
+});
+
 function initAnimations() {
-  let mainTl = gsap.timeline({
+  mainTl = gsap.timeline({
     scrollTrigger: {
       trigger: ".ct-container",
       start: "top 10%",
@@ -21,23 +35,33 @@ function initAnimations() {
       scrub: 1,
       pin: ".ct-container",
       pinSpacing: true,
-      anticipatePin: 1,
+      anticipatePin: 0, // 减少预测导致的抖动
+      refreshPriority: -1, // 降低刷新优先级
+      pinReparent: false, // 防止重新父级化
+      normalizeScroll: false, // 减少干扰
+      ignoreMobileResize: true, // 忽略移动端尺寸变化
+      onRefreshInit: () => {
+        // 确保状态正确
+        gsap.set(".ct-container", { clearProps: "transform" });
+      }
     },
   });
 
-  let headerTL = gsap.timeline({
+  headerTL = gsap.timeline({
     scrollTrigger: {
       trigger: ".ct-title",
       start: "top 10%",
       end: "top 15%",
       scrub: 1,
+      refreshPriority: -1 // 保持一致的优先级
     },
   });
 
   headerTL.to(".ct-title", {
     duration: .5,
     opacity: 0,
-    ease: "linear",
+    ease: "none", // 使用线性缓动，配合scrub更稳定
+    force3D: true // 启用硬件加速
   });
 
   // 第一阶段：隐藏 header (10-15%)
@@ -45,22 +69,26 @@ function initAnimations() {
     .to(".ct-content", {
       duration: 1,
       y: "-10%",
-      ease: "linear",
+      ease: "none", // 线性缓动更稳定
+      force3D: true
     })
     .to(".ct-content .img1", {
       duration: .5,
       scale: 2,
-      ease: "linear",
+      ease: "none",
+      force3D: true
     })
     .to(".ct-content .img1", {
       duration: 1,
       y: "-200%",
-      ease: "linear",
+      ease: "none",
+      force3D: true
     })
     .to(".ct-content-small .img2", {
       duration: 1,
       y: "-200%",
-      ease: "linear",
+      ease: "none",
+      force3D: true
     });
 }
 </script>
@@ -88,9 +116,10 @@ function initAnimations() {
   margin: 0;
   display: flex;
   flex-direction: column;
-  will-change: transform;
   box-sizing: border-box;
-  overflow: visible; // 防止pin时内容高度变化导致跳动
+  overflow: visible;
+  contain: layout; /* 限制布局影响范围 */
+  isolation: isolate; /* 创建新的堆叠上下文 */
 
   & .ct-title {
     width: 100%;
@@ -102,7 +131,6 @@ function initAnimations() {
     align-items: center;
     justify-content: center;
     color: var(--text-color);
-    will-change: transform, opacity; // 优化动画性能
     box-sizing: border-box;
   }
 
@@ -112,8 +140,7 @@ function initAnimations() {
     height: calc(100vh - 60px);
     border-radius: var(--border-radius);
     position: relative;
-    transform-origin: center center; // 设置缩放中心点
-    will-change: transform; // 优化性能
+    transform-origin: center center;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -125,8 +152,7 @@ function initAnimations() {
       height: 80%;
       display: block;
       object-fit: contain;
-      will-change: transform; // 优化动画性能
-      backface-visibility: hidden; // 减少闪烁
+      backface-visibility: hidden;
       z-index: 3;
     }
     &-small {
