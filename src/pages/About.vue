@@ -46,7 +46,6 @@ import Development from '@/components/about/Development.vue';
     height: auto;
     background-color: var(--bg-primary-color);
     position: relative;
-    overflow: visible;
     display: flex;
     justify-content: center;
     align-items: center;
