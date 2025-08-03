@@ -1,7 +1,35 @@
 <script setup>
+import { onMounted } from 'vue';
 import DownloadButton from "@/components/DownloadButton.vue";
 import Release from "@/components/Release.vue";
 import Footer from "@/components/Footer.vue";
+import { useReleasesStore } from "@/store/useSimpleStore";
+
+// 使用简化的 store
+const releasesStore = useReleasesStore();
+
+// 读取环境变量
+const appName = import.meta.env.VITE_APP_NAME || "SDUT OJ 竞赛客户端";
+
+onMounted(() => {
+  // 传统检测方法
+  console.log('=== 传统检测方法 ===');
+  releasesStore.detectSystem();
+  
+  // 现代API检测方法
+  console.log('=== 现代API检测方法 ===');
+  releasesStore.detectSystemAdvanced().then(() => {
+    console.log('高级检测完成');
+  });
+  
+  // 在开发环境下输出所有下载链接
+  if (import.meta.env.DEV) {
+    console.log('=== 下载链接信息 ===');
+    console.log('当前系统:', releasesStore.platformInfo);
+    console.log('推荐下载链接:', releasesStore.downloadUrl);
+    console.log('所有平台下载链接:', releasesStore.allDownloadUrls);
+  }
+});
 </script>
 
 <template>
@@ -24,11 +52,14 @@ import Footer from "@/components/Footer.vue";
       </div>
       <div class="content-main">
         <img src="../assets/images/favicon.png" class="logo" alt="" />
-        <h1>下载 SDUT OJ 竞赛客户端</h1>
+        <h1>下载 {{ appName }}</h1>
         <div class="btn">
-          <DownloadButton desc="下载 for Linux" />
+          <DownloadButton 
+            :desc="`下载 for ${releasesStore.platform}`" 
+            :download-url="releasesStore.downloadUrl"  
+          />
         </div>
-        <aside class="desc">版本 1.2 for .AppImage (x64)</aside>
+        <aside class="desc">版本 {{ releasesStore.newVersion }} for {{ releasesStore.downloadFormat }}</aside>
       </div>
     </div>
     <div class="release-container">
