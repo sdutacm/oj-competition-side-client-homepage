@@ -10,10 +10,26 @@ let animations = [];
 
 onMounted(async () => {
   await nextTick();
+  
+  // 延迟等待DOM完全渲染和路由过渡完成
+  setTimeout(() => {
+    initObservers();
+    initAnimations();
+  }, 300);
+});
 
+function initObservers() {
   const oj3Logo = document.querySelector(".sdutoj3-img");
   const oj3Text = document.querySelector(".sdutoj3-text");
-  // const HighLight = document.querySelector(".highlight");
+  const container = document.querySelector(".content");
+
+  // 确保元素存在再创建 Observer
+  if (!oj3Logo || !oj3Text || !container) {
+    console.warn("Elements not found, retrying...");
+    setTimeout(initObservers, 100);
+    return;
+  }
+
   const containerObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -29,40 +45,35 @@ onMounted(async () => {
     { threshold: 0.1 }
   );
 
+  containerObserver.observe(container);
+  
+  // 保存 observer 引用以便清理
+  animations.containerObserver = containerObserver;
+
   showHightLight('cp');
-
-  // const HighLightOvserver = new IntersectionObserver(
-  //   entries => {
-  //     entries.forEach(entry => {
-  //       if(entry.isIntersecting) {
-  //         HighLight.classList.add("highlight-enter-active");
-  //       } else {
-  //         HighLight.classList.remove("highlight-enter-active");
-  //       }
-  //     });
-  //   }
-  // );
-  // HighLightOvserver.observe(HighLight);
-
-  const container = document.querySelector(".content");
-  if (container) {
-    containerObserver.observe(container);
-  }
-
-  setTimeout(() => {
-    initAnimations();
-  }, 100);
-});
+}
 
 onUnmounted(() => {
+  // 清理 IntersectionObserver
+  if (animations.containerObserver) {
+    animations.containerObserver.disconnect();
+  }
+  
   // 清理所有GSAP动画和ScrollTrigger实例
   animations.forEach((anim) => {
-    if (anim.scrollTrigger) {
+    if (anim && typeof anim === 'object' && anim.scrollTrigger) {
       anim.scrollTrigger.kill();
     }
-    anim.kill();
+    if (anim && typeof anim.kill === 'function') {
+      anim.kill();
+    }
   });
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+  
+  // 清理粒子效果
+  document.querySelectorAll(".burst-particle").forEach((particle) => {
+    particle.remove();
+  });
 });
 
 function initAnimations() {

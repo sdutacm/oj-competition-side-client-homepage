@@ -4,7 +4,9 @@
       <img src="@/assets/images/favicon.png" class="logo-img" alt="Logo" />
       <span class="logo-text">OJ Competition Side Client</span>
     </router-link>
-    <div class="links">
+
+    <!-- 桌面端菜单 -->
+    <div class="links desktop-menu">
       <router-link class="link" to="/">下载</router-link>
       <router-link class="link" to="/about">功能</router-link>
       <a href="https://oj.sdutacm.cn/onlinejudge3/" class="link">更新</a>
@@ -15,7 +17,8 @@
         >讨论</a
       >
     </div>
-    <div class="tools">
+
+    <div class="tools desktop-menu">
       <div class="btn">
         <a
           href="https://github.com/sdutacm/oj-competition-side-client"
@@ -45,12 +48,61 @@
         <DownloadButton desc="下载" />
       </div>
     </div>
+
+    <!-- 移动端下拉菜单 -->
+    <div class="mobile-menu">
+      <el-dropdown trigger="click" placement="bottom-end">
+        <el-button type="text" class="mobile-menu-button">
+          菜单
+          <el-icon class="el-icon--right">
+            <ArrowDown />
+          </el-icon>
+        </el-button>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item>
+              <router-link to="/" class="mobile-link">下载</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <router-link to="/about" class="mobile-link">功能</router-link>
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <a href="https://oj.sdutacm.cn/onlinejudge3/" class="mobile-link"
+                >更新</a
+              >
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <a href="https://oj.sdutacm.cn/onlinejudge3/" class="mobile-link"
+                >官网</a
+              >
+            </el-dropdown-item>
+            <el-dropdown-item>
+              <a
+                href="https://github.com/sdutacm/oj-competition-side-client/issues"
+                class="mobile-link"
+                >讨论</a
+              >
+            </el-dropdown-item>
+            <el-dropdown-item divided>
+              <a
+                href="https://github.com/sdutacm/oj-competition-side-client"
+                target="_blank"
+                class="mobile-link"
+                >GitHub</a
+              >
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { onMounted, onUnmounted } from "vue";
 import DownloadButton from "./DownloadButton.vue";
+import { ArrowDown } from "@element-plus/icons-vue";
+
 onMounted(() => {
   const handleScroll = () => {
     const scrollTop =
@@ -91,7 +143,8 @@ onMounted(() => {
   transition: background-color 0.5s ease, box-shadow 0.5s ease;
   overflow: hidden;
   z-index: 10;
-  & .logo {
+
+  .logo {
     flex-basis: 30%;
     height: 100%;
     display: flex;
@@ -126,7 +179,7 @@ onMounted(() => {
     }
   }
 
-  & .links {
+  .links {
     flex-basis: 40%;
     height: 100%;
     display: flex;
@@ -134,7 +187,7 @@ onMounted(() => {
     align-items: center;
     gap: 1rem;
 
-    & .link {
+    .link {
       display: flex;
       flex-basis: 8%;
       height: 60%;
@@ -150,7 +203,7 @@ onMounted(() => {
     }
   }
 
-  & .tools {
+  .tools {
     flex-basis: 30%;
     height: 100%;
     display: flex;
@@ -159,7 +212,8 @@ onMounted(() => {
     align-items: center;
     padding-right: 1rem;
     gap: 1rem;
-    & .btn {
+
+    .btn {
       height: 70%;
       border-radius: var(--border-medium-radius);
       display: flex;
@@ -168,7 +222,7 @@ onMounted(() => {
       align-items: center;
       position: relative;
 
-      & a {
+      a {
         height: 100%;
         width: 100%;
         display: flex;
@@ -178,6 +232,7 @@ onMounted(() => {
         border-radius: var(--border-medium-radius);
         background-color: var(--bg-secondary-color);
       }
+
       &:nth-child(1) {
         flex-basis: 10%;
         background-color: var(--bg-secondary-color);
@@ -192,5 +247,132 @@ onMounted(() => {
       }
     }
   }
+
+  // 移动端下拉菜单
+  .mobile-menu {
+    display: none;
+    padding-right: 1rem;
+
+    .mobile-menu-button {
+      color: var(--text-color) !important;
+      font-size: var(--text-medium-size) !important;
+      font-weight: 600 !important;
+      font-family: inherit !important;
+      border: none !important;
+      box-shadow: none !important;
+      background: none !important;
+      padding: 0.5rem 1rem !important;
+      border-radius: var(--border-small-radius) !important;
+      transition: all 0.3s ease !important;
+
+      &:hover {
+        background-color: var(--bg-nav-color) !important;
+        color: var(--oj-color) !important;
+      }
+
+      &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+    }
+
+    .mobile-link {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: var(--text-medium-size);
+      font-weight: 500;
+      font-family: inherit;
+      width: 100%;
+      display: block;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: var(--oj-color);
+      }
+    }
+  }
+
+  // 响应式设计
+  @media (max-width: 760px) {
+    .logo {
+      flex-basis: auto;
+      justify-content: center;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      padding-left: 0;
+
+      &-text {
+        font-size: calc(var(--text-medium-size) * 0.9);
+      }
+    }
+
+    .desktop-menu {
+      display: none;
+    }
+
+    .mobile-menu {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .logo {
+      &-img {
+        width: 12%;
+      }
+
+      &-text {
+        font-size: calc(var(--text-medium-size) * 0.8);
+      }
+    }
+  }
+}
+
+// Element Plus 下拉菜单样式覆盖
+:deep(.el-dropdown-menu) {
+  background-color: var(--bg-secondary-color) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--border-radius) !important;
+  box-shadow: var(--box-shadow) !important;
+  padding: 0.5rem 0 !important;
+  min-width: 160px !important;
+  font-family: inherit !important;
+}
+
+:deep(.el-dropdown-menu__item) {
+  color: var(--text-color) !important;
+  font-size: var(--text-medium-size) !important;
+  font-weight: 500 !important;
+  font-family: inherit !important;
+  padding: 0.75rem 1rem !important;
+  transition: all 0.3s ease !important;
+  border-radius: 0 !important;
+  
+  &:hover {
+    background-color: var(--bg-nav-color) !important;
+    color: var(--oj-color) !important;
+  }
+
+  &:first-child {
+    border-top-left-radius: var(--border-radius) !important;
+    border-top-right-radius: var(--border-radius) !important;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: var(--border-radius) !important;
+    border-bottom-right-radius: var(--border-radius) !important;
+  }
+
+  &.is-divided {
+    border-top: 1px solid var(--border-color) !important;
+    margin-top: 0.25rem !important;
+    padding-top: 1rem !important;
+  }
+}
+
+:deep(.el-dropdown-menu__item--divided) {
+  border-top: 1px solid var(--border-color) !important;
+  margin-top: 0.25rem !important;
 }
 </style>

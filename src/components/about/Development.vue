@@ -37,225 +37,189 @@ onUnmounted(() => {
 });
 
 function initScrollAnimations() {
-  // 设置初始状态 - 使用更简单的变换
-
+  // 使用更轻量的初始状态设置
   gsap.set(".dev-section", {
     opacity: 0,
-    y: 40,
+    y: 20, // 减少移动距离
+    force3D: true, // 强制GPU加速
   });
 
-  gsap.set(".section-icon", {
-    scale: 0.8,
+  gsap.set(".section-icon, .feature-item, .step, .contribute-step, .tech-item", {
     opacity: 0,
+    force3D: true,
   });
 
-  gsap.set(".feature-item", {
-    opacity: 0,
-    x: -15,
-  });
+  // 存储observers以便清理
+  if (!window.devObservers) {
+    window.devObservers = [];
+  }
 
-  gsap.set(".step", {
-    opacity: 0,
-    y: 20,
-  });
+  // 优化的观察器选项 - 减少性能开销
+  const observerOptions = {
+    threshold: 0.15, // 降低阈值，更早触发
+    rootMargin: '0px 0px -10% 0px', // 添加边距，避免频繁触发
+  };
 
-  gsap.set(".contribute-step", {
-    opacity: 0,
-    x: -20,
-  });
-
-  gsap.set(".tech-item", {
-    opacity: 0,
-    scale: 0.8,
-  });
-
-  // GitHub section - 使用Intersection Observer
+  // GitHub section - 简化动画
   const githubObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (
-          entry.isIntersecting &&
-          entry.target.classList.contains("github-section")
-        ) {
-          const tl = gsap.timeline();
-          tl.to(".github-section", {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out",
-          })
-            .to(
-              ".github-section .section-icon",
-              {
-                scale: 1,
-                opacity: 1,
-                duration: 0.4,
-                ease: "back.out(1.2)",
-              },
-              "-=0.3"
-            )
-            .to(
-              ".github-section .feature-item",
-              {
-                opacity: 1,
-                x: 0,
-                duration: 0.3,
-                stagger: 0.08,
-                ease: "power2.out",
-              },
-              "-=0.2"
-            );
+        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+          entry.target.classList.add('animated');
+          
+          // 使用CSS变换而不是GSAP以获得更好的性能
+          requestAnimationFrame(() => {
+            entry.target.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            
+            // 子元素的简化动画
+            const children = entry.target.querySelectorAll('.section-icon, .feature-item');
+            children.forEach((child, index) => {
+              setTimeout(() => {
+                child.style.transition = 'opacity 0.3s ease-out';
+                child.style.opacity = '1';
+              }, index * 50);
+            });
+          });
+          
+          // 断开观察以避免重复触发
+          githubObserver.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.2 }
+    observerOptions
   );
 
-  githubObserver.observe(document.querySelector(".github-section"));
-
-  // CI/CD section - 使用Intersection Observer
+  // CI/CD section - 简化动画
   const cicdObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (
-          entry.isIntersecting &&
-          entry.target.classList.contains("cicd-section")
-        ) {
-          const tl = gsap.timeline();
-          tl.to(".cicd-section", {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out",
-          })
-            .to(
-              ".cicd-section .section-icon",
-              {
-                scale: 1,
-                opacity: 1,
-                duration: 0.4,
-                ease: "back.out(1.2)",
-              },
-              "-=0.3"
-            )
-            .to(
-              ".step",
-              {
-                opacity: 1,
-                y: 0,
-                duration: 0.3,
-                stagger: 0.1,
-                ease: "power2.out",
-              },
-              "-=0.2"
-            );
+        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+          entry.target.classList.add('animated');
+          
+          requestAnimationFrame(() => {
+            entry.target.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            
+            const steps = entry.target.querySelectorAll('.section-icon, .step');
+            steps.forEach((step, index) => {
+              setTimeout(() => {
+                step.style.transition = 'opacity 0.3s ease-out';
+                step.style.opacity = '1';
+              }, index * 60);
+            });
+          });
+          
+          cicdObserver.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.2 }
+    observerOptions
   );
 
-  cicdObserver.observe(document.querySelector(".cicd-section"));
-
-  // Contribute section - 使用Intersection Observer
+  // Contribute section - 简化动画
   const contributeObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        if (
-          entry.isIntersecting &&
-          entry.target.classList.contains("contribute-section")
-        ) {
-          const tl = gsap.timeline();
-          tl.to(".contribute-section", {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out",
-          })
-            .to(
-              ".contribute-section .section-icon",
-              {
-                scale: 1,
-                opacity: 1,
-                duration: 0.4,
-                ease: "back.out(1.2)",
-              },
-              "-=0.3"
-            )
-            .to(
-              ".contribute-step",
-              {
-                opacity: 1,
-                x: 0,
-                duration: 0.3,
-                stagger: 0.1,
-                ease: "power2.out",
-              },
-              "-=0.2"
-            )
-            .to(
-              ".tech-item",
-              {
-                opacity: 1,
-                scale: 1,
-                duration: 0.3,
-                stagger: 0.05,
-                ease: "back.out(1.2)",
-              },
-              "-=0.1"
-            );
+        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
+          entry.target.classList.add('animated');
+          
+          requestAnimationFrame(() => {
+            entry.target.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            
+            const elements = entry.target.querySelectorAll('.section-icon, .contribute-step, .tech-item');
+            elements.forEach((element, index) => {
+              setTimeout(() => {
+                element.style.transition = 'opacity 0.3s ease-out';
+                element.style.opacity = '1';
+              }, index * 40);
+            });
+          });
+          
+          contributeObserver.unobserve(entry.target);
         }
       });
     },
-    { threshold: 0.2 }
+    observerOptions
   );
 
-  contributeObserver.observe(document.querySelector(".contribute-section"));
+  // 安全地观察元素
+  const githubSection = document.querySelector(".github-section");
+  const cicdSection = document.querySelector(".cicd-section");
+  const contributeSection = document.querySelector(".contribute-section");
 
-  // 简化鼠标跟随效果 - 使用节流
+  if (githubSection) {
+    githubObserver.observe(githubSection);
+    window.devObservers.push(githubObserver);
+  }
+  
+  if (cicdSection) {
+    cicdObserver.observe(cicdSection);
+    window.devObservers.push(cicdObserver);
+  }
+  
+  if (contributeSection) {
+    contributeObserver.observe(contributeSection);
+    window.devObservers.push(contributeObserver);
+  }
+
+  // 简化鼠标跟随效果 - 减少性能开销，与hover状态兼容
   document.querySelectorAll(".dev-section").forEach((section) => {
-    let throttleTimer = null;
+    let animationId = null;
+    let isHovering = false;
+
+    section.addEventListener("mouseenter", () => {
+      isHovering = true;
+    });
 
     section.addEventListener("mousemove", (e) => {
-      if (throttleTimer) return;
+      if (!isHovering) return;
+      
+      // 取消之前的动画帧
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
 
-      throttleTimer = setTimeout(() => {
+      animationId = requestAnimationFrame(() => {
         const rect = section.getBoundingClientRect();
         const x = (e.clientX - rect.left) / rect.width - 0.5;
         const y = (e.clientY - rect.top) / rect.height - 0.5;
 
-        gsap.to(section, {
-          rotationY: x * 1,
-          rotationX: y * -1,
-          duration: 0.6,
-          ease: "power1.out",
-        });
-
-        gsap.to(section.querySelector(".section-icon"), {
-          x: x * 4,
-          y: y * 4,
-          duration: 0.6,
-          ease: "ease",
-        });
-
-        throttleTimer = null;
-      }, 16); // 约60fps
+        // 组合变换：保持CSS hover的translateY(-2px)，添加旋转效果
+        section.style.transform = `perspective(1000px) rotateY(${x * 0.3}deg) rotateX(${y * -0.3}deg) translateY(-2px) translateZ(0)`;
+        
+        const icon = section.querySelector(".section-icon");
+        if (icon) {
+          icon.style.transform = `translate3d(${x * 1.5}px, ${y * 1.5}px, 0)`;
+        }
+      });
     });
 
     section.addEventListener("mouseleave", () => {
-      gsap.to(section, {
-        rotationY: 0,
-        rotationX: 0,
-        duration: 0.8,
-        ease: "ease",
-      });
-
-      gsap.to(section.querySelector(".section-icon"), {
-        x: 0,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out",
-      });
+      isHovering = false;
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+      
+      // 重置变换，让CSS hover状态接管
+      section.style.transition = 'transform 0.4s ease';
+      section.style.transform = '';
+      
+      const icon = section.querySelector(".section-icon");
+      if (icon) {
+        icon.style.transition = 'transform 0.4s ease';
+        icon.style.transform = '';
+      }
+      
+      // 移除transition以避免后续影响
+      setTimeout(() => {
+        section.style.transition = '';
+        if (icon) icon.style.transition = '';
+      }, 400);
     });
   });
 }
@@ -289,30 +253,6 @@ function initInteractiveFeatures() {
       }
     });
   });
-
-  // 技术栈项目悬停动画
-  document.querySelectorAll(".tech-item").forEach((item) => {
-    item.addEventListener("mouseenter", () => {
-      gsap.to(item, {
-        scale: 1.05,
-        y: -5,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    });
-
-    item.addEventListener("mouseleave", () => {
-      gsap.to(item, {
-        scale: 1,
-        y: 0,
-        duration: 0.3,
-        ease: "power2.out",
-      });
-    });
-  });
-
-  // 步骤数字脉冲动画 - 完全移除避免干扰滚动
-  // 改为静态样式，不使用动画
 }
 </script>
 
@@ -495,14 +435,18 @@ function initInteractiveFeatures() {
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(
-    135deg,
-    var(--bg-primary-color) 0%,
-    var(--bg-secondary-color) 100%
-  );
   scroll-behavior: auto;
   transform: translateZ(0);
   -webkit-overflow-scrolling: touch;
+  
+  // 优化滚动性能
+  contain: layout style;
+  isolation: isolate;
+  
+  // 确保硬件加速
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .dev-header {
@@ -543,44 +487,65 @@ function initInteractiveFeatures() {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 4rem;
-  padding: 2rem;
-  max-width: 1200px;
+  gap: 2.5rem;
+  padding: 1.5rem;
+  max-width: 1000px;
   margin: 0 auto;
 }
 
 .dev-section {
   display: flex;
-  gap: 2rem;
-  padding: 3rem;
+  gap: 1.5rem;
+  padding: 2rem;
   background: var(--bg-secondary-color);
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   opacity: 0;
+  transform: translateY(20px) translateZ(0); // 添加初始变换和GPU加速
   transform-style: preserve-3d;
   perspective: 1000px;
-  will-change: transform, opacity;
-  transform: translateZ(0);
+  will-change: transform, opacity; // 移除 box-shadow，让其使用常规渲染
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease; // 使用更好的缓动函数
+  
+  // 优化滚动性能
+  contain: layout style paint;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  
+  // 使用硬件加速优化
+  -webkit-transform: translateZ(0);
+  -webkit-perspective: 1000px;
+  -webkit-transform-style: preserve-3d;
 
   &:hover {
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-    transition: box-shadow 0.3s ease;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12); // 减少阴影强度，更丝滑
+    transform: translateY(-2px) translateZ(0); // 添加轻微上升效果
+  }
+  
+  // 动画完成后的状态
+  &.animated {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
   }
 }
 
 .section-icon {
   flex-shrink: 0;
-  width: 80px;
-  height: 80px;
+  width: 60px; // 从80px减少到60px
+  height: 60px; // 从80px减少到60px
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
   background: var(--green-bg-color);
+  opacity: 0;
+  transform: translateZ(0); // GPU加速
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 
   svg {
-    width: 40px;
-    height: 40px;
+    width: 30px; // 从40px减少到30px
+    height: 30px; // 从40px减少到30px
     color: var(--blue-font-color);
   }
 }
@@ -589,17 +554,17 @@ function initInteractiveFeatures() {
   flex: 1;
 
   h2 {
-    font-size: 2rem;
+    font-size: 1.6rem; // 从2rem减少到1.6rem
     font-weight: 600;
     color: var(--text-color);
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem; // 从1rem减少到0.8rem
   }
 
   p {
-    font-size: 1.1rem;
+    font-size: 1rem; // 从1.1rem减少到1rem
     color: var(--text-secondary-color);
     line-height: 1.6;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.2rem; // 从1.5rem减少到1.2rem
   }
 }
 
@@ -657,6 +622,10 @@ function initInteractiveFeatures() {
   border-radius: var(--border-small-radius);
   color: var(--blue-font-color);
   font-weight: 500;
+  opacity: 0;
+  transform: translateZ(0); // GPU加速
+  will-change: opacity;
+  backface-visibility: hidden;
 
   .feature-icon {
     font-size: 1.2rem;
@@ -675,6 +644,10 @@ function initInteractiveFeatures() {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  opacity: 0;
+  transform: translateZ(0); // GPU加速
+  will-change: opacity;
+  backface-visibility: hidden;
 
   .step-number {
     width: 40px;
@@ -720,6 +693,10 @@ function initInteractiveFeatures() {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
+  opacity: 0;
+  transform: translateZ(0); // GPU加速
+  will-change: opacity;
+  backface-visibility: hidden;
 
   .step-emoji {
     font-size: 2rem;
@@ -758,6 +735,7 @@ function initInteractiveFeatures() {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+  user-select: none;
 }
 
 .tech-item {
@@ -771,10 +749,13 @@ function initInteractiveFeatures() {
   border-radius: var(--border-small-radius);
   font-weight: 500;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateZ(0); // GPU加速
+  will-change: opacity;
+  backface-visibility: hidden;
+  transition: box-shadow 0.3s ease; // 只保留必要的过渡
 
   &:hover {
-    transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   }
 }
@@ -787,23 +768,23 @@ function initInteractiveFeatures() {
 
   .dev-main {
     padding: 1rem;
-    gap: 2rem;
+    gap: 1.5rem; // 从2rem减少到1.5rem
   }
 
   .dev-section {
     flex-direction: column;
-    padding: 2rem;
+    padding: 1.5rem; // 从2rem减少到1.5rem
     gap: 1rem;
   }
 
   .section-icon {
-    width: 60px;
-    height: 60px;
+    width: 50px; // 从60px减少到50px
+    height: 50px; // 从60px减少到50px
     align-self: center;
 
     svg {
-      width: 30px;
-      height: 30px;
+      width: 25px; // 从30px减少到25px
+      height: 25px; // 从30px减少到25px
     }
   }
 

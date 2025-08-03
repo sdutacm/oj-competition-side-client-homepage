@@ -341,20 +341,20 @@ onUnmounted(() => {
           & .red {
             width: 0.5rem;
             aspect-ratio: 1;
-            background-color: red;
+            background-color: #ff5f57;
             border-radius: 50%;
           }
 
           & .yellow {
             width: 0.5rem;
             aspect-ratio: 1;
-            background-color: yellow;
+            background-color: #f3bc2e;
             border-radius: 50%;
           }
           & .green {
             width: 0.5rem;
             aspect-ratio: 1;
-            background-color: green;
+            background-color: #28c840;
             border-radius: 50%;
           }
         }

@@ -398,7 +398,7 @@ onMounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--text-color);
+  color: #fff;
   font-size: var(--text-medium-size);
   left: 0;
   top: 0;
@@ -426,7 +426,7 @@ onMounted(() => {
       align-items: center;
       font-size: var(--text-medium-size);
       font-weight: 700;
-      color: #000;
+      color: #fff;
     }
 
     &-subtitle {
@@ -441,7 +441,7 @@ onMounted(() => {
         height: fit-content;
         display: flex;
         justify-content: start;
-        color: #000;
+        color: #fff;
         font-size: var(--text-small-size);
       }
     }
@@ -453,7 +453,7 @@ onMounted(() => {
       justify-content: start;
       align-items: center;
       font-size: var(--text-small-size);
-      color: #000;
+      color: #fff;
     }
 
     &-button {

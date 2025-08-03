@@ -3,6 +3,7 @@ import gsap from "gsap";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
 import { onMounted, nextTick, onBeforeUnmount } from "vue";
 import DownloadButton from "../DownloadButton.vue";
+import ImgDataUrl from "@/utils/imgDataUrl";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -70,8 +71,8 @@ function initAnimations() {
   entranceTl.to(
     ".scrollBox",
     {
-      x: "-25%", // 调整位置让6张图片的中心对齐屏幕中心
-      duration: 0.8, // 缩短duration，让水平移动更快
+      x: "-20%", // 调整位置让6张图片的中心对齐屏幕中心
+      duration: 0.5, // 减少到0.5秒
       opacity: 1,
       ease: "power2.out", // 改为power2.out，让动画更快结束
       force3D: true, // GPU加速
@@ -87,7 +88,7 @@ function initAnimations() {
         const offsets = [-60, 80, -40, 70, -80, 50]; // 减少移动幅度，原来是[-60, 80, -40, 70, -80, 50]
         return offsets[index] || 0;
       },
-      duration: 0.8, // 与整体移动保持相同时长，缩短时间
+      duration: 0.5, // 减少到0.5秒
       ease: "power2.out", // 改为power2.out，让动画更快结束
       stagger: 0.05, // 减少每个图片之间的延迟，原来是0.1
       opacity: 1, // 确保图片在入场时可见
@@ -103,7 +104,7 @@ function initAnimations() {
         trigger: ".ab-container",
         start: triggerStart,
         end: triggerEnd,
-        scrub: 2.8, // 调整到平衡点：既有平滑过渡又保持合适的响应速度
+        scrub: 1.5, // 减少scrub值，让动画更快响应滚动
         refreshPriority: -1,
         invalidateOnRefresh: true,
         anticipatePin: 1,
@@ -116,8 +117,8 @@ function initAnimations() {
 
     // 向上滚动时：从当前位置继续向左移动
     mainTl.to(".scrollBox", {
-      x: "-30%", // 最终位置（向左移动）
-      duration: 2, // 适中的duration
+      x: "-40%", // 增加移动距离，让效果更明显
+      duration: 1.5, // 减少duration，让动画更快
       ease: "none", // 回到线性缓动，让scrub完全控制速度
       force3D: true,
       transformOrigin: "left center",
@@ -128,7 +129,7 @@ function initAnimations() {
       ".scrollItem",
       {
         y: 0, // 最终位置（水平线）
-        duration: 2, // 适中的duration
+        duration: 1.5, // 减少duration，让动画更快
         ease: "none", // 回到线性缓动，让scrub完全控制速度
         force3D: true,
         stagger: 0, // 移除stagger，确保同步
@@ -141,15 +142,15 @@ function initAnimations() {
       ScrollTrigger.refresh();
       
       // 预执行一次变换，让浏览器准备合成层
-      gsap.set(".scrollBox", { x: "-25.1%" });
-      gsap.set(".scrollBox", { x: "-25%" });
+      gsap.set(".scrollBox", { x: "-20.1%" });
+      gsap.set(".scrollBox", { x: "-20%" });
     }, 100);
     
     // 返回清理函数
     return () => {
       window.removeEventListener('scroll', updateScrollVelocity);
     };
-  }, 1200); // 减少等待时间，因为入场动画现在只需要0.8秒+stagger延迟
+  }, 800); // 调整为0.5秒动画 + 0.05秒最后stagger + 缓冲时间
 
   // 不需要悬停效果动画，移除所有鼠标事件
   
@@ -169,10 +170,8 @@ function initAnimations() {
         <span>获取 SDUT OJ 竞赛客户端</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          height="24px"
           viewBox="0 -960 960 960"
-          width="24px"
-          fill="#1f1f1f"
+          fill="currentColor"
         >
           <path d="m256-240-56-56 384-384H240v-80h480v480h-80v-344L256-240Z" />
         </svg>
@@ -183,27 +182,27 @@ function initAnimations() {
     <div class="scrollBox">
       <!-- 所有图片都使用绝对定位 -->
       <section class="scrollItem scrollItem0">
-        <img src="../../assets/images/scrollItem1.png" alt="应用截图1" />
+        <img :src="ImgDataUrl.aboutImgDataUrl.scrollItem0" alt="应用截图1" />
       </section>
 
       <section class="scrollItem scrollItem1">
-        <img src="../../assets/images/light-enter.png" alt="应用截图2" />
+        <img :src="ImgDataUrl.aboutImgDataUrl.scrollItem1" alt="应用截图2" />
       </section>
 
       <section class="scrollItem scrollItem2">
-        <img src="../../assets/images/dark-enter.png" alt="应用截图3" />
+        <img :src="ImgDataUrl.aboutImgDataUrl.scrollItem2" alt="应用截图3" />
       </section>
 
       <section class="scrollItem scrollItem3">
-        <img src="../../assets/images/scrollItem5.jpeg" alt="应用截图5" />
+        <img :src="ImgDataUrl.aboutImgDataUrl.scrollItem3" alt="应用截图4" />
       </section>
 
       <section class="scrollItem scrollItem4">
-        <img src="../../assets/images/scrollItem4.png" alt="应用截图4" />
+        <img :src="ImgDataUrl.aboutImgDataUrl.scrollItem4" alt="应用截图5" />
       </section>
 
       <section class="scrollItem scrollItem5">
-        <img src="../../assets/images/scrollItem1.png" alt="应用截图6" />
+        <img :src="ImgDataUrl.aboutImgDataUrl.scrollItem5" alt="应用截图6" />
       </section>
     </div>
   </div>
@@ -266,6 +265,7 @@ function initAnimations() {
       position: relative;
       font-size: var(--text-large-size);
       transition: color 0.3s ease;
+
       &::after {
         content: "";
         position: absolute;
@@ -282,14 +282,14 @@ function initAnimations() {
       }
 
       & svg {
-        height: 90%;
+        height: var(--text-large-size);
         fill: var(--font-color);
         transition: fill 0.3s ease;
       }
     }
 
     .logo {
-      width: 3rem;
+      width: 4rem;
       display: block;
       opacity: 0;
       transform: translateY(0rem); // 移除初始偏移，避免布局偏移
@@ -394,18 +394,28 @@ function initAnimations() {
     }
 
     // 根据实际图片尺寸调整比例 - 增大尺寸
-    .scrollItem0,
+    .scrollItem0 {
+      aspect-ratio: 2000/1200 !important; // dark-enter.png 实际比例 1.67:1
+      height: 400px !important;
+      width: auto !important;
+    }
+
+    // light-enter.png 有相同的比例 - 增大尺寸
+    .scrollItem1 {
+      aspect-ratio: 1000/600 !important; // 实际图片比例 1.67:1
+      height: 400px !important;
+      width: auto !important;
+    }
+
     .scrollItem2,
-    .scrollItem3,
-    .scrollItem5 {
+    .scrollItem3 {
       aspect-ratio: 1552/1012 !important; // 实际图片比例 1.53:1
       height: 400px !important;
       width: auto !important;
     }
 
-    // light-enter.png 有不同的比例 - 增大尺寸
-    .scrollItem1 {
-      aspect-ratio: 1000/600 !important; // 实际图片比例 1.67:1
+    .scrollItem5 {
+      aspect-ratio: 1440/900 !important; // 实际图片比例 1.6:1
       height: 400px !important;
       width: auto !important;
     }
@@ -424,27 +434,27 @@ function initAnimations() {
     }
 
     .scrollItem1 {
-      left: 630px; // 612px宽度 + 18px间距
+      left: 685px; // 667px宽度 + 18px间距
       z-index: 10;
     }
 
     .scrollItem2 {
-      left: 1315px; // 630 + 667 + 18px间距
+      left: 1370px; // 685 + 667 + 18px间距
       z-index: 10;
     }
 
     .scrollItem3 {
-      left: 1945px; // 1315 + 612 + 18px间距
+      left: 2001px; // 1370 + 613 + 18px间距
       z-index: 10;
     }
 
     .scrollItem4 {
-      left: 2575px; // 1945 + 612 + 18px间距
+      left: 2632px; // 2001 + 613 + 18px间距
       z-index: 10;
     }
 
     .scrollItem5 {
-      left: 2980px; // 2575 + 387 + 18px间距 (scrollItem4实际宽度是387px)
+      left: 3038px; // 2632 + 388 + 18px间距
       z-index: 10;
     }
   }
@@ -470,19 +480,19 @@ function initAnimations() {
         left: 0px;
       }
       .scrollItem1 {
-        left: 475px;
+        left: 551px;
       }
       .scrollItem2 {
-        left: 950px;
+        left: 1102px;
       }
       .scrollItem3 {
-        left: 1425px;
+        left: 1611px;
       }
       .scrollItem4 {
-        left: 1900px;
+        left: 2120px;
       }
       .scrollItem5 {
-        left: 2175px;
+        left: 2448px;
       }
     }
   }
@@ -506,19 +516,19 @@ function initAnimations() {
         left: 0px;
       }
       .scrollItem1 {
-        left: 330px;
+        left: 435px;
       }
       .scrollItem2 {
-        left: 660px;
+        left: 870px;
       }
       .scrollItem3 {
-        left: 990px;
+        left: 1271px;
       }
       .scrollItem4 {
-        left: 1320px;
+        left: 1672px;
       }
       .scrollItem5 {
-        left: 1550px;
+        left: 1931px;
       }
     }
   }

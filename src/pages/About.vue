@@ -6,6 +6,8 @@ import Expand from '@/components/about/Expand.vue';
 import Focus from '@/components/about/Focus.vue';
 import Safe from '@/components/about/Safe.vue';
 import Development from '@/components/about/Development.vue';
+import Footer from '@/components/Footer.vue';
+
 </script>
 
 <template>
@@ -31,6 +33,7 @@ import Development from '@/components/about/Development.vue';
     <section class="container-section">
       <Development />
     </section>
+    <Footer />
   </main>
 </template>
 
