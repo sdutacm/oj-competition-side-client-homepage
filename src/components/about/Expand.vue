@@ -6,8 +6,8 @@ import { onMounted } from "vue";
 gsap.registerPlugin(ScrollTrigger);
 
 onMounted(() => {
-  gsap.set(".ep-title-content header", { opacity: 0, y: -50 });
-  gsap.set(".ep-title-content p", { opacity: 0, y: -50 });
+  // gsap.set(".ep-title-content header", { opacity: 0, y: -50 });
+  // gsap.set(".ep-title-content p", { opacity: 0, y: -50 });
   gsap.set(".ep-content-svgs-container:nth-child(1)", {
     opacity: 0,
     x: -350,
@@ -34,15 +34,6 @@ onMounted(() => {
     y: 100,
   });
 
-  let tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".ep-container",
-      start: "top center",
-      end: "bottom bottom",
-      scrub: 1,
-    },
-  });
-
   let svgTl = gsap.timeline({
     scrollTrigger: {
       trigger: ".ep-container",
@@ -50,18 +41,6 @@ onMounted(() => {
       end: "top 70%",
       scrub: 1,
     },
-  });
-
-  tl.to(".ep-title-content header", {
-    duration: 0.5,
-    opacity: 1,
-    y: 0,
-    ease: "linear",
-  }).to(".ep-title-content p", {
-    duration: 0.5,
-    opacity: 1,
-    y: 0,
-    ease: "linear",
   });
 
   svgTl.to(".ep-content-svgs-container:nth-child(1)", {
@@ -220,10 +199,11 @@ onMounted(() => {
 <style scoped lang="less">
 .ep-container {
   width: 100%;
-  height: 60vh;
+  height: 40vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10rem;
   & .ep-title {
     width: 50%;
     height: 100%;
@@ -261,7 +241,7 @@ onMounted(() => {
     height: 100%;
     position: relative;
     display: flex;
-    justify-content: start;
+    justify-content:start;
     align-items: center;
 
     &-svgs {

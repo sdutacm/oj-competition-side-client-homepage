@@ -2,47 +2,49 @@
 import gsap from "gsap";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
 import { onMounted, onUnmounted } from "vue";
+import { showHightLight } from "@/utils/showHighLight";
 
 gsap.registerPlugin(ScrollTrigger);
 
 let mainTimeline;
 
 onMounted(() => {
+  showHightLight('sf');
   // 设置初始状态，只设置一次
-  gsap.set(".sf-content", { 
-    x: "22.6%", 
+  gsap.set(".sf-content", {
+    x: "22.6%",
     scale: 1.1,
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".sf-content-desc", { 
+  gsap.set(".sf-content-desc", {
     opacity: 0,
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".sf-content-desc-footer", { 
+  gsap.set(".sf-content-desc-footer", {
     y: "100%",
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".cookie", { 
-    left: "50%", 
+  gsap.set(".cookie", {
+    left: "50%",
     top: "5%",
     opacity: 1,
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".storage", { 
-    left: "10%", 
+  gsap.set(".storage", {
+    left: "10%",
     top: "50%",
     opacity: 1,
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".logout", { 
-    right: "10%", 
+  gsap.set(".logout", {
+    right: "10%",
     bottom: "10%",
     opacity: 1,
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".sf-content-desc-footer-bg-main-text", { 
+  gsap.set(".sf-content-desc-footer-bg-main-text", {
     opacity: 0,
-    force3D: true
+    force3D: true,
   });
 
   // 创建主时间轴，平衡抖动和布局问题
@@ -62,61 +64,89 @@ onMounted(() => {
       onRefreshInit: () => {
         // 在刷新初始化时确保状态正确
         gsap.set(".sf-container", { clearProps: "transform" });
-      }
+      },
     },
   });
 
   // 使用更稳定的动画配置
   mainTimeline
-    .to(".sf-content-desc", {
-      duration: 1.2,
-      opacity: 1,
-      ease: "none", // 改回none，配合scrub更稳定
-      force3D: true
-    }, 0)
-    .to(".sf-content", {
-      duration: 1.2,
-      x: "0%",
-      scale: 1,
-      ease: "none", // 改回none，减少抖动
-      force3D: true
-    }, 0)
-    .to(".sf-content-desc-footer", {
-      duration: 0.8,
-      y: "0%",
-      ease: "none",
-      force3D: true
-    }, 0.6)
-    .to(".cookie", {
-      duration: 0.6,
-      opacity: 0,
-      left: "50%",
-      top: "0%",
-      ease: "none",
-      force3D: true
-    }, 1.2)
-    .to(".storage", {
-      duration: 0.6,
-      opacity: 0,
-      left: "0%",
-      top: "50%",
-      ease: "none",
-      force3D: true
-    }, 1.4)
-    .to(".logout", {
-      duration: 0.6,
-      opacity: 0,
-      right: "0%",
-      bottom: "0%",
-      ease: "none",
-      force3D: true
-    }, 1.6)
-    .to(".sf-content-desc-footer-bg-main-text", {
-      duration: 0.6,
-      opacity: 1,
-      ease: "none",
-      force3D: true
-    }, 1.8);
+    .to(
+      ".sf-content-desc",
+      {
+        duration: 1.2,
+        opacity: 1,
+        ease: "none", // 改回none，配合scrub更稳定
+        force3D: true,
+      },
+      0
+    )
+    .to(
+      ".sf-content",
+      {
+        duration: 1.2,
+        x: "0%",
+        scale: 1,
+        ease: "none", // 改回none，减少抖动
+        force3D: true,
+      },
+      0
+    )
+    .to(
+      ".sf-content-desc-footer",
+      {
+        duration: 0.8,
+        y: "0%",
+        ease: "none",
+        force3D: true,
+      },
+      0.6
+    )
+    .to(
+      ".cookie",
+      {
+        duration: 0.6,
+        opacity: 0,
+        left: "50%",
+        top: "0%",
+        ease: "none",
+        force3D: true,
+      },
+      1.2
+    )
+    .to(
+      ".storage",
+      {
+        duration: 0.6,
+        opacity: 0,
+        left: "0%",
+        top: "50%",
+        ease: "none",
+        force3D: true,
+      },
+      1.4
+    )
+    .to(
+      ".logout",
+      {
+        duration: 0.6,
+        opacity: 0,
+        right: "0%",
+        bottom: "0%",
+        ease: "none",
+        force3D: true,
+      },
+      1.6
+    )
+    .to(
+      ".sf-content-desc-footer-bg-main-text",
+      {
+        duration: 0.6,
+        opacity: 1,
+        ease: "none",
+        force3D: true,
+      },
+      1.8
+    );
 });
 
 // 组件卸载时清理
@@ -131,10 +161,20 @@ onUnmounted(() => {
 <template>
   <div class="sf-container">
     <header class="sf-header">
-      <div>我们注重保护您的
-        <div class="sf-header-safe">隐私
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q97-30 162-118.5T718-480H480v-315l-240 90v207q0 7 2 18h238v316Z"/></svg>
-        </div>
+      我们注重保护您的
+      <div class="sf-header-safe">
+        <span class="highlight sf-highlight">隐私</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#1f1f1f"
+        >
+          <path
+            d="M480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q97-30 162-118.5T718-480H480v-315l-240 90v207q0 7 2 18h238v316Z"
+          />
+        </svg>
       </div>
     </header>
     <div class="sf-content">
@@ -354,13 +394,15 @@ onUnmounted(() => {
 }
 
 .sf-header {
-  width: 100%;
-  height: 10%;
+  width: fit-content;
+  height: fit-content;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   font-size: 3rem;
   font-weight: bold;
+  flex-wrap: nowrap;
   color: var(--text-color);
 
   &-safe {
@@ -382,6 +424,7 @@ onUnmounted(() => {
   margin-top: 4rem;
   position: relative;
   z-index: 1;
+  margin-bottom: 10rem;
   contain: layout; /* 限制布局影响范围 */
   isolation: isolate; /* 创建新的堆叠上下文 */
 }

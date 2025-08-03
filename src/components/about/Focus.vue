@@ -1,7 +1,9 @@
 <script setup>
 import { onMounted } from "vue";
+import { showHightLight } from "@/utils/showHighLight";
 
 onMounted(() => {
+  showHightLight("fc");
   const whiteRoute = document.querySelector(".w-d");
   let whiteRouteHide = false;
   const WhiteHeaderAndText = [...document.querySelectorAll(".w-h")];
@@ -67,31 +69,31 @@ onMounted(() => {
       redirectRouteHide = true;
     }
   });
-  const titleObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("fc-header-show");
-      } else {
-        entry.target.classList.remove("fc-header-show");
-      }
-    });
-  });
-  const title = document.querySelector(".fc-header");
-  if (title) titleObserver.observe(title);
 });
 </script>
 
 <template>
   <div class="fc-container">
-    <header class="fc-header">为您提供更加
+    <header class="fc-header">
+      为您提供更加
       <div class="fc-header-focus">
-        专注
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-42v-80q-125-14-214.5-103.5T122-440H42v-80h80q14-125 103.5-214.5T440-838v-80h80v80q125 14 214.5 103.5T838-520h80v80h-80q-14 125-103.5 214.5T520-122v80h-80Zm40-158q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Zm0-120q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T560-480q0-33-23.5-56.5T480-560q-33 0-56.5 23.5T400-480q0 33 23.5 56.5T480-400Zm0-80Z"/></svg>
-
+        <span class="highlight fc-highlight">专注</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#1f1f1f"
+        >
+          <path
+            d="M440-42v-80q-125-14-214.5-103.5T122-440H42v-80h80q14-125 103.5-214.5T440-838v-80h80v80q125 14 214.5 103.5T838-520h80v80h-80q-14 125-103.5 214.5T520-122v80h-80Zm40-158q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Zm0-120q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T560-480q0-33-23.5-56.5T480-560q-33 0-56.5 23.5T400-480q0 33 23.5 56.5T480-400Zm0-80Z"
+          />
+        </svg>
       </div>
-      的比赛环境</header>
+      的比赛环境
+    </header>
     <div class="fc-content">
-      <div class="fc-content-desc w-d" style="color: #fff;">
+      <div class="fc-content-desc w-d" style="color: #fff">
         <header class="fc-content-desc-header w-h">路由白名单拦截</header>
         <div class="fc-content-desc-text w-h">
           <p>
@@ -135,8 +137,8 @@ onMounted(() => {
           </main>
         </div>
       </div>
-      <div class="fc-content-desc redirect-route" style="color: #000;">
-        <header class="fc-content-desc-header r-h" >重定向拦截</header>
+      <div class="fc-content-desc redirect-route" style="color: #000">
+        <header class="fc-content-desc-header r-h">重定向拦截</header>
         <div class="fc-content-desc-text r-h">
           <p>拦截非法的重定向跳转，但您仍可以在合法页面尽情探索！</p>
         </div>
@@ -564,6 +566,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   background-color: var(--bg-primary-color);
+  margin-bottom: 5rem;
 }
 
 .fc-header {
@@ -575,9 +578,6 @@ onMounted(() => {
   color: var(--text-color);
   justify-content: center;
   align-items: center;
-  transform: translateY(2rem);
-  opacity: 0;
-  transition: all 0.5s ease;
 
   &-focus {
     .inline-style(

@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, nextTick } from "vue";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
+import { showHightLight } from "@/utils/showHighLight";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,7 +13,7 @@ onMounted(async () => {
 
   const oj3Logo = document.querySelector(".sdutoj3-img");
   const oj3Text = document.querySelector(".sdutoj3-text");
-
+  // const HighLight = document.querySelector(".highlight");
   const containerObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -25,8 +26,23 @@ onMounted(async () => {
         }
       });
     },
-    { threshold: 0.5 }
+    { threshold: 0.1 }
   );
+
+  showHightLight('cp');
+
+  // const HighLightOvserver = new IntersectionObserver(
+  //   entries => {
+  //     entries.forEach(entry => {
+  //       if(entry.isIntersecting) {
+  //         HighLight.classList.add("highlight-enter-active");
+  //       } else {
+  //         HighLight.classList.remove("highlight-enter-active");
+  //       }
+  //     });
+  //   }
+  // );
+  // HighLightOvserver.observe(HighLight);
 
   const container = document.querySelector(".content");
   if (container) {
@@ -270,7 +286,7 @@ function createBurstEffect() {
   <div class="cp-container">
     <header class="title">
       <div class="title-cross">
-        探索
+        <span class="highlight cp-highlight">探索</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="auto"

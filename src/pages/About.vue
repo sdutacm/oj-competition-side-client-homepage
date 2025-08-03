@@ -6,7 +6,6 @@ import Expand from '@/components/about/Expand.vue';
 import Focus from '@/components/about/Focus.vue';
 import Safe from '@/components/about/Safe.vue';
 import Development from '@/components/about/Development.vue';
-
 </script>
 
 <template>

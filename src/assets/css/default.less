@@ -117,3 +117,34 @@ body {
   font-family: "DM Sans", sans-serif;
   background-color: var(--bg-secondary-color);
 }
+
+.highlight {
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.highlight-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* SVG 描边动画样式 */
+.svg-stroke-animate {
+  opacity: 1;
+}
+
+.svg-stroke-animate path,
+.svg-stroke-animate circle,
+.svg-stroke-animate rect,
+.svg-stroke-animate line,
+.svg-stroke-animate polyline,
+.svg-stroke-animate polygon {
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
