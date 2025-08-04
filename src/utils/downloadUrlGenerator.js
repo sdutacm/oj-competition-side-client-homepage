@@ -1,105 +1,187 @@
-// 下载链接生成工具函数和测试用例
-export class DownloadUrlGenerator {
-  constructor(version = '0.0.1', cdnBaseUrl = 'https://cdn.sdutacm.cn/oj-competition-side-client') {
-    this.version = version;
-    this.cdnBaseUrl = cdnBaseUrl;
-  }
+/**
+ * 智能下载链接生成器
+ * 根据平台、架构、版本和文件类型自动生成下载链接
+ */
 
-  // 生成Mac下载链接
-  generateMacUrl(architecture = 'x64') {
-    const arch = architecture === 'arm64' ? 'arm64' : 'x64';
-    return `${this.cdnBaseUrl}/release/v${this.version}/SDUTOJCompetitionSideClient_mac_${arch}_${this.version}.dmg`;
+// 平台配置
+const PLATFORM_CONFIG = {
+  Windows: {
+    architectures: ['x64', 'arm64'],
+    fileTypes: [
+      { type: 'portable', extension: 'exe', label: 'portable' },
+      { type: 'installer', extension: 'exe', label: 'installer' }
+    ],
+    pathSuffix: '/release'
+  },
+  macOS: {
+    architectures: ['x64', 'arm64'],
+    fileTypes: [
+      { type: '', extension: 'dmg', label: 'dmg' }
+    ],
+    pathSuffix: '/release'
+  },
+  Linux: {
+    architectures: ['x86_64', 'arm64'],
+    fileTypes: [
+      { type: '', extension: 'AppImage', label: 'AppImage' }
+    ],
+    pathSuffix: '/release'
   }
+}
 
-  // 生成Linux下载链接
-  generateLinuxUrl(architecture = 'x64') {
-    const arch = architecture === 'arm64' ? 'arm64' : 'x86_64';
-    return `${this.cdnBaseUrl}/release/v${this.version}/SDUTOJCompetitionSideClient_linux_${arch}_${this.version}.AppImage`;
+// 架构显示名称映射
+const ARCH_DISPLAY_NAMES = {
+  Windows: {
+    x64: 'x64',
+    arm64: 'arm64'
+  },
+  macOS: {
+    x64: 'Intel',
+    arm64: 'Apple Silicon'
+  },
+  Linux: {
+    x86_64: 'x64',
+    arm64: 'arm64'
   }
+}
 
-  // 生成Windows下载链接
-  generateWindowsUrl(architecture = 'x64', type = 'installer') {
-    const validType = ['installer', 'portable'].includes(type) ? type : 'installer';
-    return `${this.cdnBaseUrl}/oj-competition-side-client/release/v${this.version}/SDUTOJCompetitionSideClient_windows_${validType}_${architecture}_${this.version}.exe`;
+/**
+ * 生成下载URL
+ * @param {string} platform - 平台名称 (Windows, macOS, Linux)
+ * @param {string} architecture - 架构 (x64, arm64, x86_64)
+ * @param {string} version - 版本号 (如: 0.0.1)
+ * @param {string} fileType - 文件类型 (portable, installer, 或空字符串)
+ * @returns {string} 完整的下载URL
+ */
+function generateDownloadUrl(platform, architecture, version, fileType = '') {
+  const cdnBaseUrl = import.meta.env.VITE_CDN_BASE_URL || 'https://cdn.sdutacm.cn/oj-competition-side-client'
+  const filePrefix = import.meta.env.VITE_APP_FILE_PREFIX || 'SDUTOJCompetitionSideClient'
+  
+  const config = PLATFORM_CONFIG[platform]
+  if (!config) {
+    throw new Error(`Unsupported platform: ${platform}`)
   }
-
-  // 根据平台和架构自动生成
-  generateUrl(platform, architecture = 'x64', windowsType = 'installer') {
-    const platformLower = platform.toLowerCase();
-    
-    if (platformLower.includes('mac') || platformLower.includes('darwin')) {
-      return this.generateMacUrl(architecture);
-    } else if (platformLower.includes('linux')) {
-      return this.generateLinuxUrl(architecture);
-    } else if (platformLower.includes('windows') || platformLower.includes('win')) {
-      return this.generateWindowsUrl(architecture, windowsType);
-    }
-    
-    // 默认返回Linux x64
-    return this.generateLinuxUrl('x64');
+  
+  // 构建路径
+  const basePath = `${cdnBaseUrl}${config.pathSuffix}/v${version}`
+  
+  // 构建文件名
+  let fileName = `${filePrefix}_${platform.toLowerCase()}`
+  
+  if (fileType) {
+    fileName += `_${fileType}`
   }
+  
+  fileName += `_${architecture}`
+  
+  fileName += `_${version}`
+  
+  const fileTypeConfig = config.fileTypes.find(ft => ft.type === fileType)
+  if (!fileTypeConfig) {
+    throw new Error(`Unsupported file type: ${fileType} for platform: ${platform}`)
+  }
+  
+  fileName += `.${fileTypeConfig.extension}`
+  
+  return `${basePath}/${fileName}`
+}
 
-  // 获取所有平台的下载链接
-  getAllUrls() {
-    return {
-      mac: {
-        x64: this.generateMacUrl('x64'),
-        arm64: this.generateMacUrl('arm64')
-      },
-      linux: {
-        x64: this.generateLinuxUrl('x64'),
-        arm64: this.generateLinuxUrl('arm64')
-      },
-      windows: {
-        x64: {
-          installer: this.generateWindowsUrl('x64', 'installer'),
-          portable: this.generateWindowsUrl('x64', 'portable')
-        },
-        arm64: {
-          installer: this.generateWindowsUrl('arm64', 'installer'),
-          portable: this.generateWindowsUrl('arm64', 'portable')
-        }
+/**
+ * 生成平台的所有下载选项
+ * @param {string} platform - 平台名称
+ * @param {string} version - 版本号
+ * @returns {Array} 下载选项数组
+ */
+function generatePlatformDownloads(platform, version) {
+  const config = PLATFORM_CONFIG[platform]
+  if (!config) {
+    return []
+  }
+  
+  const downloads = []
+  
+  // 遍历所有架构
+  for (const arch of config.architectures) {
+    // 遍历所有文件类型
+    for (const fileType of config.fileTypes) {
+      const archDisplayName = ARCH_DISPLAY_NAMES[platform][arch] || arch
+      const fileTypeLabel = fileType.label
+      
+      // 生成标题
+      let title = `${platform}(${archDisplayName})`
+      if (fileType.type) {
+        title += `(${fileTypeLabel})`
+      } else {
+        title += `(${fileTypeLabel})`
       }
-    };
+      
+      // 生成URL
+      const url = generateDownloadUrl(platform, arch, version, fileType.type)
+      
+      downloads.push({
+        title,
+        url,
+        platform,
+        architecture: arch,
+        fileType: fileType.type,
+        extension: fileType.extension
+      })
+    }
   }
+  
+  return downloads
 }
 
-// 测试用例
-export function testDownloadUrls() {
-  const generator = new DownloadUrlGenerator('0.0.1');
+/**
+ * 获取所有版本的所有平台下载链接
+ * @returns {Object} 按版本和平台组织的下载链接
+ */
+function getAllDownloads() {
+  const versions = (import.meta.env.VITE_HISTORICAL_VERSIONS || '0.0.2,0.0.1').split(',')
+  const platforms = Object.keys(PLATFORM_CONFIG)
   
-  console.log('=== 下载链接生成测试 ===');
+  const result = {}
   
-  // 测试Mac链接
-  console.log('Mac x64:', generator.generateMacUrl('x64'));
-  console.log('Mac arm64:', generator.generateMacUrl('arm64'));
+  for (const version of versions) {
+    result[version] = {}
+    for (const platform of platforms) {
+      result[version][platform] = generatePlatformDownloads(platform, version.trim())
+    }
+  }
   
-  // 测试Linux链接
-  console.log('Linux x64:', generator.generateLinuxUrl('x64'));
-  console.log('Linux arm64:', generator.generateLinuxUrl('arm64'));
-  
-  // 测试Windows链接
-  console.log('Windows x64 installer:', generator.generateWindowsUrl('x64', 'installer'));
-  console.log('Windows x64 portable:', generator.generateWindowsUrl('x64', 'portable'));
-  console.log('Windows arm64 installer:', generator.generateWindowsUrl('arm64', 'installer'));
-  console.log('Windows arm64 portable:', generator.generateWindowsUrl('arm64', 'portable'));
-  
-  // 测试自动生成
-  console.log('Auto - macOS arm64:', generator.generateUrl('macOS', 'arm64'));
-  console.log('Auto - Linux x64:', generator.generateUrl('Linux', 'x64'));
-  console.log('Auto - Windows x64:', generator.generateUrl('Windows', 'x64'));
-  
-  return generator.getAllUrls();
+  return result
 }
 
-// 验证URL格式是否正确
-export function validateUrl(url, expectedPattern) {
-  const regex = new RegExp(expectedPattern);
-  return regex.test(url);
+/**
+ * 获取特定版本的所有平台下载链接
+ * @param {string} version - 版本号
+ * @returns {Object} 按平台组织的下载链接
+ */
+function getVersionDownloads(version) {
+  const platforms = Object.keys(PLATFORM_CONFIG)
+  const result = {}
+  
+  for (const platform of platforms) {
+    result[platform] = generatePlatformDownloads(platform, version)
+  }
+  
+  return result
 }
 
-// 在浏览器控制台中运行测试
-if (typeof window !== 'undefined') {
-  window.testDownloadUrls = testDownloadUrls;
-  window.DownloadUrlGenerator = DownloadUrlGenerator;
+/**
+ * 获取所有版本列表
+ * @returns {Array} 版本列表，最新版本在前
+ */
+function getVersions() {
+  return (import.meta.env.VITE_HISTORICAL_VERSIONS || '0.0.2,0.0.1').split(',').map(v => v.trim())
+}
+
+export {
+  generateDownloadUrl,
+  generatePlatformDownloads,
+  getAllDownloads,
+  getVersionDownloads,
+  getVersions,
+  PLATFORM_CONFIG,
+  ARCH_DISPLAY_NAMES
 }

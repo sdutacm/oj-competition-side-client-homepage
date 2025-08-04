@@ -1,27 +1,23 @@
 <script setup>
 import { ref } from "vue";
 import ReleaseItem from "./ReleaseItem.vue";
-const activeNames = ref(["1"]);
-import { LinuxData, WindowsData, MacOSData } from "@/config/data.js";
-import { versions } from "@/config/data.js";
 import { ElTag } from "element-plus";
+import { getVersions, getVersionDownloads } from "@/utils/downloadUrlGenerator";
+
+const activeNames = ref(["1"]);
+
 const handleChange = (val) => {
   console.log(val);
 };
 
-function genDesc(version, sys) {
-  switch (sys) {
-    case "Windows":
-      return WindowsData.find((item) => item.version === version)?.description || [];
-    case "Linux":
-      return LinuxData.find((item) => item.version === version)?.description || [];
-    case "macOS":
-      return MacOSData.find((item) => item.version === version)?.description || [];
-    default:
-      return [];
-  }
-}
+// 从环境变量获取版本列表
+const versions = getVersions();
 
+// 生成特定版本的描述数据
+function genDesc(version, sys) {
+  const versionDownloads = getVersionDownloads(version);
+  return versionDownloads[sys] || [];
+}
 </script>
 
 <template>
@@ -44,9 +40,9 @@ function genDesc(version, sys) {
         </el-tag>
       </template>
         <div class="release-items">
-          <ReleaseItem system="Windows" :description="genDesc(version, 'Windows')" />
-          <ReleaseItem system="macOS" :description="genDesc(version, 'macOS')" />
-          <ReleaseItem system="Linux" :description="genDesc(version, 'Linux')" />
+          <ReleaseItem system="Windows" :description="genDesc(version, 'Windows')" :version="version" />
+          <ReleaseItem system="macOS" :description="genDesc(version, 'macOS')" :version="version" />
+          <ReleaseItem system="Linux" :description="genDesc(version, 'Linux')" :version="version" />
         </div>
       </el-collapse-item>
     </el-collapse>

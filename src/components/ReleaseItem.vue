@@ -49,29 +49,41 @@
       <h2>{{ props.system }}</h2>
     </header>
     <main>
-      <button class="release-info" v-for="(description, index) in props.description" :key="index">
+      <button 
+        class="release-info" 
+        v-for="(description, index) in props.description" 
+        :key="index"
+        @click="handleDownload(description.url, description.title)"
+        :disabled="downloading[index]"
+      >
         <p>{{ description.title }}</p>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="var(--text-color)"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M12 17V3" />
-          <path d="m6 11 6 6 6-6" />
-          <path d="M19 21H5" />
-        </svg>
+        <div class="download-status">
+          <span v-if="downloading[index]" class="downloading-text">下载中...</span>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="var(--text-color)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M12 17V3" />
+            <path d="m6 11 6 6 6-6" />
+            <path d="M19 21H5" />
+          </svg>
+        </div>
       </button>
     </main>
   </div>
 </template>
 
 <script setup>
+import { ref, reactive } from 'vue'
+
 const props = defineProps({
   description: {
     type: Array,
@@ -81,7 +93,73 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  version: {
+    type: String,
+    required: true,
+  },
 });
+
+// 下载状态跟踪
+const downloading = reactive({})
+
+// 下载函数
+async function handleDownload(url, title) {
+  console.log('=== 开始下载文件 ===')
+  console.log('文件:', title)
+  console.log('URL:', url)
+  console.log('版本:', props.version)
+  
+  // 获取下载项的索引
+  const index = props.description.findIndex(item => item.url === url)
+  if (index === -1) return
+  
+  downloading[index] = true
+  
+  try {
+    // 先检查文件是否存在
+    try {
+      const response = await fetch(url, { method: 'HEAD' })
+      console.log('文件检查结果:', response.status)
+      
+      if (!response.ok) {
+        throw new Error(`文件不存在 (${response.status})`)
+      }
+    } catch (fetchError) {
+      console.error('文件检查失败:', fetchError)
+      alert(`下载失败: 文件不存在或无法访问\n${title}`)
+      return
+    }
+
+    // 获取文件名
+    const urlObj = new URL(url)
+    const fileName = urlObj.pathname.split('/').pop() || `${props.system}-${props.version}-${title.replace(/[^a-zA-Z0-9]/g, '-')}`
+    
+    console.log('开始下载:', fileName)
+
+    // 创建下载链接
+    const link = document.createElement('a')
+    link.href = url
+    link.download = fileName
+    link.style.display = 'none'
+    
+    // 添加到 DOM，触发下载，然后清理
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    
+    console.log('下载触发完成')
+    
+    // 短暂显示下载状态
+    setTimeout(() => {
+      downloading[index] = false
+    }, 2000)
+
+  } catch (error) {
+    console.error('下载失败:', error)
+    alert(`下载失败: ${error.message}\n${title}`)
+    downloading[index] = false
+  }
+}
 </script>
 <style scoped lang="less">
 .release-item {
@@ -127,11 +205,39 @@ const props = defineProps({
       font-size: var(--text-small-size);
       border-radius: var(--border-medium-radius);
       background-color: var(--bg-secondary-color);
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, opacity 0.3s ease;
       padding: .5rem;
       color: var(--text-color);
-      &:hover {
+      cursor: pointer;
+      
+      &:hover:not(:disabled) {
         background-color: var(--bg-primary-color);
+      }
+      
+      &:disabled {
+        opacity: 0.8;
+        cursor: not-allowed;
+        background-color: var(--border-color);
+        
+        p {
+          color: var(--text-secondary-color);
+        }
+        
+        .downloading-text {
+          color: var(--text-color);
+          font-weight: 500;
+        }
+      }
+      
+      .download-status {
+        display: flex;
+        align-items: center;
+        
+        .downloading-text {
+          font-size: var(--text-small-size);
+          color: var(--text-secondary-color);
+          margin-right: 0.5rem;
+        }
       }
     }
   }
