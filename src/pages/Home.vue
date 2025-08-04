@@ -56,7 +56,8 @@ onMounted(() => {
         <div class="btn">
           <DownloadButton 
             :desc="`下载 for ${releasesStore.platform}`" 
-            :download-url="releasesStore.downloadUrl"  
+            :download-url="releasesStore.downloadUrl"
+            :platform="releasesStore.platform"
           />
         </div>
         <aside class="desc">版本 {{ releasesStore.newVersion }} for {{ releasesStore.downloadFormat }}</aside>

@@ -45,7 +45,11 @@
       </div>
 
       <div class="btn">
-        <DownloadButton desc="下载" />
+        <DownloadButton 
+          desc="下载" 
+          :download-url="releasesStore.downloadUrl"
+          :platform="releasesStore.platform"
+        />
       </div>
     </div>
 
@@ -102,6 +106,10 @@
 import { onMounted, onUnmounted } from "vue";
 import DownloadButton from "./DownloadButton.vue";
 import { ArrowDown } from "@element-plus/icons-vue";
+import { useReleasesStore } from "@/store/useSimpleStore";
+
+// 使用简化的 store
+const releasesStore = useReleasesStore();
 
 onMounted(() => {
   const handleScroll = () => {
