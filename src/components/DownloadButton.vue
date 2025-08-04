@@ -1,10 +1,18 @@
 <template>
   <button 
+    ref="buttonRef"
     type="button" 
     class="dl-btn"
     :class="{ error: hasError }"
     @click="handleDownload" 
+    @mousemove="handleMouseMove"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
     :disabled="isDownloading || !hasValidDownloadUrl"
+    :style="{
+      '--mouse-x': mouseX + '%',
+      '--mouse-y': mouseY + '%'
+    }"
   >
     <!-- Windows SVG -->
     <svg
@@ -81,7 +89,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useReleasesStore } from '@/store/useSimpleStore'
 
 const props = defineProps({
@@ -106,6 +114,12 @@ const releasesStore = useReleasesStore()
 const isDownloading = ref(false)
 const downloadProgress = ref('准备下载...')
 const hasError = ref(false)
+
+// 鼠标高光效果
+const mouseX = ref(0)
+const mouseY = ref(0)
+const isHovering = ref(false)
+const buttonRef = ref(null)
 
 // 获取当前平台
 const currentPlatform = computed(() => {
@@ -146,6 +160,23 @@ const buttonText = computed(() => {
   
   return '下载'
 })
+
+// 鼠标移动处理
+function handleMouseMove(event) {
+  if (!buttonRef.value) return
+  
+  const rect = buttonRef.value.getBoundingClientRect()
+  mouseX.value = ((event.clientX - rect.left) / rect.width) * 100
+  mouseY.value = ((event.clientY - rect.top) / rect.height) * 100
+}
+
+function handleMouseEnter() {
+  isHovering.value = true
+}
+
+function handleMouseLeave() {
+  isHovering.value = false
+}
 
 // 直接下载函数
 async function handleDownload(event) {
@@ -253,10 +284,38 @@ onMounted(() => {
   background-color: var(--text-color);
   user-select: none;
   transition: background-color 0.5s ease, box-shadow 0.5s ease, opacity 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  
+  // 鼠标跟随高光效果
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(
+      circle 120px at var(--mouse-x) var(--mouse-y),
+      rgba(255, 255, 255, 0.15) 0%,
+      rgba(255, 255, 255, 0.08) 40%,
+      rgba(255, 255, 255, 0.02) 70%,
+      transparent 100%
+    );
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    border-radius: var(--border-medium-radius);
+    z-index: 1;
+  }
   
   &:hover:not(:disabled) {
     background-color: var(--text-secondary-color);
     box-shadow: var(--box-shadow);
+    
+    &::before {
+      opacity: 1;
+    }
   }
 
   &:disabled {
@@ -278,6 +337,8 @@ onMounted(() => {
     fill: var(--bg-secondary-color);
     stroke: var(--bg-secondary-color);
     transition: transform 0.3s ease;
+    position: relative;
+    z-index: 2;
   }
 
   &:hover:not(:disabled) .icon {
@@ -291,6 +352,8 @@ onMounted(() => {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 200px;
+    position: relative;
+    z-index: 2;
   }
 }
 </style>

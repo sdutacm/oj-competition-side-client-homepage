@@ -266,20 +266,99 @@ onMounted(async () => {
     grid-row-gap: 2rem;
     margin-top: 2rem;
     &-box {
-      border-radius: var(--border-radius);
+      border-radius: 20px;
       overflow: hidden;
-      background-color: var(--bg-secondary-color);
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.02) 50%,
+        rgba(255, 255, 255, 0.08) 100%
+      );
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: var(--box-shadow);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
       user-select: none;
       cursor: pointer;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      
+      // 边缘散射效果
+      &::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(
+          45deg,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0.05) 25%,
+          rgba(255, 255, 255, 0.08) 50%,
+          rgba(255, 255, 255, 0.03) 75%,
+          rgba(255, 255, 255, 0.1) 100%
+        );
+        border-radius: 22px;
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        filter: blur(4px);
+      }
+      
+      // 顶部高光
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        height: 40%;
+        width: 100%;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.15) 0%,
+          rgba(255, 255, 255, 0.1) 30%,
+          transparent 100%
+        );
+        border-radius: 20px 20px 0 0;
+        pointer-events: none;
+        z-index: 1;
+      }
       &:hover {
+        transform: translateY(-4px);
+        box-shadow: 
+          0 16px 48px rgba(0, 0, 0, 0.15),
+          0 8px 16px rgba(0, 0, 0, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.4),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+        
+        // 激活边缘散射
+        &::before {
+          opacity: 1;
+        }
+        
         .release-container-desc-box-icon {
+          // 激活液态玻璃效果
+          &::before {
+            opacity: 1;
+          }
+          
+          // 激活高光散射
+          &::after {
+            opacity: 0.8;
+          }
+          
           & img {
-            transform: scale(1.1);
+            transform: scale(1.03);
+            filter: brightness(1.08) contrast(1.05) saturate(1.15);
           }
         }
       }
@@ -288,12 +367,60 @@ onMounted(async () => {
         width: 100%;
         height: 60%;
         overflow: hidden;
+        position: relative;
+        
+        // 主要液态玻璃层
+        &::before {
+          content: '';
+          position: absolute;
+          top: -3px;
+          left: -3px;
+          right: -3px;
+          bottom: -3px;
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.2) 0%,
+            rgba(255, 255, 255, 0.05) 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.05) 75%,
+            rgba(255, 255, 255, 0.15) 100%
+          );
+          z-index: 2;
+          pointer-events: none;
+          opacity: 0;
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+          filter: blur(1px);
+        }
+        
+        // 高光散射效果
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 50%;
+          background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.15) 0%,
+            rgba(255, 255, 255, 0.08) 40%,
+            rgba(255, 255, 255, 0.02) 70%,
+            transparent 100%
+          );
+          border-radius: 15px 15px 0 0;
+          z-index: 3;
+          opacity: 0;
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+          pointer-events: none;
+        }
+        
         & img {
           width: 100%;
           height: 100%;
-          // width: 100%;
           object-fit: cover;
-          transition: transform 0.3s ease;
+          transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+          position: relative;
+          z-index: 1;
         }
       }
 
@@ -302,6 +429,10 @@ onMounted(async () => {
         height: 40%;
         display: flex;
         flex-direction: column;
+        position: relative;
+        z-index: 2;
+        padding: 0.5rem;
+        
         & p {
           width: 100%;
           height: 30%;
@@ -310,6 +441,8 @@ onMounted(async () => {
           display: flex;
           justify-content: center;
           align-items: center;
+          font-weight: 600;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         & small {
           width: 100%;
@@ -318,6 +451,10 @@ onMounted(async () => {
           padding-right: 1rem;
           font-size: var(--text-small-size);
           color: var(--text-secondary-color);
+          line-height: 1.4;
+          text-align: center;
+          display: flex;
+          align-items: center;
         }
       }
       &:nth-child(1) {
