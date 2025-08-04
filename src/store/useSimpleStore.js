@@ -4,8 +4,13 @@ import { ref, computed } from 'vue'
 
 export const useReleasesStore = defineStore('releases', () => {
   const newVersion = ref(import.meta.env.VITE_APP_VERSION || '1.2.0')
-  const platform = ref('Linux')
-  const architecture = ref('x64')
+  
+  // 从 localStorage 读取保存的系统信息，如果没有则使用默认值
+  const savedPlatform = localStorage.getItem('detectedPlatform')
+  const savedArchitecture = localStorage.getItem('detectedArchitecture')
+  
+  const platform = ref(savedPlatform || 'Linux')
+  const architecture = ref(savedArchitecture || 'x64')
   const cdnBaseUrl = ref(import.meta.env.VITE_CDN_BASE_URL || 'https://cdn.sdutacm.cn/oj-competition-side-client')
   
   // 计算属性：完整的平台信息
@@ -21,7 +26,9 @@ export const useReleasesStore = defineStore('releases', () => {
     if (platformLower.includes('windows')) {
       return `.exe (${arch})`
     } else if (platformLower.includes('macos')) {
-      return `.dmg (${arch})`
+      // 统一使用标准架构名称
+      const archDisplay = arch === 'arm64' ? 'arm64' : 'x86_64'
+      return `.dmg (${archDisplay})`
     } else {
       return `.AppImage (${arch})`
     }
@@ -104,23 +111,17 @@ export const useReleasesStore = defineStore('releases', () => {
     let detectedArch = null
     
     try {
-      // 尝试使用 navigator.userAgentData (Chrome 90+)
-      if ('userAgentData' in navigator && navigator.userAgentData.getHighEntropyValues) {
-        const uaData = await navigator.userAgentData.getHighEntropyValues(['architecture', 'platform'])
+      // 尝试使用 navigator.userAgentData (Chrome 90+, Edge 90+)
+      if ('userAgentData' in navigator && navigator.userAgentData?.getHighEntropyValues) {
+        const uaData = await navigator.userAgentData.getHighEntropyValues(['architecture'])
         if (uaData.architecture) {
           console.log('Modern API detected architecture:', uaData.architecture)
-          switch (uaData.architecture.toLowerCase()) {
-            case 'arm':
-            case 'arm64':
-              detectedArch = 'arm64'
-              break
-            case 'x86':
-              detectedArch = 'x86'
-              break
-            case 'x86_64':
-            case 'x64':
-              detectedArch = 'x64'
-              break
+          // 标准化架构名称
+          const arch = uaData.architecture.toLowerCase()
+          if (arch.includes('arm') || arch === 'arm64') {
+            detectedArch = 'arm64'
+          } else if (arch.includes('x86') || arch === 'x86_64' || arch === 'x64') {
+            detectedArch = 'x86_64'
           }
         }
       }
@@ -131,25 +132,31 @@ export const useReleasesStore = defineStore('releases', () => {
     // 如果现代 API 检测到了架构，使用它
     if (detectedArch) {
       architecture.value = detectedArch
+      console.log('使用现代 API 检测结果:', detectedArch)
     } else {
       // 回退到传统检测方法
       if (/Macintosh/.test(userAgent)) {
-        // 对于 macOS，检测是否为 Apple Silicon
-        if (!/Intel/.test(userAgent)) {
+        // 对于 macOS，M 系列芯片的 User Agent 通常不包含 "Intel"
+        const hasIntelKeyword = /Intel/.test(userAgent)
+        if (!hasIntelKeyword) {
           architecture.value = 'arm64'
+          console.log('传统方法检测为 Apple Silicon')
         } else {
-          architecture.value = 'x64'
+          architecture.value = 'x86_64'
+          console.log('传统方法检测为 Intel Mac')
         }
       } else if (/ARM|aarch64/.test(userAgent)) {
         architecture.value = 'arm64'
       } else if (/x86_64|Win64|WOW64|x64/.test(userAgent)) {
-        architecture.value = 'x64'
-      } else if (/i[3-6]86|x86/.test(userAgent)) {
-        architecture.value = 'x86'
+        architecture.value = 'x86_64'
       } else {
-        architecture.value = 'x64'
+        architecture.value = 'x86_64'
       }
     }
+    
+    // 保存检测结果到 localStorage
+    localStorage.setItem('detectedPlatform', platform.value)
+    localStorage.setItem('detectedArchitecture', architecture.value)
     
     console.log('Advanced system detection:', {
       platform: platform.value,
@@ -177,28 +184,41 @@ export const useReleasesStore = defineStore('releases', () => {
     }
     
     // 更精确的架构检测
-    // 对于 macOS，优先检测 Apple Silicon
     if (/Macintosh/.test(userAgent)) {
-      // 检测 Apple Silicon
-      if (!/Intel/.test(userAgent)) {
-        // 现代 Mac 如果不包含 Intel，很可能是 Apple Silicon
+      // 对于 macOS，现代检测方法
+      // M1/M2/M3/M4 Mac 在 User Agent 中通常不包含 "Intel" 关键字
+      // 而 Intel Mac 会明确包含 "Intel Mac OS X"
+      
+      const hasIntelKeyword = /Intel/.test(userAgent)
+      
+      console.log('=== macOS 架构检测详情 ===');
+      console.log('User Agent:', userAgent);
+      console.log('包含 Intel 关键字:', hasIntelKeyword);
+      
+      // 如果 User Agent 中没有 "Intel" 关键字，很可能是 Apple Silicon
+      if (!hasIntelKeyword) {
         architecture.value = 'arm64'
+        console.log('检测为 Apple Silicon (M 系列芯片)');
       } else {
-        // 包含 Intel 的是 Intel Mac
-        architecture.value = 'x64'
+        architecture.value = 'x86_64'
+        console.log('检测为 Intel Mac');
       }
     } 
     // 其他平台的架构检测
     else if (/ARM|aarch64/.test(userAgent)) {
       architecture.value = 'arm64'
     } else if (/x86_64|Win64|WOW64|x64/.test(userAgent)) {
-      architecture.value = 'x64'
+      architecture.value = 'x86_64'
     } else if (/i[3-6]86|x86/.test(userAgent)) {
-      architecture.value = 'x86'
+      architecture.value = 'x86_64'
     } else {
-      // 默认设为 x64
-      architecture.value = 'x64'
+      // 默认设为 x86_64
+      architecture.value = 'x86_64'
     }
+    
+    // 保存检测结果到 localStorage
+    localStorage.setItem('detectedPlatform', platform.value)
+    localStorage.setItem('detectedArchitecture', architecture.value)
     
     console.log('System detected:', {
       platform: platform.value,
@@ -214,6 +234,9 @@ export const useReleasesStore = defineStore('releases', () => {
   function setPlatform(newPlatform, newArch) {
     platform.value = newPlatform
     architecture.value = newArch
+    // 保存到 localStorage
+    localStorage.setItem('detectedPlatform', newPlatform)
+    localStorage.setItem('detectedArchitecture', newArch)
   }
   
   return {

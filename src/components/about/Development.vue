@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, nextTick } from "vue";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
+import { showHightLight } from "@/utils/showHighLight";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,6 +15,7 @@ onMounted(async () => {
   ScrollTrigger.refresh();
 
   setTimeout(() => {
+    showHightLight('dev');
     initScrollAnimations();
     initInteractiveFeatures();
   }, 200);
@@ -260,8 +262,8 @@ function initInteractiveFeatures() {
   <div class="dev-container">
     <header class="dev-header">
       <h1>
-        <div class="dev-header-dev">
-          开发
+        <div class="dev-header-dev ">
+          <span class="highlight dev-highlight">开发</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="24px"

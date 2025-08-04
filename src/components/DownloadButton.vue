@@ -229,8 +229,9 @@ async function handleDownload(event) {
 }
 
 onMounted(() => {
-  // 确保系统信息已检测
-  if (!releasesStore.platform) {
+  // 确保系统信息已检测 - 如果没有保存的检测结果，就重新检测
+  const savedPlatform = localStorage.getItem('detectedPlatform')
+  if (!savedPlatform || !releasesStore.platform) {
     releasesStore.detectSystem()
   }
 })

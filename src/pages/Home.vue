@@ -11,24 +11,24 @@ const releasesStore = useReleasesStore();
 // 读取环境变量
 const appName = import.meta.env.VITE_APP_NAME || "SDUT OJ 竞赛客户端";
 
-onMounted(() => {
-  // 传统检测方法
-  console.log('=== 传统检测方法 ===');
-  releasesStore.detectSystem();
+onMounted(async () => {
+  // 清除旧的检测结果，强制重新检测
+  localStorage.removeItem('detectedPlatform');
+  localStorage.removeItem('detectedArchitecture');
   
-  // 现代API检测方法
-  console.log('=== 现代API检测方法 ===');
-  releasesStore.detectSystemAdvanced().then(() => {
-    console.log('高级检测完成');
-  });
-  
-  // 在开发环境下输出所有下载链接
-  if (import.meta.env.DEV) {
-    console.log('=== 下载链接信息 ===');
-    console.log('当前系统:', releasesStore.platformInfo);
-    console.log('推荐下载链接:', releasesStore.downloadUrl);
-    console.log('所有平台下载链接:', releasesStore.allDownloadUrls);
+  // 只使用高级检测方法，如果失败再使用传统方法
+  try {
+    await releasesStore.detectSystemAdvanced();
+    console.log('=== 使用现代 API 检测完成 ===');
+  } catch (error) {
+    console.log('现代 API 检测失败，使用传统方法:', error);
+    releasesStore.detectSystem();
   }
+  
+  console.log('最终检测结果:');
+  console.log('平台:', releasesStore.platform);
+  console.log('架构:', releasesStore.architecture);
+  console.log('下载格式:', releasesStore.downloadFormat);
 });
 </script>
 

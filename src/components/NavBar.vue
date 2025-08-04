@@ -56,7 +56,7 @@
     <!-- 移动端下拉菜单 -->
     <div class="mobile-menu">
       <el-dropdown trigger="click" placement="bottom-end">
-        <el-button type="text" class="mobile-menu-button">
+        <el-button link class="mobile-menu-button">
           菜单
           <el-icon class="el-icon--right">
             <ArrowDown />
@@ -112,6 +112,12 @@ import { useReleasesStore } from "@/store/useSimpleStore";
 const releasesStore = useReleasesStore();
 
 onMounted(() => {
+  // 确保系统信息已检测 - 如果没有保存的检测结果，就重新检测
+  const savedPlatform = localStorage.getItem('detectedPlatform')
+  if (!savedPlatform) {
+    releasesStore.detectSystem();
+  }
+  
   const handleScroll = () => {
     const scrollTop =
       document.documentElement.scrollTop || document.body.scrollTop;
