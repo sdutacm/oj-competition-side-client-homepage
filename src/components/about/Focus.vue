@@ -230,6 +230,14 @@ onMounted(() => {
     align-items: center;
     position: relative;
     background-color: var(--bg-primary-color);
+    @media screen and (max-width: 1024px) {
+      width: 90%;
+    }
+
+    @media screen and (max-width: 640px) {
+      width: 90%;
+      height: 70%;
+    }
 
     &::after {
       content: "😲";
@@ -276,11 +284,14 @@ onMounted(() => {
         width: 80%;
         aspect-ratio: 4/3;
         color: var(--text-color);
-        border-radius: var(--border-radius);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        @media screen and (max-width: 1024px) {
+          width: 70%;
+          height: 70%;
+        }
         &-title {
           width: 100%;
           height: 20%;
@@ -288,6 +299,15 @@ onMounted(() => {
           justify-content: start;
           align-items: center;
           font-size: var(--text-medium-size);
+
+          @media screen and (max-width: 1024px) {
+            font-size: var(--text-large-size);
+          }
+
+          @media screen and (max-width: 640px) {
+            height: fit-content;
+            font-size: calc(var(--text-small-size));
+          }
         }
 
         &-subtitle {
@@ -297,12 +317,20 @@ onMounted(() => {
           flex-direction: column;
           justify-content: center;
           align-items: center;
+          @media screen and (max-width: 640px) {
+            height: fit-content;
+          
+          }
           & p {
             width: 100%;
             height: fit-content;
             display: flex;
             justify-content: start;
             font-size: var(--text-small-size);
+
+            @media screen and (max-width: 640px) {
+              font-size: calc(var(--text-small-size) - 2px);
+            }
           }
         }
 
@@ -313,6 +341,11 @@ onMounted(() => {
           justify-content: center;
           align-items: center;
           font-size: var(--text-small-size);
+
+          @media screen and (max-width: 640px) {
+            height: fit-content;
+            font-size: calc(var(--text-small-size) );
+          }
         }
 
         &-button {
@@ -326,6 +359,12 @@ onMounted(() => {
           font-size: var(--text-small-size);
           border-radius: 3rem;
           margin-top: 1rem;
+
+          @media screen and (max-width: 640px) {
+            height: fit-content;
+            padding: 0.5rem 1rem;
+            font-size: calc(var(--text-small-size) - 2px);
+          }
         }
       }
     }
@@ -337,6 +376,12 @@ onMounted(() => {
     line-height: 1.5;
     color: #000;
     font-size: var(--text-medium-size);
+
+    @media screen and (max-width: 640px) {
+      width: 90%;
+      height: fit-content;
+      font-size: calc(var(--text-small-size) - 2px);
+    }
   }
 }
 
@@ -348,6 +393,11 @@ onMounted(() => {
   align-items: center;
   position: relative;
   color: #000;
+  @media screen {
+    @media (max-width: 640px) {
+      height: 20rem;
+    }
+  }
   &-icon {
     position: absolute;
     width: 20%;
@@ -361,17 +411,45 @@ onMounted(() => {
     width: 60%;
     height: 25%;
     position: absolute;
-    border-radius: var(--border-radius);
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #000;
+    font-size: 14px;
+    @media screen and (max-width: 1024px) {
+      width: 50%;
+      height: fit-content;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      width: fit-content;
+      height: fit-content !important;
+      padding: 1rem;
+      font-size: var(--text-small-size);
+    }
+
     &:nth-child(1) {
       background-color: white;
       transform: translate(-10%, 20%) scale(1);
       z-index: 1;
-      box-shadow: var(--box-shadow);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       transition: all 0.5s ease;
+
+      @media screen and (max-width: 1024px) {
+        transform: translate(-10%, 300%) scale(1) !important;
+      }
+
+
+      @media (max-width: 640px) {
+        transform: translate(-5%, 20%) scale(1) !important;
+        background-color: white !important;
+        background: white !important;
+        z-index: 10 !important;
+      }
+
       &::after {
         content: "😵‍💫";
         position: absolute;
@@ -379,11 +457,25 @@ onMounted(() => {
         bottom: 0;
         font-size: 3rem;
         transform: translate(20%, 50%) rotate(10deg);
+
+        @media (max-width: 640px) {
+          font-size: 24px !important;
+        }
       }
     }
+
     &:nth-child(2) {
       background-color: rgba(227, 227, 227, 0.837);
+      background: rgba(227, 227, 227, 0.837);
       transform: translate(10%, -50%);
+
+      @media  screen and (max-width: 1024px) {
+        transform: translate(10%, 200%) scale(1) !important;        
+      }
+
+      @media (max-width: 640px) {
+        background-color: rgba(227, 227, 227, 0.837) !important;
+      }
     }
   }
 }
@@ -397,7 +489,6 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   color: #fff;
-  font-size: var(--text-medium-size);
   left: 0;
   top: 0;
   gap: 2rem;
@@ -405,9 +496,13 @@ onMounted(() => {
   transform: translateY(5rem);
   transition: all 0.5s ease;
 
+  @media screen and (max-width: 640px) {
+    gap: 1rem;
+  }
+
   &-header {
-    width: 65%;
-    aspect-ratio: 4/3;
+    width: 60%;
+    height: 50%;
     background-color: var(--blue-bg-color);
     border-radius: var(--border-radius);
     display: flex;
@@ -416,15 +511,19 @@ onMounted(() => {
     align-items: center;
     position: relative;
     padding-left: 1rem;
+
+    @media screen and (max-width: 640px) {
+      width: 90%;
+    }
     &-title {
       width: 100%;
       height: 20%;
       display: flex;
       justify-content: start;
       align-items: center;
-      font-size: var(--text-medium-size);
       font-weight: 700;
       color: #fff;
+      font-size: var(--text-medium-size);
     }
 
     &-subtitle {
@@ -434,6 +533,11 @@ onMounted(() => {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+
+      @media screen and (max-width: 640px) {
+        height: fit-content;
+        font-size: var(--text-small-size);
+      }
       &-text {
         width: 100%;
         height: fit-content;
@@ -456,7 +560,7 @@ onMounted(() => {
 
     &-button {
       width: 70%;
-      height: 10%;
+      height: 20%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -465,6 +569,12 @@ onMounted(() => {
       font-size: var(--text-small-size);
       border-radius: 3rem;
       margin-top: 2rem;
+
+      @media screen and (max-width: 640px) {
+        height: fit-content;
+        margin: 1rem;
+        padding: 0.5rem 0;
+      }
     }
   }
 
@@ -473,6 +583,12 @@ onMounted(() => {
     height: fit-content;
     font-size: var(--text-medium-size);
     line-height: 1.5;
+
+    @media screen and (max-width: 640px) {
+      width: 90%;
+      font-size: var(--text-small-size);
+      line-height: 1.4;
+    }
   }
 }
 
@@ -491,16 +607,31 @@ onMounted(() => {
     align-items: start;
     padding-left: 3rem;
     gap: 1rem;
+
+    @media screen and (min-width: 1024px) and (max-height: 1000px) {
+      height: 30rem;
+      
+    }
+    @media screen and (max-width: 640px) {
+      height: 15rem;
+    }
   }
 
   &-indicator {
-    width: 55%;
-    aspect-ratio: 4/1;
+    width: fit-content;
+    height: fit-content;
+    padding: 1rem;
     background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: var(--border-radius);
+
+    @media screen and (min-width: 1024px) and (max-height: 1000px) {
+      width: 60%;
+      height: 20%;
+    }
+
     transition: all 0.5s ease;
     &:nth-child(1) {
       transition-delay: 0.2s;
@@ -509,12 +640,22 @@ onMounted(() => {
       transition-delay: 0.1s;
     }
     &-large {
-      width: 60%;
-      aspect-ratio: 3/1;
       position: absolute;
       top: 45%;
       left: 30%;
+      padding: 1rem;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+      @media screen and (min-width: 1024px) and (max-height: 1000px) {
+        top: 40% !important;
+        left: 20%;
+      }
+      white-space: nowrap;
+
+      @media screen and (max-width: 640px) {
+        left: 20%;
+        top: 65% !important;
+      }
 
       & img {
         display: block;
@@ -601,10 +742,9 @@ onMounted(() => {
   &-desc {
     height: 90%;
     aspect-ratio: 1;
-    padding: 1.5rem; // 增加内边距给文字更多空间
+    padding: 1.5rem;
     user-select: none;
     cursor: pointer;
-    overflow: visible; // 改为visible避免溢出隐藏
     position: relative;
 
     &:nth-child(1) {
@@ -622,6 +762,11 @@ onMounted(() => {
       color: var(--text-color);
       background-color: var(--blue-bg-color);
 
+      @media screen and (max-width: 640px) {
+        // margin-top: 2rem; 
+        aspect-ratio: 2/2.5;       
+      }
+
       &:hover {
         .redirect-route-container-icon {
           transform: rotate(-10deg) scale(1.1);
@@ -630,7 +775,6 @@ onMounted(() => {
         .redirect-route-container {
           &-indicator:nth-child(1) {
             transform: scale(1.1) translate(-10%, 20%);
-            // background-color: var(--blue-bg-color);
           }
         }
       }
@@ -648,10 +792,11 @@ onMounted(() => {
     }
 
     &-text {
-      font-size: var(--text-medium-size); // 稍微减小字体避免溢出
+      // background-color: red;
+      font-size: var(--text-large-size);
       width: 100%;
-      height: 35%; // 增加text区域高度
-      line-height: 1.4; // 稍微减小行高
+      height: 35%; 
+      line-height: 1.5; 
       font-weight: 700;
       transition: all 0.5s ease;
       transition-delay: 0.1s;
@@ -669,7 +814,7 @@ onMounted(() => {
 }
 
 /* 响应式设计 */
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
   .white-route-indicator-large {
     top: 100%;
   }
@@ -681,37 +826,37 @@ onMounted(() => {
     margin-bottom: 4rem;
     padding: 2rem 1rem;
   }
-  
+
   .fc-header {
     font-size: 1.8rem;
     margin-bottom: 1.5rem;
     padding: 1rem;
   }
-  
+
   .fc-content {
     width: 95%;
     gap: 1.5rem;
     flex-direction: column; // 确保垂直排列
-    
+
     &-desc {
       width: 90%;
       aspect-ratio: 4/3;
       padding: 1rem;
-      
+
       &-header {
         font-size: var(--text-medium-size);
         height: auto;
         padding: 0.5rem 0;
       }
-      
+
       &-text {
-        font-size: var(--text-medium-size);
+        font-size: var(--text-large-size);
         height: auto;
         margin-bottom: 1rem;
         line-height: 1.4;
       }
-      
-            &-footer {
+
+      &-footer {
         height: auto;
         min-height: 200px; // 增加最小高度，原来是180px
       }
@@ -724,29 +869,28 @@ onMounted(() => {
     padding: 1rem 0.5rem;
     margin-bottom: 2rem;
   }
-  
+
   .fc-header {
-    font-size: 1.5rem;
+    flex-wrap: wrap;
     margin-bottom: 1rem;
-    padding: 0.5rem;
   }
-  
+
   .fc-content {
     width: 98%;
     gap: 1rem;
-    
+
     &-desc {
       width: 95%;
       aspect-ratio: 1/1;
       padding: 0.8rem;
-      
+
       &-header {
         font-size: var(--text-small-size);
         padding: 0.3rem 0;
       }
-      
+
       &-text {
-        font-size: var(--text-small-size);
+        font-size: var(--text-medium-size);
         margin-bottom: 0.5rem;
         line-height: 1.3;
       }
@@ -755,62 +899,6 @@ onMounted(() => {
         min-height: 180px;
       }
     }
-  }
-}
-
-/* 独立的媒体查询来确保 redirect-route-container 样式生效 */
-@media (max-width: 640px) {
-  .redirect-route .redirect-route-container {
-    width: 100% !important;
-    height: 100% !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    position: relative !important;
-    color: #000 !important;
-  }
-  
-  .redirect-route .redirect-route-container-icon {
-    position: absolute !important;
-    width: 20% !important;
-    left: 10% !important;
-    top: 5% !important;
-    transition: transform 0.5s ease !important;
-    transform-origin: center center !important;
-  }
-  
-  .redirect-route .redirect-route-container-indicator {
-    width: 60% !important;
-    height: 25% !important;
-    position: absolute !important;
-    border-radius: var(--border-radius) !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    color: #000 !important;
-    font-size: 0.5rem !important;
-  }
-  
-  .redirect-route .redirect-route-container-indicator:nth-child(1) {
-    background-color: white !important;
-    transform: translate(-10%, 20%) scale(1) !important;
-    z-index: 1 !important;
-    box-shadow: var(--box-shadow) !important;
-    transition: all 0.5s ease !important;
-  }
-  
-  .redirect-route .redirect-route-container-indicator:nth-child(1)::after {
-    content: "😵‍💫" !important;
-    position: absolute !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    font-size: 1.5rem !important;
-    transform: translate(20%, 50%) rotate(10deg) !important;
-  }
-  
-  .redirect-route .redirect-route-container-indicator:nth-child(2) {
-    background-color: rgba(227, 227, 227, 0.837) !important;
-    transform: translate(10%, -50%) !important;
   }
 }
 </style>

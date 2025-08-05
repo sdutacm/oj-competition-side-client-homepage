@@ -2,13 +2,13 @@
   <div class="nav-container">
     <router-link to="/" class="logo">
       <img src="@/assets/images/favicon.png" class="logo-img" alt="Logo" />
-      <span class="logo-text">OJ Competition Side Client</span>
+      <span class="logo-text">SDUT OJ Competition Side Client</span>
     </router-link>
 
     <!-- 桌面端菜单 -->
     <div class="links desktop-menu">
       <router-link class="link" to="/">下载</router-link>
-      <router-link class="link" to="/about">功能</router-link>
+      <router-link class="link" to="/about">探索</router-link>
       <a href="https://oj.sdutacm.cn/onlinejudge3/" class="link">更新</a>
       <a href="https://oj.sdutacm.cn/onlinejudge3/" class="link">官网</a>
       <a
@@ -66,21 +66,22 @@
               <router-link to="/" class="mobile-link">下载</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <router-link to="/about" class="mobile-link">功能</router-link>
+              <router-link to="/about" class="mobile-link">探索</router-link>
             </el-dropdown-item>
             <el-dropdown-item>
-              <a href="https://oj.sdutacm.cn/onlinejudge3/" class="mobile-link"
+              <a href="https://github.com/sdutacm/oj-competition-side-client/releases" target="_blank" class="mobile-link"
                 >更新</a
               >
             </el-dropdown-item>
             <el-dropdown-item>
-              <a href="https://oj.sdutacm.cn/onlinejudge3/" class="mobile-link"
+              <a href="https://oj.sdutacm.cn/onlinejudge3/" target="_blank" class="mobile-link"
                 >官网</a
               >
             </el-dropdown-item>
             <el-dropdown-item>
               <a
                 href="https://github.com/sdutacm/oj-competition-side-client/issues"
+                target="_blank"
                 class="mobile-link"
                 >讨论</a
               >
@@ -123,7 +124,7 @@ onMounted(() => {
     if (!container) return;
 
     if (scrollTop > 0) {
-      container.style.backgroundColor = "var(--bg-secondary-color)";
+      container.style.backgroundColor = "var(--navbar-color)";
       container.style.boxShadow = "var(--box-shadow)";
     } else {
       container.style.backgroundColor = "transparent";
@@ -155,7 +156,8 @@ onMounted(() => {
   border-radius: var(--border-radius);
   transition: background-color 0.5s ease, box-shadow 0.5s ease;
   overflow: visible;
-  z-index: 10;
+  z-index: 20 !important;
+  backdrop-filter: blur(10px);
 
   .logo {
     display: flex;
@@ -198,7 +200,7 @@ onMounted(() => {
       height: 60%;
       justify-content: center;
       align-items: center;
-      color: var(--text-nav-color);
+      color: var(--text-color);
       border-radius: 0.5rem;
       transition: background-color 0.5s ease;
       font-size: var(--text-medium-size);
@@ -325,7 +327,7 @@ onMounted(() => {
     }
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 1024px) {
     .logo {
       flex-basis: auto;
       justify-content: center;

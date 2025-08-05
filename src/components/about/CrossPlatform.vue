@@ -10,7 +10,7 @@ let animations = [];
 
 onMounted(async () => {
   await nextTick();
-  
+
   // 延迟等待DOM完全渲染和路由过渡完成
   setTimeout(() => {
     initObservers();
@@ -46,11 +46,11 @@ function initObservers() {
   );
 
   containerObserver.observe(container);
-  
+
   // 保存 observer 引用以便清理
   animations.containerObserver = containerObserver;
 
-  showHightLight('cp');
+  showHightLight("cp");
 }
 
 onUnmounted(() => {
@@ -58,18 +58,18 @@ onUnmounted(() => {
   if (animations.containerObserver) {
     animations.containerObserver.disconnect();
   }
-  
+
   // 清理所有GSAP动画和ScrollTrigger实例
   animations.forEach((anim) => {
-    if (anim && typeof anim === 'object' && anim.scrollTrigger) {
+    if (anim && typeof anim === "object" && anim.scrollTrigger) {
       anim.scrollTrigger.kill();
     }
-    if (anim && typeof anim.kill === 'function') {
+    if (anim && typeof anim.kill === "function") {
       anim.kill();
     }
   });
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-  
+
   // 清理粒子效果
   document.querySelectorAll(".burst-particle").forEach((particle) => {
     particle.remove();
@@ -139,7 +139,6 @@ function initAnimations() {
 }
 
 function playBurstAnimation() {
-  // OJ客户端轻微缩放效果 - 更快速
   gsap.to(".oj-client", {
     scale: 1.05,
     duration: 0.15,
@@ -152,8 +151,8 @@ function playBurstAnimation() {
   gsap.to(".linux", {
     scale: 1,
     opacity: 1,
-    x: -120,
-    y: -80,
+    x: "-100%",
+    y: "-50%",
     rotation: -15,
     duration: 0.5,
     ease: "ease",
@@ -163,8 +162,8 @@ function playBurstAnimation() {
   gsap.to(".windows", {
     scale: 1,
     opacity: 1,
-    x: 120,
-    y: -80,
+    x: "100%",
+    y: "-50%",
     rotation: 15,
     duration: 0.5,
     ease: "ease",
@@ -175,7 +174,7 @@ function playBurstAnimation() {
     scale: 1,
     opacity: 1,
     x: 0,
-    y: -140,
+    y: "-100%",
     rotation: 0,
     duration: 0.5,
     ease: "ease",
@@ -235,16 +234,13 @@ function reverseBurstAnimation() {
 }
 
 function createBurstEffect() {
-  // 清理之前的粒子
   document.querySelectorAll(".burst-particle").forEach((particle) => {
     particle.remove();
   });
 
-  // 创建简单的爆发效果
   const container = document.querySelector(".footer");
   if (!container) return;
 
-  // 创建更多小光点，更快速
   for (let i = 0; i < 8; i++) {
     const particle = document.createElement("div");
     particle.className = "burst-particle";
@@ -368,7 +364,12 @@ function createBurstEffect() {
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-top: 5%;
+  margin-top: 10rem;
+
+  @media screen and (min-width: 1024px) and (max-height: 1000px) {
+    margin-top: 30rem;
+  }
+
   & .title {
     position: relative;
     width: 100%;
@@ -400,6 +401,11 @@ function createBurstEffect() {
       aspect-ratio: 4/3;
       border-radius: 2rem;
       overflow: hidden;
+
+      @media screen and (min-width: 1024px) and (max-height: 1000px) {
+         height: 100%;  
+      }
+
       & .tag {
         width: 100%;
         height: 20%;
@@ -427,7 +433,6 @@ function createBurstEffect() {
         align-items: center;
         position: relative;
         overflow: visible;
-        padding-bottom: 1rem;
 
         &-left {
           align-items: end;
@@ -449,22 +454,22 @@ function createBurstEffect() {
         }
 
         .oj-client {
-          z-index: 6;
+          z-index: 2;
           filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
         }
 
         .linux {
-          z-index: 5;
+          z-index: 1;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
         .windows {
-          z-index: 5;
+          z-index: 1;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
         .macos {
-          z-index: 5;
+          z-index: 1;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
@@ -511,24 +516,24 @@ function createBurstEffect() {
     min-height: 70vh;
     margin-top: 2rem;
     padding: 1rem;
-    
+
     .title {
       height: auto;
-      font-size: 2rem;
+      font-size: 3rem;
       margin-bottom: 2rem;
       text-align: center;
     }
-    
+
     .content {
       flex-direction: column;
       height: auto;
       gap: 2rem;
-      
+
       .section {
         width: 90%;
         height: auto;
         min-height: 300px;
-        
+
         .tag {
           padding-left: 1rem;
           font-size: 1.5rem;
@@ -536,23 +541,23 @@ function createBurstEffect() {
           padding-top: 1rem;
           padding-bottom: 0.5rem;
         }
-        
+
         .desc {
           padding: 0 1rem;
-          
+
           p {
             font-size: var(--text-medium-size);
             line-height: 1.5;
           }
         }
-        
+
         .footer {
           height: 200px;
-          
+
           img {
             width: 3rem;
           }
-          
+
           p {
             font-size: 1.2rem;
           }
@@ -562,43 +567,92 @@ function createBurstEffect() {
   }
 }
 
-@media (max-width: 640px) {
+// @media (max-width: 1000px) and (min-height: 1000px) {
+//   .cp-container {
+//     height: auto;
+//     min-height: 80vh;
+//     margin-top: 5rem;
+
+//     .title {
+//       font-size: 3rem;
+//       margin-bottom: 1rem;
+//       text-align: center;
+//     }
+
+//     .content {
+//       gap: 1rem;
+
+//       .section {
+//         width: 95%;
+//         min-height: 250px;
+
+//         .tag {
+//           font-size: 1.2rem;
+//           padding: 0.5rem;
+//         }
+
+//         .desc {
+//           padding: 0 0.5rem;
+
+//           p {
+//             font-size: var(--text-large-size);
+//           }
+//         }
+
+//         .footer {
+//           height: 150px;
+
+//           img {
+//             width: 4rem;
+//           }
+
+//           p {
+//             font-size: 1rem;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
+
+
+@media (max-width: 640px) and (min-height: 1000px) {
   .cp-container {
     padding: 0.5rem;
-    
+    margin-top: 10rem;
     .title {
-      font-size: 1.5rem;
+      flex-wrap: wrap;
       margin-bottom: 1rem;
     }
-    
+
     .content {
       gap: 1rem;
-      
+
       .section {
         width: 95%;
         min-height: 250px;
         border-radius: 1rem;
-        
+
         .tag {
           font-size: 1.2rem;
           padding: 0.5rem;
         }
-        
+
         .desc {
           padding: 0 0.5rem;
-          
+
           p {
-            font-size: var(--text-small-size);
+            font-size: var(--text-medium-size);
           }
         }
-        
+
         .footer {
-          height: 150px;
-          
+          // height: 150px;
+
           img {
-            width: 2.5rem;
+            width: 10rem;
           }
-          
+
           p {
             font-size: 1rem;
           }

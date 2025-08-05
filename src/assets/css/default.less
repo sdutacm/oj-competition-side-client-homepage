@@ -20,6 +20,7 @@
   font-size: 16px;
   --bg-primary-color: #f5f5f5;
   --bg-secondary-color: #ffffff;
+  --navbar-color: #ffffffa0;
   --bg-nav-color: #dbdbdb88;
   --border-radius: 0.6rem;
   --border-medium-radius: 0.4rem;
@@ -50,6 +51,7 @@
   :root {
     --bg-primary-color: #181818;
     --bg-secondary-color: #2f2f2f;
+    --navbar-color: #2f2f2fa0;
     --bg-nav-color: #28282888;
     --text-color: #e0e0e0;
     --text-secondary-color: #b0b0b0;
@@ -115,7 +117,7 @@
 }
 
 /* 📱 平板（801px ～ 1000px） */
-@media screen and (min-width: 801px) and (max-width: 1000px) {
+@media screen and (min-width: 801px) and (max-width: 1024px) {
   :root {
     font-size: 16px;
     --text-large-size: 1.6rem; /* ≈ 26px */
@@ -125,7 +127,7 @@
 }
 
 /* 📱 暗色模式平板（801px ～ 1000px） */
-@media screen and (min-width: 801px) and (max-width: 1000px) and (prefers-color-scheme: dark) {
+@media screen and (min-width: 801px) and (max-width: 1024px) and (prefers-color-scheme: dark) {
   :root {
     font-size: 16px;
     --text-large-size: 1.6rem; /* ≈ 26px */
@@ -135,7 +137,7 @@
 }
 
 /* 📱 较大平板（1001px ～ 1200px） */
-@media screen and (min-width: 1001px) and (max-width: 1200px) {
+@media screen and (min-width: 1024px) and (max-width: 1200px) {
   :root {
     font-size: 16px;
     --text-large-size: 1.7rem; /* ≈ 27.2px */

@@ -51,7 +51,7 @@ onMounted(() => {
   mainTimeline = gsap.timeline({
     scrollTrigger: {
       trigger: ".sf-container",
-      start: "top 30%",
+      start: "top 10%",
       end: "top -150%",
       scrub: 1,
       pin: ".sf-container",
@@ -269,7 +269,7 @@ onUnmounted(() => {
   padding-top: 2rem;
 
   &-media {
-    width: 35%;
+    width: 45%;
     aspect-ratio: 16/9;
     flex-shrink: 0;
 
@@ -282,7 +282,7 @@ onUnmounted(() => {
     }
   }
   &-desc {
-    width: 35%;
+    width: 45%;
     aspect-ratio: 16/9 !important;
     min-height: 0;
     max-height: none;
@@ -295,6 +295,12 @@ onUnmounted(() => {
     padding-right: 1rem;
     flex-shrink: 0;
     box-sizing: border-box;
+
+    @media screen and (max-width: 640px) {
+      width: 100% !important;
+      aspect-ratio: 1 !important;
+    }
+
     &-header {
       width: 100%;
       height: 20%;
@@ -314,6 +320,15 @@ onUnmounted(() => {
       line-height: 1.5;
       font-weight: bold;
       font-size: var(--text-large-size);
+
+      @media screen and (max-width: 1300px) {
+        font-size: var(--text-medium-size);
+      }
+
+      @media screen and (max-width: 640px) {
+        font-size: var(--text-medium-size);
+        
+      }
     }
 
     &-footer {
@@ -436,7 +451,7 @@ onUnmounted(() => {
 }
 
 /* 响应式设计 */
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
   .sf-container {
     height: auto;
     min-height: 60vh;
@@ -446,7 +461,7 @@ onUnmounted(() => {
   }
   
   .sf-header {
-    font-size: 2rem;
+    font-size: 3rem;
     text-align: center;
     margin-bottom: 2rem;
   }
@@ -499,10 +514,11 @@ onUnmounted(() => {
   .sf-container {
     padding: 0.5rem;
     margin-bottom: 3rem;
+    height: 90vh !important;
   }
   
   .sf-header {
-    font-size: 1.5rem;
+    flex-wrap: wrap;
     margin-bottom: 1rem;
   }
   
@@ -515,7 +531,6 @@ onUnmounted(() => {
     }
     
     &-desc {
-      padding: 0.5rem;
       
       &-header {
         font-size: var(--text-small-size);
@@ -530,8 +545,6 @@ onUnmounted(() => {
           width: 90%;
           
           &-header {
-            // padding-left: 0.3rem;
-            // gap: 0.3rem;
             
             .red, .yellow, .green {
               width: 0.4rem;
@@ -544,7 +557,7 @@ onUnmounted(() => {
             }
             
             &-icon {
-              width: 1.2rem;
+              width: 3rem;
             }
           }
         }
@@ -553,7 +566,6 @@ onUnmounted(() => {
   }
   
   .cookie, .storage, .logout {
-    font-size: 0.7rem !important;
     padding: 0.2rem 0.4rem !important;
   }
 }

@@ -280,8 +280,6 @@ function initAnimations() {
       animation: logoFadeIn 0.5s ease forwards;
       animation-delay: 0.6s;
     }
-
-    // 确保header在动画期间保持稳定的高度
     min-height: 300px; // 设置最小高度，防止内容跳动
 
     &-button {
@@ -531,9 +529,17 @@ function initAnimations() {
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     .header .title {
-      font-size: 1.2rem;
+      font-size: var(--text-large-size);
+    }
+
+    .header-button {
+      font-size: var(--text-medium-size);
+
+      & svg {
+        height: var(--text-medium-size);
+      }
     }
 
     .scrollBox {

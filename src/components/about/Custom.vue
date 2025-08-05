@@ -53,7 +53,7 @@ function initAnimations() {
   mainTl = gsap.timeline({
     scrollTrigger: {
       trigger: ".ct-container",
-      start: "top 10%",
+      start: "top top",
       end: "top -400%",
       scrub: 0.8,
       pin: ".ct-container",
@@ -244,6 +244,7 @@ function initAnimations() {
   font-weight: bold;
   font-size: 4rem;
   z-index: 4;
+  text-align: center;
 
   & p {
     margin: 0;
@@ -261,29 +262,27 @@ function initAnimations() {
   }
 }
 
-/* Emoji 外围容器 - 覆盖整个视口 */
 .emoji-outer-container {
-  position: absolute; /* 改回absolute，相对于ct-content定位 */
+  position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   pointer-events: none;
-  z-index: 20; /* 提高z-index确保在最上层 */
+  z-index: 20;
 }
 
 .emoji-outer {
   position: absolute;
-  font-size: 3rem; /* 增大字体确保可见 */
+  font-size: 3rem;
   opacity: 0;
   transform: scale(0);
   will-change: transform, opacity;
 
-  /* 初始位置在容器中心 */
   top: 50%;
   left: 50%;
   transform-origin: center center;
-  margin-left: -1.5rem; /* 居中偏移 */
+  margin-left: -1.5rem;
   margin-top: -1.5rem;
 }
 
@@ -301,6 +300,7 @@ function initAnimations() {
   contain: layout style;
   isolation: isolate;
   will-change: transform;
+  margin-top: 3rem !important;
 
   & .ct-title {
     width: 100%;
@@ -377,30 +377,29 @@ function initAnimations() {
   }
 }
 
-/* 响应式设计 */
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
   .ct-container {
     height: auto;
-    min-height: 70vh;
+    min-height: 80vh;
     padding: 1rem;
     
     .ct-title {
-      font-size: 2rem;
+      font-size: 3rem;
       height: auto;
       text-align: center;
       padding: 1rem 0;
     }
     
     .ct-content {
-      width: 90%;
+      width: 100%;
       height: 50vh;
       
       .img1 {
-        height: 70%;
+        height: 100%;
       }
       
       &-small {
-        height: 70%;
+        height: 100%;
       }
       
       &-mask {
@@ -419,8 +418,7 @@ function initAnimations() {
     padding: 0.5rem;
     
     .ct-title {
-      font-size: 1.5rem;
-      padding: 0.5rem 0;
+      flex-wrap: wrap;
     }
     
     .ct-content {

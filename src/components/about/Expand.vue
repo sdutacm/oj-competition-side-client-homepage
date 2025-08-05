@@ -6,8 +6,6 @@ import { onMounted } from "vue";
 gsap.registerPlugin(ScrollTrigger);
 
 onMounted(() => {
-  // gsap.set(".ep-title-content header", { opacity: 0, y: -50 });
-  // gsap.set(".ep-title-content p", { opacity: 0, y: -50 });
   gsap.set(".ep-content-svgs-container:nth-child(1)", {
     opacity: 0,
     x: -350,
@@ -46,8 +44,9 @@ onMounted(() => {
   svgTl.to(".ep-content-svgs-container:nth-child(1)", {
     duration: 0.5,
     opacity: 1,
-    x: -200, // 增加散开幅度，原来是-150
-    y: -50, // 增加散开幅度，原来是-30
+    scale: 1.2,
+    x: "-400%", // 增加散开幅度，原来是-150
+    y: "-50%", // 增加散开幅度，原来是-30
     ease: "linear",
   });
   svgTl.to(
@@ -55,8 +54,9 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: 180, // 增加散开幅度，原来是120
-      y: -120, // 增加散开幅度，原来是-80
+      scale: 1.5,
+      x: "340%", // 增加散开幅度，原来是120
+      y: "-220%", // 增加散开幅度，原来是-80
       ease: "linear",
     },
     "<"
@@ -66,8 +66,8 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: 0,
-      y: -150, // 增加散开幅度，原来是-100
+      x: "-100%",
+      y: "-250%", // 增加散开幅度，原来是-100
       ease: "linear",
     },
     "<"
@@ -77,8 +77,8 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: -100, // 增加散开幅度，原来是-60
-      y: 120, // 增加散开幅度，原来是80
+      x: "-100%", // 增加散开幅度，原来是-60
+      y: "220%", // 增加散开幅度，原来是80
       ease: "linear",
     },
     "<"
@@ -88,8 +88,9 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: 180, // 增加散开幅度，原来是120
-      y: 100, // 增加散开幅度，原来是60
+      scale: 1.2,
+      x: "400%", // 增加散开幅度，原来是120
+      y: "100%", // 增加散开幅度，原来是60
       ease: "linear",
     },
     "<"
@@ -206,7 +207,7 @@ onMounted(() => {
   margin-bottom: 10rem;
   gap: 1rem; // 减少文字和图片之间的间距
   & .ep-title {
-    width: 45%; // 稍微减小宽度给图片更多空间
+    width: 50%; // 
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -238,7 +239,7 @@ onMounted(() => {
   }
 
   & .ep-content {
-    width: 45%; // 稍微减小宽度
+    width: 50%; // 稍微减小宽度
     height: 100%;
     position: relative;
     display: flex;
@@ -311,7 +312,7 @@ onMounted(() => {
 }
 
 /* 响应式设计 */
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
   .ep-container {
     height: auto;
     min-height: 50vh;

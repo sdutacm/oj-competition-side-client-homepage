@@ -14,6 +14,7 @@
   text-align: center;
   font-size: var(--text-medium-size);
   color: var(--text-secondary-color);
+  z-index: 0;
   background-color: var(--bg-primary-color);
 }
 </style>

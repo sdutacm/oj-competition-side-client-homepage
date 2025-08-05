@@ -153,7 +153,7 @@ onMounted(async () => {
   & .content {
     width: 100%;
     aspect-ratio: 3/1;
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 1024px) {
       aspect-ratio: 3/2;
     }
     
@@ -259,6 +259,11 @@ onMounted(async () => {
         color: var(--text-color);
         font-weight: 800;
         text-align: center;
+
+        @media screen and (max-width: 1024px) {
+          // font-size: 2.5rem;
+          white-space: nowrap;
+        }
         
         @media screen and (max-width: 640px) {
           font-size: var(--text-medium-size);

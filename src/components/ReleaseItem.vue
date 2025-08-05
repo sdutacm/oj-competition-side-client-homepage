@@ -168,7 +168,7 @@ async function handleDownload(url, title) {
   border: 1px solid var(--border-color);
   
   // 移动端适配
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 1024px) {
     width: 100%;
     aspect-ratio: auto;
     min-height: 200px;
@@ -192,7 +192,7 @@ async function handleDownload(url, title) {
     color: var(--text-color);
     
     // 移动端适配
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 1024px) {
       height: auto;
       min-height: 60px;
       padding: 1rem 0.5rem;
@@ -235,7 +235,7 @@ async function handleDownload(url, title) {
     gap: .5rem;
     
     // 移动端适配
-    @media screen and (max-width: 1000px) {
+    @media screen and (max-width: 1024px) {
       height: auto;
       flex: 1;
       padding: 1rem 0.5rem;
@@ -324,7 +324,7 @@ async function handleDownload(url, title) {
         align-items: center;
         
         // 移动端适配
-        @media screen and (max-width: 1000px) {
+        @media screen and (max-width: 1024px) {
           flex-shrink: 0;
         }
         
@@ -338,7 +338,7 @@ async function handleDownload(url, title) {
         // 调整 SVG 图标尺寸
         .icon {
           // 移动端适配
-          @media screen and (max-width: 1000px) {
+          @media screen and (max-width: 1024px) {
             width: 20px;
             height: 20px;
           }
@@ -358,7 +358,7 @@ async function handleDownload(url, title) {
   fill: var(--text-color);
   
   // 移动端适配 - header 中的图标
-  @media screen and (max-width: 1000px) {
+  @media screen and (max-width: 1024px) {
     width: 28px;
     height: 28px;
   }
