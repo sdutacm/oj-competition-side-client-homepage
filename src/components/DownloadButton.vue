@@ -235,6 +235,7 @@ async function handleDownload(event) {
     // 重置状态
     setTimeout(() => {
       isDownloading.value = false
+      hasError.value = false
       downloadProgress.value = '准备下载...'
     }, 2000)
 

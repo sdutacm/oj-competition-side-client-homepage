@@ -43,30 +43,28 @@
       <h2>{{ props.system }}</h2>
     </header>
     <main>
-      <button 
-        class="release-info" 
-        v-for="(description, index) in props.description" 
+      <button
+        class="release-info"
+        v-for="(description, index) in props.description"
         :key="index"
         @click="handleDownload(description.url, description.title)"
         :disabled="downloading[index]"
       >
         <p>{{ description.title }}</p>
         <div class="download-status">
-          <span v-if="downloading[index]" class="downloading-text">下载中...</span>
+          <span v-if="downloading[index]" class="downloading-text"
+            >下载中...</span
+          >
           <svg
             v-else
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="var(--text-color)"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            viewBox="0 -960 960 960"
+            fill="var(--text-color)"
             class="icon"
           >
-            <path d="M12 17V3" />
-            <path d="m6 11 6 6 6-6" />
-            <path d="M19 21H5" />
+            <path
+              d="M480-320 280-520l56-58 104 104v-326h80v326l104-104 56 58-200 200ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z"
+            />
           </svg>
         </div>
       </button>
@@ -75,7 +73,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive } from "vue";
 
 const props = defineProps({
   description: {
@@ -93,64 +91,66 @@ const props = defineProps({
 });
 
 // 下载状态跟踪
-const downloading = reactive({})
+const downloading = reactive({});
 
 // 下载函数
 async function handleDownload(url, title) {
-  console.log('=== 开始下载文件 ===')
-  console.log('文件:', title)
-  console.log('URL:', url)
-  console.log('版本:', props.version)
-  
+  console.log("=== 开始下载文件 ===");
+  console.log("文件:", title);
+  console.log("URL:", url);
+  console.log("版本:", props.version);
+
   // 获取下载项的索引
-  const index = props.description.findIndex(item => item.url === url)
-  if (index === -1) return
-  
-  downloading[index] = true
-  
+  const index = props.description.findIndex((item) => item.url === url);
+  if (index === -1) return;
+
+  downloading[index] = true;
+
   try {
     // 先检查文件是否存在
     try {
-      const response = await fetch(url, { method: 'HEAD' })
-      console.log('文件检查结果:', response.status)
-      
+      const response = await fetch(url, { method: "HEAD" });
+      console.log("文件检查结果:", response.status);
+
       if (!response.ok) {
-        throw new Error(`文件不存在 (${response.status})`)
+        throw new Error(`文件不存在 (${response.status})`);
       }
     } catch (fetchError) {
-      console.error('文件检查失败:', fetchError)
-      alert(`下载失败: 文件不存在或无法访问\n${title}`)
-      return
+      console.error("文件检查失败:", fetchError);
+      alert(`下载失败: 文件不存在或无法访问\n${title}`);
+      downloading[index] = false; // 重置下载状态
+      return;
     }
 
     // 获取文件名
-    const urlObj = new URL(url)
-    const fileName = urlObj.pathname.split('/').pop() || `${props.system}-${props.version}-${title.replace(/[^a-zA-Z0-9]/g, '-')}`
-    
-    console.log('开始下载:', fileName)
+    const urlObj = new URL(url);
+    const fileName =
+      urlObj.pathname.split("/").pop() ||
+      `${props.system}-${props.version}-${title.replace(/[^a-zA-Z0-9]/g, "-")}`;
+
+    console.log("开始下载:", fileName);
 
     // 创建下载链接
-    const link = document.createElement('a')
-    link.href = url
-    link.download = fileName
-    link.style.display = 'none'
-    
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = fileName;
+    link.style.display = "none";
+
     // 添加到 DOM，触发下载，然后清理
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    
-    console.log('下载触发完成')
-    
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    console.log("下载触发完成");
+
     // 短暂显示下载状态
     setTimeout(() => {
-      downloading[index] = false
-    }, 2000)
-
+      downloading[index] = false;
+    }, 2000);
   } catch (error) {
-    console.error('下载失败:', error)
-    alert(`下载失败: ${error.message}\n${title}`)
-    downloading[index] = false
+    console.error("下载失败:", error);
+    alert(`下载失败: ${error.message}\n${title}`);
+    downloading[index] = false;
   }
 }
 </script>
@@ -166,7 +166,7 @@ async function handleDownload(url, title) {
   justify-content: start;
   align-items: center;
   border: 1px solid var(--border-color);
-  
+
   // 移动端适配
   @media screen and (max-width: 1024px) {
     width: 100%;
@@ -174,7 +174,7 @@ async function handleDownload(url, title) {
     min-height: 200px;
     margin-bottom: 0.5rem;
   }
-  
+
   // 平板适配
   @media screen and (min-width: 1001px) and (max-width: 1024px) {
     width: 45%;
@@ -190,35 +190,35 @@ async function handleDownload(url, title) {
     padding: 0.5rem;
     border-bottom: 1px solid var(--border-color);
     color: var(--text-color);
-    
+
     // 移动端适配
     @media screen and (max-width: 1024px) {
       height: auto;
       min-height: 60px;
       padding: 1rem 0.5rem;
       justify-content: center;
-      
+
       h2 {
         font-size: var(--text-medium-size);
         font-weight: 600;
       }
     }
-    
+
     // 小手机适配
     @media screen and (max-width: 480px) {
       min-height: 65px;
       padding: 1.2rem 0.5rem;
-      
+
       h2 {
         font-size: var(--text-large-size);
         font-weight: 600;
       }
     }
-    
+
     // 平板适配
     @media screen and (min-width: 1001px) and (max-width: 1024px) {
       padding: 0.8rem 0.5rem;
-      
+
       h2 {
         font-size: 1.2rem;
       }
@@ -230,10 +230,10 @@ async function handleDownload(url, title) {
     height: 80%;
     display: flex;
     flex-direction: column;
-    padding-top: .5rem;
+    padding-top: 0.5rem;
     color: var(--text-color);
-    gap: .5rem;
-    
+    gap: 0.5rem;
+
     // 移动端适配
     @media screen and (max-width: 1024px) {
       height: auto;
@@ -241,7 +241,7 @@ async function handleDownload(url, title) {
       padding: 1rem 0.5rem;
       gap: 0.8rem;
     }
-    
+
     // 平板适配
     @media screen and (min-width: 1001px) and (max-width: 1024px) {
       padding: 0.8rem 0.5rem;
@@ -260,81 +260,81 @@ async function handleDownload(url, title) {
       border-radius: var(--border-medium-radius);
       background-color: var(--bg-secondary-color);
       transition: background-color 0.3s ease, opacity 0.3s ease;
-      padding: .5rem;
+      padding: 0.5rem;
       color: var(--text-color);
       cursor: pointer;
-      
+
       // 移动端适配
       @media screen and (max-width: 1000px) {
         height: auto;
         min-height: 60px;
         padding: 1rem;
         border-radius: 8px;
-        
+
         p {
           font-size: var(--text-medium-size);
           line-height: 1.5;
           font-weight: 600;
         }
       }
-      
+
       // 小手机适配
       @media screen and (max-width: 480px) {
         padding: 1.2rem;
         min-height: 65px;
-        
+
         p {
           font-size: var(--text-medium-size);
           line-height: 1.6;
           font-weight: 600;
         }
       }
-      
+
       // 平板适配
       @media screen and (min-width: 1001px) and (max-width: 1024px) {
         padding: 0.6rem;
         min-height: 45px;
-        
+
         p {
           font-size: 1rem;
         }
       }
-      
+
       &:hover:not(:disabled) {
         background-color: var(--bg-primary-color);
       }
-      
+
       &:disabled {
         opacity: 0.8;
         cursor: not-allowed;
         background-color: var(--border-color);
-        
+
         p {
           color: var(--text-secondary-color);
         }
-        
+
         .downloading-text {
           color: var(--text-color);
           font-weight: 500;
         }
       }
-      
+
       .download-status {
         display: flex;
         align-items: center;
-        
+
         // 移动端适配
         @media screen and (max-width: 1024px) {
           flex-shrink: 0;
         }
-        
+
         .downloading-text {
           font-size: var(--text-small-size);
           color: var(--text-secondary-color);
           margin-right: 0.5rem;
           font-weight: 600;
         }
-        
+
         // 调整 SVG 图标尺寸
         .icon {
           // 移动端适配
@@ -342,7 +342,7 @@ async function handleDownload(url, title) {
             width: 20px;
             height: 20px;
           }
-          
+
           // 小手机适配
           @media screen and (max-width: 480px) {
             width: 18px;
@@ -356,13 +356,13 @@ async function handleDownload(url, title) {
 
 .icon {
   fill: var(--text-color);
-  
+
   // 移动端适配 - header 中的图标
   @media screen and (max-width: 1024px) {
     width: 28px;
     height: 28px;
   }
-  
+
   // 小手机适配 - header 中的图标
   @media screen and (max-width: 480px) {
     width: 32px;

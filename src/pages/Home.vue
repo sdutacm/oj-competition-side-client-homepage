@@ -4,6 +4,7 @@ import DownloadButton from "@/components/DownloadButton.vue";
 import Release from "@/components/Release.vue";
 import Footer from "@/components/Footer.vue";
 import { useReleasesStore } from "@/store/useSimpleStore";
+import ImgDataUrl from '@/utils/imgDataUrl';
 
 // 使用简化的 store
 const releasesStore = useReleasesStore();
@@ -38,20 +39,20 @@ onMounted(async () => {
       <div class="content-mask">
         <div class="content-mask-real"></div>
         <img
-          src="../assets/images/light-home.png"
+          :src="ImgDataUrl.lightHome"
           class="light-home"
           id="light-home"
           alt=""
         />
         <img
-          src="../assets/images/dark-home.png"
+          :src="ImgDataUrl.darkHome"
           class="light-home"
           id="dark-home"
           alt=""
         />
       </div>
       <div class="content-main">
-        <img src="../assets/images/favicon.png" class="logo" alt="" />
+        <img :src="ImgDataUrl.logo" class="logo" alt="" />
         <h1>下载 {{ appName }}</h1>
         <div class="btn">
           <DownloadButton 

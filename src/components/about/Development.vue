@@ -15,7 +15,7 @@ onMounted(async () => {
   ScrollTrigger.refresh();
 
   setTimeout(() => {
-    showHightLight('dev');
+    showHightLight("dev");
     initScrollAnimations();
     initInteractiveFeatures();
   }, 200);
@@ -46,10 +46,13 @@ function initScrollAnimations() {
     force3D: true, // 强制GPU加速
   });
 
-  gsap.set(".section-icon, .feature-item, .step, .contribute-step, .tech-item", {
-    opacity: 0,
-    force3D: true,
-  });
+  gsap.set(
+    ".section-icon, .feature-item, .step, .contribute-step, .tech-item",
+    {
+      opacity: 0,
+      force3D: true,
+    }
+  );
 
   // 存储observers以便清理
   if (!window.devObservers) {
@@ -59,95 +62,102 @@ function initScrollAnimations() {
   // 优化的观察器选项 - 减少性能开销
   const observerOptions = {
     threshold: 0.15, // 降低阈值，更早触发
-    rootMargin: '0px 0px -10% 0px', // 添加边距，避免频繁触发
+    rootMargin: "0px 0px -10% 0px", // 添加边距，避免频繁触发
   };
 
   // GitHub section - 简化动画
-  const githubObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-          entry.target.classList.add('animated');
-          
-          // 使用CSS变换而不是GSAP以获得更好的性能
-          requestAnimationFrame(() => {
-            entry.target.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-            
-            // 子元素的简化动画
-            const children = entry.target.querySelectorAll('.section-icon, .feature-item');
-            children.forEach((child, index) => {
-              setTimeout(() => {
-                child.style.transition = 'opacity 0.3s ease-out';
-                child.style.opacity = '1';
-              }, index * 50);
-            });
+  const githubObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (
+        entry.isIntersecting &&
+        !entry.target.classList.contains("animated")
+      ) {
+        entry.target.classList.add("animated");
+
+        // 使用CSS变换而不是GSAP以获得更好的性能
+        requestAnimationFrame(() => {
+          entry.target.style.transition =
+            "opacity 0.4s ease-out, transform 0.4s ease-out";
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
+
+          // 子元素的简化动画
+          const children = entry.target.querySelectorAll(
+            ".section-icon, .feature-item"
+          );
+          children.forEach((child, index) => {
+            setTimeout(() => {
+              child.style.transition = "opacity 0.3s ease-out";
+              child.style.opacity = "1";
+            }, index * 50);
           });
-          
-          // 断开观察以避免重复触发
-          githubObserver.unobserve(entry.target);
-        }
-      });
-    },
-    observerOptions
-  );
+        });
+
+        // 断开观察以避免重复触发
+        githubObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
 
   // CI/CD section - 简化动画
-  const cicdObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-          entry.target.classList.add('animated');
-          
-          requestAnimationFrame(() => {
-            entry.target.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-            
-            const steps = entry.target.querySelectorAll('.section-icon, .step');
-            steps.forEach((step, index) => {
-              setTimeout(() => {
-                step.style.transition = 'opacity 0.3s ease-out';
-                step.style.opacity = '1';
-              }, index * 60);
-            });
+  const cicdObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (
+        entry.isIntersecting &&
+        !entry.target.classList.contains("animated")
+      ) {
+        entry.target.classList.add("animated");
+
+        requestAnimationFrame(() => {
+          entry.target.style.transition =
+            "opacity 0.4s ease-out, transform 0.4s ease-out";
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
+
+          const steps = entry.target.querySelectorAll(".section-icon, .step");
+          steps.forEach((step, index) => {
+            setTimeout(() => {
+              step.style.transition = "opacity 0.3s ease-out";
+              step.style.opacity = "1";
+            }, index * 60);
           });
-          
-          cicdObserver.unobserve(entry.target);
-        }
-      });
-    },
-    observerOptions
-  );
+        });
+
+        cicdObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
 
   // Contribute section - 简化动画
-  const contributeObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting && !entry.target.classList.contains('animated')) {
-          entry.target.classList.add('animated');
-          
-          requestAnimationFrame(() => {
-            entry.target.style.transition = 'opacity 0.4s ease-out, transform 0.4s ease-out';
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-            
-            const elements = entry.target.querySelectorAll('.section-icon, .contribute-step, .tech-item');
-            elements.forEach((element, index) => {
-              setTimeout(() => {
-                element.style.transition = 'opacity 0.3s ease-out';
-                element.style.opacity = '1';
-              }, index * 40);
-            });
+  const contributeObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (
+        entry.isIntersecting &&
+        !entry.target.classList.contains("animated")
+      ) {
+        entry.target.classList.add("animated");
+
+        requestAnimationFrame(() => {
+          entry.target.style.transition =
+            "opacity 0.4s ease-out, transform 0.4s ease-out";
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
+
+          const elements = entry.target.querySelectorAll(
+            ".section-icon, .contribute-step, .tech-item"
+          );
+          elements.forEach((element, index) => {
+            setTimeout(() => {
+              element.style.transition = "opacity 0.3s ease-out";
+              element.style.opacity = "1";
+            }, index * 40);
           });
-          
-          contributeObserver.unobserve(entry.target);
-        }
-      });
-    },
-    observerOptions
-  );
+        });
+
+        contributeObserver.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
 
   // 安全地观察元素
   const githubSection = document.querySelector(".github-section");
@@ -158,12 +168,12 @@ function initScrollAnimations() {
     githubObserver.observe(githubSection);
     window.devObservers.push(githubObserver);
   }
-  
+
   if (cicdSection) {
     cicdObserver.observe(cicdSection);
     window.devObservers.push(cicdObserver);
   }
-  
+
   if (contributeSection) {
     contributeObserver.observe(contributeSection);
     window.devObservers.push(contributeObserver);
@@ -180,7 +190,7 @@ function initScrollAnimations() {
 
     section.addEventListener("mousemove", (e) => {
       if (!isHovering) return;
-      
+
       // 取消之前的动画帧
       if (animationId) {
         cancelAnimationFrame(animationId);
@@ -192,8 +202,10 @@ function initScrollAnimations() {
         const y = (e.clientY - rect.top) / rect.height - 0.5;
 
         // 组合变换：保持CSS hover的translateY(-2px)，添加旋转效果
-        section.style.transform = `perspective(1000px) rotateY(${x * 0.3}deg) rotateX(${y * -0.3}deg) translateY(-2px) translateZ(0)`;
-        
+        section.style.transform = `perspective(1000px) rotateY(${
+          x * 0.3
+        }deg) rotateX(${y * -0.3}deg) translateY(-2px) translateZ(0)`;
+
         const icon = section.querySelector(".section-icon");
         if (icon) {
           icon.style.transform = `translate3d(${x * 1.5}px, ${y * 1.5}px, 0)`;
@@ -206,21 +218,21 @@ function initScrollAnimations() {
       if (animationId) {
         cancelAnimationFrame(animationId);
       }
-      
+
       // 重置变换，让CSS hover状态接管
-      section.style.transition = 'transform 0.4s ease';
-      section.style.transform = '';
-      
+      section.style.transition = "transform 0.4s ease";
+      section.style.transform = "";
+
       const icon = section.querySelector(".section-icon");
       if (icon) {
-        icon.style.transition = 'transform 0.4s ease';
-        icon.style.transform = '';
+        icon.style.transition = "transform 0.4s ease";
+        icon.style.transform = "";
       }
-      
+
       // 移除transition以避免后续影响
       setTimeout(() => {
-        section.style.transition = '';
-        if (icon) icon.style.transition = '';
+        section.style.transition = "";
+        if (icon) icon.style.transition = "";
       }, 400);
     });
   });
@@ -262,7 +274,7 @@ function initInteractiveFeatures() {
   <div class="dev-container">
     <header class="dev-header">
       <h1>
-        <div class="dev-header-dev ">
+        <div class="dev-header-dev">
           <span class="highlight dev-highlight">开发</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -294,7 +306,8 @@ function initInteractiveFeatures() {
         <div class="section-content">
           <h2>GitHub 集成</h2>
           <p>
-            SDUT OJ 竞赛客户端项目托管在 GitHub 上，基于 Electron 构建的专业在线评测系统客户端，支持标准的 Git 工作流
+            SDUT OJ 竞赛客户端项目托管在 GitHub 上，基于 Electron
+            构建的专业在线评测系统客户端，支持标准的 Git 工作流
           </p>
           <div class="code-block">
             <code
@@ -337,7 +350,10 @@ function initInteractiveFeatures() {
         </div>
         <div class="section-content">
           <h2>自动化构建</h2>
-          <p>配置了完整的 Electron 应用构建流程，支持 Windows、macOS、Linux 多平台自动化打包和发布</p>
+          <p>
+            配置了完整的 Electron 应用构建流程，支持 Windows、macOS、Linux
+            多平台自动化打包和发布
+          </p>
           <div class="pipeline-steps">
             <div class="step">
               <div class="step-number">1</div>
@@ -381,7 +397,10 @@ function initInteractiveFeatures() {
         </div>
         <div class="section-content">
           <h2>快速贡献</h2>
-          <p>简单的 Electron 应用开发流程，让每个人都能轻松参与 SDUT OJ 竞赛客户端项目贡献</p>
+          <p>
+            简单的 Electron 应用开发流程，让每个人都能轻松参与 SDUT OJ
+            竞赛客户端项目贡献
+          </p>
           <div class="contribute-steps">
             <div class="contribute-step">
               <span class="step-emoji">🍴</span>
@@ -440,11 +459,11 @@ function initInteractiveFeatures() {
   scroll-behavior: auto;
   transform: translateZ(0);
   -webkit-overflow-scrolling: touch;
-  
+
   // 优化滚动性能
   contain: layout style;
   isolation: isolate;
-  
+
   // 确保硬件加速
   -webkit-transform: translateZ(0);
   -webkit-backface-visibility: hidden;
@@ -507,24 +526,25 @@ function initInteractiveFeatures() {
   transform: translateY(20px) translateZ(0); // 添加初始变换和GPU加速
   transform-style: preserve-3d;
   perspective: 1000px;
-  will-change: transform, opacity; // 移除 box-shadow，让其使用常规渲染
-  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease; // 使用更好的缓动函数
-  
+  will-change: transform, opacity;
+  transition: box-shadow 0.3s ease, transform 0.3s ease; // 使用更好的缓动函数
+
   // 优化滚动性能
   contain: layout style paint;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  
+
   // 使用硬件加速优化
   -webkit-transform: translateZ(0);
   -webkit-perspective: 1000px;
   -webkit-transform-style: preserve-3d;
 
   &:hover {
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12); // 减少阴影强度，更丝滑
-    transform: translateY(-2px) translateZ(0); // 添加轻微上升效果
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px) translateZ(0);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
   }
-  
+
   // 动画完成后的状态
   &.animated {
     opacity: 1;

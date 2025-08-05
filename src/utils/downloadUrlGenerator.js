@@ -36,8 +36,8 @@ const ARCH_DISPLAY_NAMES = {
     arm64: 'arm64'
   },
   macOS: {
-    x64: 'Intel',
-    arm64: 'Apple Silicon'
+    x64: 'x64',
+    arm64: 'arm64'
   },
   Linux: {
     x86_64: 'x64',
@@ -65,8 +65,15 @@ function generateDownloadUrl(platform, architecture, version, fileType = '') {
   // 构建路径
   const basePath = `${cdnBaseUrl}${config.pathSuffix}/v${version}`
   
+  // 平台名称映射 - 修复 macOS 文件名格式
+  const platformNames = {
+    'Windows': 'windows',
+    'macOS': 'macos',  // 修改这里：从 macos 改为 mac
+    'Linux': 'linux'
+  }
+  
   // 构建文件名
-  let fileName = `${filePrefix}_${platform.toLowerCase()}`
+  let fileName = `${filePrefix}_${platformNames[platform] || platform.toLowerCase()}`
   
   if (fileType) {
     fileName += `_${fileType}`

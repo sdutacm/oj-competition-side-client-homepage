@@ -9,11 +9,12 @@
     <div class="links desktop-menu">
       <router-link class="link" to="/">下载</router-link>
       <router-link class="link" to="/about">探索</router-link>
-      <a href="https://oj.sdutacm.cn/onlinejudge3/" class="link">更新</a>
-      <a href="https://oj.sdutacm.cn/onlinejudge3/" class="link">官网</a>
+      <a href="https://github.com/sdutacm/oj-competition-side-client/releases" target="_blank" class="link">更新</a>
+      <a href="https://oj.sdutacm.cn/onlinejudge3/" target="_blank" class="link">官网</a>
       <a
         href="https://github.com/sdutacm/oj-competition-side-client/issues"
         class="link"
+        target="_blank"
         >讨论</a
       >
     </div>
