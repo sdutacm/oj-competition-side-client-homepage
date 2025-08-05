@@ -180,7 +180,8 @@ onUnmounted(() => {
     <div class="sf-content">
       <div class="sf-content-media">
         <video
-          src="../../assets/video/safe.mov"
+          src="../../assets/video/safe.webm"
+          typeof="video/webm"
           autoplay
           loop
           muted
