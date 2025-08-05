@@ -58,9 +58,6 @@
     --border-medium-radius: 0.3rem;
     --border-small-radius: 0.2rem;
     --box-shadow: 0 0 15px rgba(178, 178, 178, 0.2);
-    --text-large-size: 1.5rem;
-    --text-medium-size: 1rem;
-    --text-small-size: 0.6rem;
     --border-color: #3a3a3a;
     --mask-color: linear-gradient(
       to bottom,
@@ -76,25 +73,74 @@
     display: block;
   }
 }
-/* 📱 手机屏幕（≤ 480px） */
-@media screen and (max-width: 480px) {
+/* 📱 手机屏幕（≤ 640px） */
+@media screen and (max-width: 640px) {
   :root {
-    font-size: 14px; /* 缩小整个 rem 系统 */
+    font-size: 16px; /* 适中的基础字体 */
 
-    --text-large-size: 1.1rem; /* ≈ 15.4px */
-    --text-medium-size: 0.95rem; /* ≈ 13.3px */
-    --text-small-size: 0.8rem; /* ≈ 11.2px */
+    --text-large-size: 2rem; /* ≈ 29px */
+    --text-medium-size: 1rem; /* ≈ 21px */
+    --text-small-size: 0.6rem; /* ≈ 18px */
   }
 }
 
-/* 📱 平板（481px ～ 768px） */
-@media screen and (min-width: 481px) and (max-width: 768px) {
+/* 📱 暗色模式手机屏幕（≤ 640px） */
+@media screen and (max-width: 640px) and (prefers-color-scheme: dark) {
   :root {
-    font-size: 15px;
+    font-size: 16px; /* 适中的基础字体 */
+    --text-large-size: 1.8rem; /* ≈ 29px */
+    --text-medium-size: 1.3rem; /* ≈ 21px */
+    --text-small-size: 1.1rem; /* ≈ 18px */
+  }
+}
 
-    --text-large-size: 1.15rem;
-    --text-medium-size: 1rem;
-    --text-small-size: 0.85rem;
+/* 📱 中等手机屏幕（641px ～ 800px） */
+@media screen and (min-width: 641px) and (max-width: 800px) {
+  :root {
+    font-size: 16px;
+    --text-large-size: 1.7rem; /* ≈ 27px */
+    --text-medium-size: 1.25rem; /* ≈ 20px */
+    --text-small-size: 1.05rem; /* ≈ 17px */
+  }
+}
+
+/* 📱 暗色模式中等手机屏幕（641px ～ 800px） */
+@media screen and (min-width: 641px) and (max-width: 800px) and (prefers-color-scheme: dark) {
+  :root {
+    font-size: 16px;
+    --text-large-size: 1.7rem; /* ≈ 27px */
+    --text-medium-size: 1.25rem; /* ≈ 20px */
+    --text-small-size: 1.05rem; /* ≈ 17px */
+  }
+}
+
+/* 📱 平板（801px ～ 1000px） */
+@media screen and (min-width: 801px) and (max-width: 1000px) {
+  :root {
+    font-size: 16px;
+    --text-large-size: 1.6rem; /* ≈ 26px */
+    --text-medium-size: 1.2rem; /* ≈ 19px */
+    --text-small-size: 1rem; /* ≈ 16px */
+  }
+}
+
+/* 📱 暗色模式平板（801px ～ 1000px） */
+@media screen and (min-width: 801px) and (max-width: 1000px) and (prefers-color-scheme: dark) {
+  :root {
+    font-size: 16px;
+    --text-large-size: 1.6rem; /* ≈ 26px */
+    --text-medium-size: 1.2rem; /* ≈ 19px */
+    --text-small-size: 1rem; /* ≈ 16px */
+  }
+}
+
+/* 📱 较大平板（1001px ～ 1200px） */
+@media screen and (min-width: 1001px) and (max-width: 1200px) {
+  :root {
+    font-size: 16px;
+    --text-large-size: 1.7rem; /* ≈ 27.2px */
+    --text-medium-size: 1.25rem; /* ≈ 20px */
+    --text-small-size: 1.05rem; /* ≈ 16.8px */
   }
 }
 
@@ -116,6 +162,131 @@ body {
   overflow-y: auto;
   font-family: "DM Sans", sans-serif;
   background-color: var(--bg-secondary-color);
+}
+
+/* 📐 响应式 SVG 图标样式 */
+svg.icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+/* 📱 手机屏幕 SVG 适配 - 仅针对没有特定尺寸的图标 */
+@media screen and (max-width: 640px) {
+  /* 只对没有明确尺寸设置的SVG图标生效 */
+  .nav-bar svg.icon,
+  .navbar svg.icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .dl-btn svg.icon {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .release-item header svg.icon {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* 📱 中等手机屏幕 SVG 适配 */
+@media screen and (min-width: 641px) and (max-width: 800px) {
+  .nav-bar svg.icon,
+  .navbar svg.icon,
+  .dl-btn svg.icon {
+    width: 22px;
+    height: 22px;
+  }
+  
+  .release-item header svg.icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* 📱 平板 SVG 适配 */
+@media screen and (min-width: 801px) and (max-width: 1000px) {
+  .nav-bar svg.icon,
+  .navbar svg.icon,
+  .dl-btn svg.icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .release-item header svg.icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* 💻 桌面高清屏 SVG 适配 */
+@media screen and (min-width: 1440px) {
+  .nav-bar svg.icon,
+  .navbar svg.icon,
+  .dl-btn svg.icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .release-item header svg.icon {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* 🎯 特殊SVG图标优化 */
+.lucide {
+  stroke-width: 2 !important;
+}
+
+/* 防止SVG图标变形 */
+svg.icon {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 📐 Logo 和特殊图标响应式适配 */
+.logo {
+  transition: all 0.3s ease;
+}
+
+/* 📱 手机屏幕 Logo 适配 */
+@media screen and (max-width: 640px) {
+  .logo {
+    width: 12% !important;
+    min-width: 40px;
+    max-width: 60px;
+  }
+}
+
+/* 📱 中等手机屏幕 Logo 适配 */
+@media screen and (min-width: 641px) and (max-width: 800px) {
+  .logo {
+    width: 13% !important;
+    min-width: 50px;
+    max-width: 70px;
+  }
+}
+
+/* 📱 平板 Logo 适配 */
+@media screen and (min-width: 801px) and (max-width: 1000px) {
+  .logo {
+    width: 14% !important;
+    min-width: 60px;
+    max-width: 80px;
+  }
+}
+
+/* 💻 桌面高清屏 Logo 适配 */
+@media screen and (min-width: 1440px) {
+  .logo {
+    width: 16% !important;
+    min-width: 80px;
+    max-width: 120px;
+  }
 }
 
 .highlight {

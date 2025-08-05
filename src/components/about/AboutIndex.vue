@@ -44,6 +44,30 @@ function initAnimations() {
   const triggerEnd = "bottom top"; // 更长的滚动距离
   const triggerStart = "bottom 80%"; // 使用bottom触发，确保用户必须向下滚动才能触发
 
+  // 根据屏幕尺寸计算合适的居中位置
+  const getEntrancePosition = () => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 480) {
+      return "-35%"; // 极小屏幕需要更多左移
+    } else if (screenWidth <= 1000) {
+      return "-30%"; // 移动端需要更多左移来居中
+    } else {
+      return "-20%"; // 桌面端原有位置
+    }
+  };
+
+  // 根据屏幕尺寸计算滚动动画的目标位置
+  const getScrollPosition = () => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth <= 480) {
+      return "-55%"; // 极小屏幕
+    } else if (screenWidth <= 1000) {
+      return "-50%"; // 移动端
+    } else {
+      return "-40%"; // 桌面端原有位置
+    }
+  };
+
   // 预先设置所有元素的合成层，避免动画时的闪烁
   gsap.set(".scrollBox, .scrollItem", {
     force3D: true,
@@ -71,7 +95,7 @@ function initAnimations() {
   entranceTl.to(
     ".scrollBox",
     {
-      x: "-20%", // 调整位置让6张图片的中心对齐屏幕中心
+      x: getEntrancePosition(), // 使用动态计算的位置
       duration: 0.5, // 减少到0.5秒
       opacity: 1,
       ease: "power2.out", // 改为power2.out，让动画更快结束
@@ -117,7 +141,7 @@ function initAnimations() {
 
     // 向上滚动时：从当前位置继续向左移动
     mainTl.to(".scrollBox", {
-      x: "-40%", // 增加移动距离，让效果更明显
+      x: getScrollPosition(), // 使用动态计算的位置
       duration: 1.5, // 减少duration，让动画更快
       ease: "none", // 回到线性缓动，让scrub完全控制速度
       force3D: true,
@@ -142,13 +166,22 @@ function initAnimations() {
       ScrollTrigger.refresh();
       
       // 预执行一次变换，让浏览器准备合成层
-      gsap.set(".scrollBox", { x: "-20.1%" });
-      gsap.set(".scrollBox", { x: "-20%" });
+      gsap.set(".scrollBox", { x: getEntrancePosition() + 0.1 + "%" });
+      gsap.set(".scrollBox", { x: getEntrancePosition() });
     }, 100);
+    
+    // 窗口大小变化时更新位置
+    const handleResize = () => {
+      // 重新设置当前位置
+      gsap.set(".scrollBox", { x: getEntrancePosition() });
+      ScrollTrigger.refresh();
+    };
+    
+    window.addEventListener('resize', handleResize);
     
     // 返回清理函数
     return () => {
-      window.removeEventListener('scroll', updateScrollVelocity);
+      window.removeEventListener('resize', handleResize);
     };
   }, 800); // 调整为0.5秒动画 + 0.05秒最后stagger + 缓冲时间
 
@@ -461,7 +494,7 @@ function initAnimations() {
   }
 
   // 响应式设计
-  @media (max-width: 768px) {
+  @media (max-width: 1000px) {
     .header .title {
       font-size: 1.5rem;
       padding: 0 1rem;
@@ -469,31 +502,31 @@ function initAnimations() {
 
     .scrollBox {
       .scrollItem {
-        height: 320px !important; // 在小屏幕上减小图片高度
+        height: 250px !important; // 进一步减小图片高度避免遮挡
       }
 
       .scrollItem4 {
-        height: 360px !important;
+        height: 280px !important; // 也相应减小
       }
 
-      // 调整间距以适应小屏幕 - 按比例缩小，保持18px间距比例
+      // 调整间距以适应小屏幕 - 减少间距，从18px改为12px
       .scrollItem0 {
         left: 0px;
       }
       .scrollItem1 {
-        left: 551px;
+        left: 429px; // 减少间距
       }
       .scrollItem2 {
-        left: 1102px;
+        left: 858px; // 减少间距
       }
       .scrollItem3 {
-        left: 1611px;
+        left: 1253px; // 减少间距
       }
       .scrollItem4 {
-        left: 2120px;
+        left: 1648px; // 减少间距
       }
       .scrollItem5 {
-        left: 2448px;
+        left: 1906px; // 减少间距
       }
     }
   }
@@ -505,31 +538,31 @@ function initAnimations() {
 
     .scrollBox {
       .scrollItem {
-        height: 250px !important; // 在超小屏幕上进一步减小
+        height: 200px !important; // 在超小屏幕上进一步减小
       }
 
       .scrollItem4 {
-        height: 280px !important;
+        height: 220px !important; // 相应减小
       }
 
-      // 进一步减小间距 - 按比例缩小，保持间距一致性
+      // 进一步减小间距 - 从12px改为8px间距
       .scrollItem0 {
         left: 0px;
       }
       .scrollItem1 {
-        left: 435px;
+        left: 341px; // 减少间距
       }
       .scrollItem2 {
-        left: 870px;
+        left: 682px; // 减少间距
       }
       .scrollItem3 {
-        left: 1271px;
+        left: 997px; // 减少间距
       }
       .scrollItem4 {
-        left: 1672px;
+        left: 1312px; // 减少间距
       }
       .scrollItem5 {
-        left: 1931px;
+        left: 1518px; // 减少间距
       }
     }
   }

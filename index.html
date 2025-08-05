@@ -13,46 +13,34 @@
       rel="stylesheet"
     />
     <script>
-      (function setRemBase({
-        designWidth = 1440, // 设计稿宽度（如 375 / 750 / 1440）
-        baseSize = 10, // 1rem = width / baseSize，推荐为 10，方便计算
-        minWidth = 320, // 最小限制宽度
-        maxWidth = 1920, // 最大限制宽度
-      } = {}) {
+      // 简化版本：只在特定情况下调整字体，主要让CSS媒体查询控制
+      (function() {
         const doc = document.documentElement;
-
+        
         function updateRem() {
-          let width = doc.clientWidth;
-
-          // 限制宽度范围（可选）
-          if (width < minWidth) width = minWidth;
-          if (width > maxWidth) width = maxWidth;
-
-          // 设置 font-size
-          const rem = (width / designWidth) * baseSize;
-          doc.style.fontSize = rem + "px";
+          const width = doc.clientWidth;
+          
+          // 只在极端情况下干预，大部分情况让CSS媒体查询处理
+          if (width <= 320) {
+            // 极小屏幕强制设置最小字体
+            doc.style.fontSize = "18px";
+          } else if (width >= 1920) {
+            // 超大屏幕设置合适字体
+            doc.style.fontSize = "20px";
+          } else {
+            // 其他情况移除内联样式，让CSS媒体查询生效
+            doc.style.fontSize = "";
+          }
         }
 
-        // 初次执行
         updateRem();
-
-        // resize 监听（防抖）
+        
         let timer;
         window.addEventListener("resize", () => {
           clearTimeout(timer);
           timer = setTimeout(updateRem, 300);
         });
-
-        // 页面恢复可见（从后台返回）
-        window.addEventListener("pageshow", (e) => {
-          if (e.persisted) updateRem();
-        });
-      })({
-        designWidth: 1440, // 你也可以设成 750、375、1920
-        minWidth: 320,
-        maxWidth: 1920,
-        baseSize: 16,
-      });
+      })();
     </script>
   </head>
   <body>

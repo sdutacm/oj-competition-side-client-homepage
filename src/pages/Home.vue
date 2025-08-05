@@ -153,8 +153,16 @@ onMounted(async () => {
   & .content {
     width: 100%;
     aspect-ratio: 3/1;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1000px) {
       aspect-ratio: 3/2;
+    }
+    
+    @media screen and (max-width: 640px) {
+      aspect-ratio: 4/3; // 更小屏幕使用更高的比例
+    }
+    
+    @media screen and (max-width: 480px) {
+      aspect-ratio: 1/1; // 极小屏幕使用正方形比例
     }
 
     display: flex;
@@ -186,6 +194,18 @@ onMounted(async () => {
         width: 80%;
         z-index: 1;
         transform: translateY(40%);
+
+        @media screen and (max-width: 1000px) {
+          width: 90%;
+        }
+
+        @media screen and (max-width: 640px) {
+          width: 95%;
+        }
+
+        @media screen and (max-width: 480px) {
+          width: 100%;
+        }
       }
     }
 
@@ -198,22 +218,64 @@ onMounted(async () => {
       align-items: center;
       gap: 1rem;
       z-index: 4;
+      
+      @media screen and (max-width: 1000px) {
+        width: 80%;
+        height: 85%;
+        gap: 0.8rem;
+      }
+      
+      @media screen and (max-width: 640px) {
+        width: 90%;
+        height: 80%;
+        gap: 0.6rem;
+      }
+      
+      @media screen and (max-width: 480px) {
+        width: 95%;
+        height: 75%;
+        gap: 0.5rem;
+      }
 
       & .logo {
         display: block;
         width: 15%;
+        
+        @media screen and (max-width: 1000px) {
+          width: 20%;
+        }
+        
+        @media screen and (max-width: 640px) {
+          width: 25%;
+        }
+        
+        @media screen and (max-width: 480px) {
+          width: 30%;
+        }
       }
 
       & h1 {
-        font-size: var(--text-large-size);
+        font-size: 3rem;
         color: var(--text-color);
         font-weight: 800;
+        text-align: center;
+        
+        @media screen and (max-width: 640px) {
+          font-size: var(--text-medium-size);
+        }
+        
+        @media screen and (max-width: 480px) {
+          font-size: calc(var(--text-large-size) * 0.9);
+        }
       }
 
       & .btn {
-        width: 20%;
-        height: 3rem;
+        width: auto; // 改为自适应宽度
+        height: auto; // 改为自适应高度
+        min-width: fit-content; // 确保至少适应内容
         position: relative;
+        display: flex; // 添加flex布局
+        justify-content: center; // 居中对齐
         &-info {
           position: absolute;
           width: 70%;
@@ -232,6 +294,17 @@ onMounted(async () => {
         font-size: var(--text-small-size);
         color: var(--text-nav-color);
         text-align: center;
+        
+        @media screen and (max-width: 640px) {
+          font-size: calc(var(--text-small-size) * 0.9);
+          height: auto;
+          padding: 0.5rem;
+        }
+        
+        @media screen and (max-width: 480px) {
+          font-size: calc(var(--text-small-size) * 0.8);
+          padding: 0.3rem;
+        }
       }
     }
   }
@@ -255,6 +328,20 @@ onMounted(async () => {
     font-weight: 700;
     margin-top: 1rem;
     color: var(--text-color);
+    
+    // 移动端适配
+    @media screen and (max-width: 1000px) {
+      width: 90%;
+      height: 3rem;
+      font-size: var(--text-large-size);
+      margin-top: 2rem;
+    }
+    
+    // 平板适配
+    @media screen and (min-width: 1001px) and (max-width: 1024px) {
+      width: 80%;
+      font-size: var(--text-large-size);
+    }
   }
   &-desc {
     width: 60%;
@@ -265,6 +352,26 @@ onMounted(async () => {
     grid-column-gap: 2rem;
     grid-row-gap: 2rem;
     margin-top: 2rem;
+    
+    // 移动端适配
+    @media screen and (max-width: 1000px) {
+      width: 90%;
+      aspect-ratio: auto;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(6, auto);
+      grid-column-gap: 0;
+      grid-row-gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    // 平板适配
+    @media screen and (min-width: 1001px) and (max-width: 1024px) {
+      width: 80%;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      grid-column-gap: 1.5rem;
+      grid-row-gap: 1.5rem;
+    }
     &-box {
       border-radius: 20px;
       overflow: hidden;
@@ -290,6 +397,28 @@ onMounted(async () => {
       cursor: pointer;
       position: relative;
       transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      
+      // 移动端适配
+      @media screen and (max-width: 1000px) {
+        flex-direction: row;
+        height: 120px;
+        padding: 1rem;
+        border-radius: 15px;
+        
+        // 移动端悬停效果调整
+        &:hover {
+          transform: translateY(-2px);
+        }
+      }
+      
+      // 平板适配
+      @media screen and (min-width: 1001px) and (max-width: 1024px) {
+        border-radius: 18px;
+        
+        &:hover {
+          transform: translateY(-3px);
+        }
+      }
       
       // 边缘散射效果
       &::before {
@@ -369,6 +498,19 @@ onMounted(async () => {
         overflow: hidden;
         position: relative;
         
+        // 移动端适配
+        @media screen and (max-width: 1000px) {
+          width: 80px;
+          height: 80px;
+          flex-shrink: 0;
+          border-radius: 12px;
+        }
+        
+        // 平板适配
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          border-radius: 12px;
+        }
+        
         // 主要液态玻璃层
         &::before {
           content: '';
@@ -421,6 +563,11 @@ onMounted(async () => {
           transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
           position: relative;
           z-index: 1;
+          
+          // 移动端适配
+          @media screen and (max-width: 1000px) {
+            border-radius: 12px;
+          }
         }
       }
 
@@ -433,6 +580,19 @@ onMounted(async () => {
         z-index: 2;
         padding: 0.5rem;
         
+        // 移动端适配
+        @media screen and (max-width: 1000px) {
+          width: calc(100% - 80px);
+          height: auto;
+          padding: 0 0 0 1rem;
+          justify-content: center;
+        }
+        
+        // 平板适配
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          padding: 0.8rem;
+        }
+        
         & p {
           width: 100%;
           height: 30%;
@@ -443,6 +603,21 @@ onMounted(async () => {
           align-items: center;
           font-weight: 600;
           text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          
+          // 移动端适配
+          @media screen and (max-width: 1000px) {
+            height: auto;
+            font-size: var(--text-medium-size);
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+          }
+          
+          // 平板适配
+          @media screen and (min-width: 1001px) and (max-width: 1024px) {
+            font-size: var(--text-medium-size);
+          }
         }
         & small {
           width: 100%;
@@ -455,25 +630,89 @@ onMounted(async () => {
           text-align: center;
           display: flex;
           align-items: center;
+          
+          // 移动端适配
+          @media screen and (max-width: 1000px) {
+            height: auto;
+            padding: 0;
+            font-size: var(--text-small-size);
+            text-align: left;
+            align-items: flex-start;
+            line-height: 1.3;
+          }
+          
+          // 平板适配
+          @media screen and (min-width: 1001px) and (max-width: 1024px) {
+            padding: 0.5rem;
+            font-size: var(--text-small-size);
+          }
         }
       }
       &:nth-child(1) {
         grid-area: 1 / 1 / 2 / 2;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 1 / 1 / 2 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 1 / 1 / 2 / 2;
+        }
       }
       &:nth-child(2) {
         grid-area: 1 / 2 / 2 / 3;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 2 / 1 / 3 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 1 / 2 / 2 / 3;
+        }
       }
       &:nth-child(3) {
         grid-area: 1 / 3 / 2 / 4;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 3 / 1 / 4 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 2 / 1 / 3 / 2;
+        }
       }
       &:nth-child(4) {
         grid-area: 2 / 1 / 3 / 2;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 4 / 1 / 5 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 2 / 2 / 3 / 3;
+        }
       }
       &:nth-child(5) {
         grid-area: 2 / 2 / 3 / 3;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 5 / 1 / 6 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 3 / 1 / 4 / 2;
+        }
       }
       &:nth-child(6) {
         grid-area: 2 / 3 / 3 / 4;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 6 / 1 / 7 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 3 / 2 / 4 / 3;
+        }
       }
     }
     // height;
@@ -489,6 +728,20 @@ onMounted(async () => {
     font-weight: bold;
     color: var(--text-color);
     margin-top: 3rem;
+    
+    // 移动端适配
+    @media screen and (max-width: 1000px) {
+      width: 90%;
+      font-size: var(--text-large-size);
+      margin-top: 2rem;
+    }
+    
+    // 平板适配
+    @media screen and (min-width: 1001px) and (max-width: 1024px) {
+      width: 80%;
+      font-size: var(--text-large-size);
+      margin-top: 2.5rem;
+    }
   }
 }
 </style>

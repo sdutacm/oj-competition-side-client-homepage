@@ -503,4 +503,108 @@ function createBurstEffect() {
     pointer-events: none;
   }
 }
+
+/* 响应式设计 */
+@media (max-width: 1000px) {
+  .cp-container {
+    height: auto;
+    min-height: 70vh;
+    margin-top: 2rem;
+    padding: 1rem;
+    
+    .title {
+      height: auto;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .content {
+      flex-direction: column;
+      height: auto;
+      gap: 2rem;
+      
+      .section {
+        width: 90%;
+        height: auto;
+        min-height: 300px;
+        
+        .tag {
+          padding-left: 1rem;
+          font-size: 1.5rem;
+          height: auto;
+          padding-top: 1rem;
+          padding-bottom: 0.5rem;
+        }
+        
+        .desc {
+          padding: 0 1rem;
+          
+          p {
+            font-size: var(--text-medium-size);
+            line-height: 1.5;
+          }
+        }
+        
+        .footer {
+          height: 200px;
+          
+          img {
+            width: 3rem;
+          }
+          
+          p {
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .cp-container {
+    padding: 0.5rem;
+    
+    .title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .content {
+      gap: 1rem;
+      
+      .section {
+        width: 95%;
+        min-height: 250px;
+        border-radius: 1rem;
+        
+        .tag {
+          font-size: 1.2rem;
+          padding: 0.5rem;
+        }
+        
+        .desc {
+          padding: 0 0.5rem;
+          
+          p {
+            font-size: var(--text-small-size);
+          }
+        }
+        
+        .footer {
+          height: 150px;
+          
+          img {
+            width: 2.5rem;
+          }
+          
+          p {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+}
 </style>

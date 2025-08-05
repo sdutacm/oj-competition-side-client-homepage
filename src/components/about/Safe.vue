@@ -261,16 +261,17 @@ onUnmounted(() => {
 
 .sf-content {
   width: 100%;
-  height: 90%;
+  height: auto;
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   gap: 1rem;
   padding-top: 2rem;
 
   &-media {
-    width: 40%;
+    width: 35%;
     aspect-ratio: 16/9;
+    flex-shrink: 0;
 
     &-video {
       width: 100%;
@@ -281,8 +282,10 @@ onUnmounted(() => {
     }
   }
   &-desc {
-    width: 40%;
-    aspect-ratio: 16/9;
+    width: 35%;
+    aspect-ratio: 16/9 !important;
+    min-height: 0;
+    max-height: none;
     overflow: hidden;
     border-radius: var(--border-radius);
     background-color: var(--yellow-font-color);
@@ -290,6 +293,8 @@ onUnmounted(() => {
     flex-direction: column;
     padding-left: 1rem;
     padding-right: 1rem;
+    flex-shrink: 0;
+    box-sizing: border-box;
     &-header {
       width: 100%;
       height: 20%;
@@ -297,7 +302,7 @@ onUnmounted(() => {
       justify-content: start;
       align-items: center;
       font-size: var(--text-medium-size);
-      color: var(--text-secondary-color);
+      color: var(--text-color);
     }
 
     &-content {
@@ -318,10 +323,11 @@ onUnmounted(() => {
       display: flex;
       justify-content: center;
       align-items: end;
+      // background-color: red;
 
       &-bg {
-        width: 60%;
-        height: 90%;
+        width: 70%;
+        height: 100%; 
         background-color: var(--text-color);
         display: flex;
         flex-direction: column;
@@ -427,5 +433,128 @@ onUnmounted(() => {
   margin-bottom: 10rem;
   contain: layout; /* 限制布局影响范围 */
   isolation: isolate; /* 创建新的堆叠上下文 */
+}
+
+/* 响应式设计 */
+@media (max-width: 1000px) {
+  .sf-container {
+    height: auto;
+    min-height: 60vh;
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+    padding: 1rem;
+  }
+  
+  .sf-header {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .sf-content {
+    width: 90% !important;
+    flex-direction: column;
+    gap: 2rem;
+    
+    &-media {
+      width: 100%; // 移动端视频占满宽度
+    }
+    
+    &-desc {
+      width: 100%;
+      
+      &-header {
+        font-size: var(--text-medium-size);
+      }
+      
+      &-content {
+        font-size: var(--text-large-size);
+      }
+      
+      &-footer {
+        &-bg {
+          width: 85%; // 增加移动端宽度
+          
+          &-main {
+            &-text {
+              font-size: var(--text-medium-size);
+            }
+            
+            &-icon {
+              width: 1.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .cookie, .storage, .logout {
+    font-size: 0.8rem !important;
+    padding: 0.3rem 0.6rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .sf-container {
+    padding: 0.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .sf-header {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .sf-content {
+    width: 95% !important;
+    gap: 1rem;
+    
+    &-media {
+      width: 100%;
+    }
+    
+    &-desc {
+      padding: 0.5rem;
+      
+      &-header {
+        font-size: var(--text-small-size);
+      }
+      
+      &-content {
+        font-size: var(--text-small-size);
+      }
+      
+      &-footer {
+        &-bg {
+          width: 90%;
+          
+          &-header {
+            // padding-left: 0.3rem;
+            // gap: 0.3rem;
+            
+            .red, .yellow, .green {
+              width: 0.4rem;
+            }
+          }
+          
+          &-main {
+            &-text {
+              font-size: var(--text-small-size);
+            }
+            
+            &-icon {
+              width: 1.2rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .cookie, .storage, .logout {
+    font-size: 0.7rem !important;
+    padding: 0.2rem 0.4rem !important;
+  }
 }
 </style>

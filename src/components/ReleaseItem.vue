@@ -5,8 +5,6 @@
         class="icon"
         viewBox="0 0 1024 1024"
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
         v-if="system === 'Windows'"
       >
         <path
@@ -19,8 +17,6 @@
         class="icon"
         viewBox="0 0 1024 1024"
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
         v-else-if="props.system === 'Linux'"
       >
         <path
@@ -36,8 +32,6 @@
         class="icon"
         viewBox="0 0 1024 1024"
         xmlns="http://www.w3.org/2000/svg"
-        width="24"
-        height="24"
         v-else-if="props.system === 'macOS'"
       >
         <path
@@ -62,14 +56,13 @@
           <svg
             v-else
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
             viewBox="0 0 24 24"
             fill="none"
             stroke="var(--text-color)"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
+            class="icon"
           >
             <path d="M12 17V3" />
             <path d="m6 11 6 6 6-6" />
@@ -173,6 +166,20 @@ async function handleDownload(url, title) {
   justify-content: start;
   align-items: center;
   border: 1px solid var(--border-color);
+  
+  // 移动端适配
+  @media screen and (max-width: 1000px) {
+    width: 100%;
+    aspect-ratio: auto;
+    min-height: 200px;
+    margin-bottom: 0.5rem;
+  }
+  
+  // 平板适配
+  @media screen and (min-width: 1001px) and (max-width: 1024px) {
+    width: 45%;
+    aspect-ratio: 3/2;
+  }
   & header {
     display: flex;
     width: 90%;
@@ -183,6 +190,39 @@ async function handleDownload(url, title) {
     padding: 0.5rem;
     border-bottom: 1px solid var(--border-color);
     color: var(--text-color);
+    
+    // 移动端适配
+    @media screen and (max-width: 1000px) {
+      height: auto;
+      min-height: 60px;
+      padding: 1rem 0.5rem;
+      justify-content: center;
+      
+      h2 {
+        font-size: var(--text-medium-size);
+        font-weight: 600;
+      }
+    }
+    
+    // 小手机适配
+    @media screen and (max-width: 480px) {
+      min-height: 65px;
+      padding: 1.2rem 0.5rem;
+      
+      h2 {
+        font-size: var(--text-large-size);
+        font-weight: 600;
+      }
+    }
+    
+    // 平板适配
+    @media screen and (min-width: 1001px) and (max-width: 1024px) {
+      padding: 0.8rem 0.5rem;
+      
+      h2 {
+        font-size: 1.2rem;
+      }
+    }
   }
 
   & main {
@@ -193,6 +233,20 @@ async function handleDownload(url, title) {
     padding-top: .5rem;
     color: var(--text-color);
     gap: .5rem;
+    
+    // 移动端适配
+    @media screen and (max-width: 1000px) {
+      height: auto;
+      flex: 1;
+      padding: 1rem 0.5rem;
+      gap: 0.8rem;
+    }
+    
+    // 平板适配
+    @media screen and (min-width: 1001px) and (max-width: 1024px) {
+      padding: 0.8rem 0.5rem;
+      gap: 0.6rem;
+    }
     & .release-info {
       appearance: none;
       border: none;
@@ -209,6 +263,42 @@ async function handleDownload(url, title) {
       padding: .5rem;
       color: var(--text-color);
       cursor: pointer;
+      
+      // 移动端适配
+      @media screen and (max-width: 1000px) {
+        height: auto;
+        min-height: 60px;
+        padding: 1rem;
+        border-radius: 8px;
+        
+        p {
+          font-size: var(--text-medium-size);
+          line-height: 1.5;
+          font-weight: 600;
+        }
+      }
+      
+      // 小手机适配
+      @media screen and (max-width: 480px) {
+        padding: 1.2rem;
+        min-height: 65px;
+        
+        p {
+          font-size: var(--text-medium-size);
+          line-height: 1.6;
+          font-weight: 600;
+        }
+      }
+      
+      // 平板适配
+      @media screen and (min-width: 1001px) and (max-width: 1024px) {
+        padding: 0.6rem;
+        min-height: 45px;
+        
+        p {
+          font-size: 1rem;
+        }
+      }
       
       &:hover:not(:disabled) {
         background-color: var(--bg-primary-color);
@@ -233,10 +323,31 @@ async function handleDownload(url, title) {
         display: flex;
         align-items: center;
         
+        // 移动端适配
+        @media screen and (max-width: 1000px) {
+          flex-shrink: 0;
+        }
+        
         .downloading-text {
           font-size: var(--text-small-size);
           color: var(--text-secondary-color);
           margin-right: 0.5rem;
+          font-weight: 600;
+        }
+        
+        // 调整 SVG 图标尺寸
+        .icon {
+          // 移动端适配
+          @media screen and (max-width: 1000px) {
+            width: 20px;
+            height: 20px;
+          }
+          
+          // 小手机适配
+          @media screen and (max-width: 480px) {
+            width: 18px;
+            height: 18px;
+          }
         }
       }
     }
@@ -245,5 +356,17 @@ async function handleDownload(url, title) {
 
 .icon {
   fill: var(--text-color);
+  
+  // 移动端适配 - header 中的图标
+  @media screen and (max-width: 1000px) {
+    width: 28px;
+    height: 28px;
+  }
+  
+  // 小手机适配 - header 中的图标
+  @media screen and (max-width: 480px) {
+    width: 32px;
+    height: 32px;
+  }
 }
 </style>

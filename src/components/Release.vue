@@ -56,6 +56,17 @@ function genDesc(version, sys) {
   width: 60% !important;
   position: relative;
   overflow: hidden;
+  
+  // 移动端适配
+  @media screen and (max-width: 1000px) {
+    width: 90% !important;
+  }
+  
+  // 平板适配
+  @media screen and (min-width: 1001px) and (max-width: 1024px) {
+    width: 80% !important;
+  }
+  
   ::v-deep(.el)-collapse {
     border: none;
   }
@@ -71,6 +82,19 @@ function genDesc(version, sys) {
     font-size: var(--text-large-size);
     height: 4rem;
     position: relative;
+    
+    // 移动端适配
+    @media screen and (max-width: 1000px) {
+      font-size: var(--text-medium-size);
+      height: 3.5rem;
+      padding: 0 1rem;
+    }
+    
+    // 平板适配
+    @media screen and (min-width: 1001px) and (max-width: 1024px) {
+      font-size: var(--text-medium-size);
+      height: 3.8rem;
+    }
   }
   ::v-deep(.el-collapse-item__wrap) {
     border-bottom: none;
@@ -94,5 +118,20 @@ function genDesc(version, sys) {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  
+  // 移动端适配
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    aspect-ratio: auto;
+    gap: 1rem;
+    padding: 1rem 0;
+    align-items: stretch;
+  }
+  
+  // 平板适配
+  @media screen and (min-width: 1001px) and (max-width: 1024px) {
+    aspect-ratio: 2/1;
+    gap: 1rem;
+  }
 }
 </style>

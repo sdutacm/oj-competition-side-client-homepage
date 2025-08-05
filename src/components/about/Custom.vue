@@ -376,4 +376,78 @@ function initAnimations() {
     }
   }
 }
+
+/* 响应式设计 */
+@media (max-width: 1000px) {
+  .ct-container {
+    height: auto;
+    min-height: 70vh;
+    padding: 1rem;
+    
+    .ct-title {
+      font-size: 2rem;
+      height: auto;
+      text-align: center;
+      padding: 1rem 0;
+    }
+    
+    .ct-content {
+      width: 90%;
+      height: 50vh;
+      
+      .img1 {
+        height: 70%;
+      }
+      
+      &-small {
+        height: 70%;
+      }
+      
+      &-mask {
+        font-size: 2rem;
+      }
+    }
+    
+    .emoji-outer {
+      font-size: 2rem;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .ct-container {
+    padding: 0.5rem;
+    
+    .ct-title {
+      font-size: 1.5rem;
+      padding: 0.5rem 0;
+    }
+    
+    .ct-content {
+      width: 95%;
+      height: 40vh;
+      
+      .img1 {
+        height: 60%;
+      }
+      
+      &-small {
+        height: 60%;
+      }
+      
+      &-mask {
+        font-size: 1.2rem;
+        
+        p {
+          text-align: center;
+          line-height: 1.2;
+        }
+      }
+    }
+    
+    .emoji-outer {
+      font-size: 1.5rem;
+    }
+  }
+}
 </style>

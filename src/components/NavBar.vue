@@ -26,15 +26,13 @@
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
             viewBox="0 0 24 24"
             fill="none"
             stroke="var(--text-color)"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="lucide lucide-github-icon lucide-github"
+            class="lucide lucide-github-icon lucide-github icon"
           >
             <path
               d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
@@ -150,51 +148,45 @@ onMounted(() => {
   top: 0.5rem;
   left: 50%;
   transform: translateX(-50%);
-  width: 90vw;
+  width: 95vw;
   max-width: 100vw;
-  height: 6vh;
+  height: 5%;
+  min-height: 50px;
   border-radius: var(--border-radius);
   transition: background-color 0.5s ease, box-shadow 0.5s ease;
-  overflow: hidden;
+  overflow: visible;
   z-index: 10;
 
   .logo {
-    flex-basis: 30%;
-    height: 100%;
     display: flex;
-    flex-direction: row;
-    justify-content: start;
     align-items: center;
-    gap: 1rem;
-    user-select: none;
-    cursor: pointer;
+    justify-content: flex-start;
+    gap: 0.8rem;
     padding-left: 1rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: max-content;
 
     &-img {
-      width: 8%;
-      display: block;
-      -webkit-user-drag: none;
+      width: 2.5rem;
+      height: 2.5rem;
+      flex-shrink: 0;
     }
 
     &-text {
-      display: block;
-      width: fit-content;
-      height: fit-content;
-      display: flex;
-      align-items: center;
-      justify-content: left;
       font-size: var(--text-medium-size);
-      font-weight: 700;
+
+      font-weight: 600;
       color: var(--text-color);
-      transition: color 0.3s ease;
-      &:hover {
-        color: var(--oj-color);
-      }
+      white-space: nowrap;
+      flex-shrink: 0;
     }
   }
 
   .links {
-    flex-basis: 40%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
     height: 100%;
     display: flex;
     justify-content: center;
@@ -203,7 +195,6 @@ onMounted(() => {
 
     .link {
       display: flex;
-      flex-basis: 8%;
       height: 60%;
       justify-content: center;
       align-items: center;
@@ -211,6 +202,9 @@ onMounted(() => {
       border-radius: 0.5rem;
       transition: background-color 0.5s ease;
       font-size: var(--text-medium-size);
+      white-space: nowrap;
+      min-width: fit-content;
+      padding: 0 0.8rem;
       &:hover {
         background-color: var(--bg-nav-color);
       }
@@ -218,14 +212,14 @@ onMounted(() => {
   }
 
   .tools {
-    flex-basis: 30%;
-    height: 100%;
     display: flex;
     position: relative;
-    justify-content: end;
+    justify-content: flex-end;
     align-items: center;
     padding-right: 1rem;
     gap: 1rem;
+    flex-shrink: 0;
+    min-width: 120px;
 
     .btn {
       height: 70%;
@@ -244,12 +238,12 @@ onMounted(() => {
         align-items: center;
         z-index: 3;
         border-radius: var(--border-medium-radius);
-        background-color: var(--bg-secondary-color);
+        // background-color: var(--bg-secondary-color);
       }
 
       &:nth-child(1) {
-        flex-basis: 10%;
-        background-color: var(--bg-secondary-color);
+        width: 3rem;
+        // background-color: var(--bg-secondary-color);
         font-size: var(--text-medium-size);
         font-weight: 700;
         cursor: pointer;
@@ -257,7 +251,9 @@ onMounted(() => {
       }
 
       &:nth-child(2) {
-        flex-basis: 20%;
+        width: auto;
+        min-width: 6rem;
+        max-width: none; // 移除最大宽度限制，让按钮自适应内容
       }
     }
   }
@@ -307,7 +303,29 @@ onMounted(() => {
   }
 
   // 响应式设计
-  @media (max-width: 760px) {
+  @media (max-width: 1400px) {
+    .tools {
+      min-width: 100px;
+      gap: 0.8rem;
+
+      .btn:nth-child(2) {
+        min-width: 5.5rem;
+      }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    .tools {
+      min-width: 90px;
+      gap: 0.6rem;
+
+      .btn:nth-child(2) {
+        min-width: 5rem;
+      }
+    }
+  }
+
+  @media (max-width: 1000px) {
     .logo {
       flex-basis: auto;
       justify-content: center;
@@ -315,9 +333,15 @@ onMounted(() => {
       left: 50%;
       transform: translateX(-50%);
       padding-left: 0;
+      gap: 0.5rem;
+
+      &-img {
+        width: 2rem;
+        height: 2rem;
+      }
 
       &-text {
-        font-size: calc(var(--text-medium-size) * 0.9);
+        font-size: var(--text-medium-size);
       }
     }
 
@@ -330,14 +354,47 @@ onMounted(() => {
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     .logo {
+      gap: 0.3rem;
+      
       &-img {
-        width: 12%;
+        width: 1.6rem;
+        height: 1.6rem;
       }
 
       &-text {
-        font-size: calc(var(--text-medium-size) * 0.8);
+        font-size: var(--text-small-size);
+      }
+    }
+
+    .mobile-menu {
+      .mobile-menu-button {
+        font-size: var(--text-small-size) !important;
+        padding: 0.4rem 0.8rem !important;
+      }
+    }
+  }
+
+  // 极小屏幕适配
+  @media (max-width: 480px) {
+    .logo {
+      gap: 0.2rem;
+      
+      &-img {
+        width: 1.4rem;
+        height: 1.4rem;
+      }
+
+      &-text {
+        font-size: calc(var(--text-small-size) * 0.9);
+      }
+    }
+
+    .mobile-menu {
+      .mobile-menu-button {
+        font-size: calc(var(--text-small-size) * 0.9) !important;
+        padding: 0.3rem 0.6rem !important;
       }
     }
   }

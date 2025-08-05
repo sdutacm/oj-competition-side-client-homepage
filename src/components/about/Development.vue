@@ -763,7 +763,7 @@ function initInteractiveFeatures() {
 }
 
 /* 响应式设计 */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .dev-header h1 {
     font-size: 2rem;
   }

@@ -19,8 +19,6 @@
       class="icon"
       viewBox="0 0 1024 1024"
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
       v-if="currentPlatform === 'Windows' || currentPlatform === 'Windows 10'"
     >
       <path
@@ -34,8 +32,6 @@
       class="icon"
       viewBox="0 0 1024 1024"
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
       v-else-if="currentPlatform === 'Linux'"
     >
       <path
@@ -53,8 +49,6 @@
       class="icon"
       viewBox="0 0 1024 1024"
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
       v-else-if="currentPlatform === 'macOS'"
     >
       <path
@@ -66,8 +60,6 @@
     <!-- 默认下载图标 -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -272,9 +264,12 @@ onMounted(() => {
 .dl-btn {
   appearance: none;
   border: none;
-  width: 95%;
-  height: 90%;
-  display: flex;
+  width: fit-content; // 使用 fit-content
+  height: fit-content; // 使用 fit-content
+  min-width: max-content; // 确保至少能容纳内容
+  min-height: auto; // 移除最小高度限制
+  max-width: none; // 移除最大宽度限制
+  display: inline-flex; // 改为 inline-flex 以适应内容
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
@@ -285,7 +280,8 @@ onMounted(() => {
   user-select: none;
   transition: background-color 0.5s ease, box-shadow 0.5s ease, opacity 0.3s ease;
   position: relative;
-  overflow: hidden;
+  overflow: visible; // 允许内容溢出
+  padding: 0.6rem 1rem; // 稍微增加垂直内边距
   
   // 鼠标跟随高光效果
   &::before {
@@ -339,6 +335,9 @@ onMounted(() => {
     transition: transform 0.3s ease;
     position: relative;
     z-index: 2;
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
   }
 
   &:hover:not(:disabled) .icon {
@@ -349,11 +348,142 @@ onMounted(() => {
     color: var(--bg-secondary-color);
     font-size: var(--text-medium-size);
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
+    font-weight: 500;
     position: relative;
     z-index: 2;
+    flex-shrink: 0; // 防止文字被压缩
+    overflow: visible; // 确保文字不被隐藏
+    text-overflow: unset; // 移除文字省略号
+    min-width: max-content; // 确保文字有足够空间
+  }
+
+  // NavBar 环境中的特殊样式
+  .nav-container & {
+    width: fit-content; // 使用 fit-content
+    height: fit-content; // 使用 fit-content
+    min-width: auto; // 移除最小宽度限制
+    min-height: auto; // 移除最小高度限制
+    max-width: none;
+    padding: 0.4rem 0.8rem;
+
+    & .icon {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+
+    & span {
+      font-size: var(--text-medium-size);
+      font-weight: 500;
+    }
+  }
+
+  // NavBar 环境中的响应式调整
+  @media (max-width: 1200px) {
+    .nav-container & {
+      padding: 0.35rem 0.7rem;
+
+      & .icon {
+        width: 1.1rem;
+        height: 1.1rem;
+      }
+
+      & span {
+        font-size: var(--text-medium-size);
+      }
+    }
+  }
+
+  @media (max-width: 900px) {
+    .nav-container & {
+      padding: 0.3rem 0.6rem;
+
+      & .icon {
+        width: 1rem;
+        height: 1rem;
+      }
+
+      & span {
+        font-size: var(--text-medium-size);
+      }
+    }
+  }
+
+  // 响应式设计 - 确保在窄屏下也能完整显示
+  @media (max-width: 1440px) {
+    gap: 0.4rem;
+    padding: 0.5rem 0.9rem;
+    
+    & .icon {
+      width: 1.4rem;
+      height: 1.4rem;
+    }
+    
+    & span {
+      font-size: var(--text-medium-size);
+    }
+  }
+
+  @media (max-width: 1000px) {
+    gap: 0.4rem;
+    padding: 0.5rem 0.8rem;
+    min-width: max-content; // 强制确保文字有足够空间
+    
+    & .icon {
+      width: 1.3rem;
+      height: 1.3rem;
+    }
+    
+    & span {
+      font-size: var(--text-medium-size);
+      font-weight: 600;
+      white-space: nowrap; // 确保不换行
+    }
+  }
+
+  @media (max-width: 600px) {
+    gap: 0.35rem;
+    padding: 0.45rem 0.7rem;
+    
+    & .icon {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+    
+    & span {
+      font-size: var(--text-medium-size);
+      font-weight: 600;
+    }
+  }
+
+  @media (max-width: 480px) {
+    gap: 0.3rem;
+    padding: 0.4rem 0.6rem;
+    min-width: max-content; // 在小屏幕强制确保有足够空间
+    
+    & .icon {
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+    
+    & span {
+      font-size: var(--text-medium-size);
+      font-weight: 600;
+    }
+  }
+
+  @media (max-width: 360px) {
+    gap: 0.25rem;
+    padding: 0.35rem 0.5rem;
+    
+    & .icon {
+      width: 1rem;
+      height: 1rem;
+    }
+    
+    & span {
+      font-size: var(--text-medium-size);
+      font-weight: 600;
+    }
   }
 }
 </style>

@@ -348,7 +348,6 @@ onMounted(() => {
   align-items: center;
   position: relative;
   color: #000;
-
   &-icon {
     position: absolute;
     width: 20%;
@@ -384,7 +383,6 @@ onMounted(() => {
     }
     &:nth-child(2) {
       background-color: rgba(227, 227, 227, 0.837);
-
       transform: translate(10%, -50%);
     }
   }
@@ -603,10 +601,10 @@ onMounted(() => {
   &-desc {
     height: 90%;
     aspect-ratio: 1;
-    padding: 1rem;
+    padding: 1.5rem; // 增加内边距给文字更多空间
     user-select: none;
     cursor: pointer;
-    overflow: hidden;
+    overflow: visible; // 改为visible避免溢出隐藏
     position: relative;
 
     &:nth-child(1) {
@@ -642,7 +640,7 @@ onMounted(() => {
     &-header {
       font-size: var(--text-medium-size);
       width: 100%;
-      height: 10%;
+      height: 15%; // 增加header高度
       display: flex;
       justify-content: start;
       align-items: center;
@@ -650,22 +648,169 @@ onMounted(() => {
     }
 
     &-text {
-      font-size: var(--text-large-size);
+      font-size: var(--text-medium-size); // 稍微减小字体避免溢出
       width: 100%;
-      height: 30%;
-      line-height: 1.5;
+      height: 35%; // 增加text区域高度
+      line-height: 1.4; // 稍微减小行高
       font-weight: 700;
       transition: all 0.5s ease;
       transition-delay: 0.1s;
+      display: flex;
+      align-items: flex-start; // 文字从顶部开始
     }
 
     &-footer {
       width: 100%;
-      height: 60%;
+      height: 50%; // 减少footer高度给文字更多空间
       display: flex;
       transition: all 0.5s ease;
-      // background-color: red;
     }
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 1000px) {
+  .white-route-indicator-large {
+    top: 100%;
+  }
+
+  .fc-container {
+    height: auto;
+    min-height: 50vh;
+    flex-direction: column;
+    margin-bottom: 4rem;
+    padding: 2rem 1rem;
+  }
+  
+  .fc-header {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+  }
+  
+  .fc-content {
+    width: 95%;
+    gap: 1.5rem;
+    flex-direction: column; // 确保垂直排列
+    
+    &-desc {
+      width: 90%;
+      aspect-ratio: 4/3;
+      padding: 1rem;
+      
+      &-header {
+        font-size: var(--text-medium-size);
+        height: auto;
+        padding: 0.5rem 0;
+      }
+      
+      &-text {
+        font-size: var(--text-medium-size);
+        height: auto;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+      }
+      
+            &-footer {
+        height: auto;
+        min-height: 200px; // 增加最小高度，原来是180px
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .fc-container {
+    padding: 1rem 0.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .fc-header {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+  }
+  
+  .fc-content {
+    width: 98%;
+    gap: 1rem;
+    
+    &-desc {
+      width: 95%;
+      aspect-ratio: 1/1;
+      padding: 0.8rem;
+      
+      &-header {
+        font-size: var(--text-small-size);
+        padding: 0.3rem 0;
+      }
+      
+      &-text {
+        font-size: var(--text-small-size);
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+      }
+
+      &-footer {
+        min-height: 180px;
+      }
+    }
+  }
+}
+
+/* 独立的媒体查询来确保 redirect-route-container 样式生效 */
+@media (max-width: 640px) {
+  .redirect-route .redirect-route-container {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+    color: #000 !important;
+  }
+  
+  .redirect-route .redirect-route-container-icon {
+    position: absolute !important;
+    width: 20% !important;
+    left: 10% !important;
+    top: 5% !important;
+    transition: transform 0.5s ease !important;
+    transform-origin: center center !important;
+  }
+  
+  .redirect-route .redirect-route-container-indicator {
+    width: 60% !important;
+    height: 25% !important;
+    position: absolute !important;
+    border-radius: var(--border-radius) !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    color: #000 !important;
+    font-size: 0.5rem !important;
+  }
+  
+  .redirect-route .redirect-route-container-indicator:nth-child(1) {
+    background-color: white !important;
+    transform: translate(-10%, 20%) scale(1) !important;
+    z-index: 1 !important;
+    box-shadow: var(--box-shadow) !important;
+    transition: all 0.5s ease !important;
+  }
+  
+  .redirect-route .redirect-route-container-indicator:nth-child(1)::after {
+    content: "😵‍💫" !important;
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    font-size: 1.5rem !important;
+    transform: translate(20%, 50%) rotate(10deg) !important;
+  }
+  
+  .redirect-route .redirect-route-container-indicator:nth-child(2) {
+    background-color: rgba(227, 227, 227, 0.837) !important;
+    transform: translate(10%, -50%) !important;
   }
 }
 </style>

@@ -46,8 +46,8 @@ onMounted(() => {
   svgTl.to(".ep-content-svgs-container:nth-child(1)", {
     duration: 0.5,
     opacity: 1,
-    x: -400,
-    y: -50,
+    x: -200, // 增加散开幅度，原来是-150
+    y: -50, // 增加散开幅度，原来是-30
     ease: "linear",
   });
   svgTl.to(
@@ -55,8 +55,8 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: 300,
-      y: -200,
+      x: 180, // 增加散开幅度，原来是120
+      y: -120, // 增加散开幅度，原来是-80
       ease: "linear",
     },
     "<"
@@ -67,7 +67,7 @@ onMounted(() => {
       duration: 0.5,
       opacity: 1,
       x: 0,
-      y: -250,
+      y: -150, // 增加散开幅度，原来是-100
       ease: "linear",
     },
     "<"
@@ -77,8 +77,8 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: -100,
-      y: 200,
+      x: -100, // 增加散开幅度，原来是-60
+      y: 120, // 增加散开幅度，原来是80
       ease: "linear",
     },
     "<"
@@ -88,8 +88,8 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: 300,
-      y: 150,
+      x: 180, // 增加散开幅度，原来是120
+      y: 100, // 增加散开幅度，原来是60
       ease: "linear",
     },
     "<"
@@ -204,8 +204,9 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   margin-bottom: 10rem;
+  gap: 1rem; // 减少文字和图片之间的间距
   & .ep-title {
-    width: 50%;
+    width: 45%; // 稍微减小宽度给图片更多空间
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -237,7 +238,7 @@ onMounted(() => {
   }
 
   & .ep-content {
-    width: 50%;
+    width: 45%; // 稍微减小宽度
     height: 100%;
     position: relative;
     display: flex;
@@ -305,6 +306,104 @@ onMounted(() => {
       width: 70%;
       aspect-ratio: 16/9;
       object-fit: contain;
+    }
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 1000px) {
+  .ep-container {
+    height: auto;
+    min-height: 50vh;
+    flex-direction: column;
+    margin-bottom: 5rem;
+    padding: 2rem 1rem;
+    
+    .ep-title {
+      width: 100%;
+      height: auto;
+      align-items: center;
+      margin-bottom: 1.5rem; // 减少间距
+      
+      &-content {
+        width: 90%;
+        padding: 1rem;
+        text-align: center;
+        
+        header {
+          font-size: 1.8rem;
+        }
+        
+        p {
+          font-size: var(--text-medium-size);
+          margin-top: 1rem;
+        }
+      }
+    }
+    
+    .ep-content {
+      width: 100%;
+      height: 400px;
+      justify-content: center;
+      
+      &-svgs {
+        width: 80%;
+        
+        &-container {
+          width: 3rem;
+          
+          svg {
+            stroke-width: 0.15rem;
+          }
+        }
+      }
+      
+      img {
+        width: 80%;
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .ep-container {
+    padding: 1rem 0.5rem;
+    margin-bottom: 3rem;
+    
+    .ep-title {
+      &-content {
+        width: 95%;
+        padding: 0.5rem;
+        
+        header {
+          font-size: 1.5rem;
+        }
+        
+        p {
+          font-size: var(--text-small-size);
+          margin-top: 0.8rem;
+        }
+      }
+    }
+    
+    .ep-content {
+      height: 300px;
+      
+      &-svgs {
+        width: 90%;
+        
+        &-container {
+          width: 2.5rem;
+          
+          svg {
+            stroke-width: 0.2rem;
+          }
+        }
+      }
+      
+      img {
+        width: 90%;
+      }
     }
   }
 }
