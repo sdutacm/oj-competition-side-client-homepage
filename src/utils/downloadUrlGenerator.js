@@ -56,40 +56,40 @@ const ARCH_DISPLAY_NAMES = {
 function generateDownloadUrl(platform, architecture, version, fileType = '') {
   const cdnBaseUrl = import.meta.env.VITE_CDN_BASE_URL || 'https://cdn.sdutacm.cn/oj-competition-side-client'
   const filePrefix = import.meta.env.VITE_APP_FILE_PREFIX || 'SDUTOJCompetitionSideClient'
-  
+
   const config = PLATFORM_CONFIG[platform]
   if (!config) {
     throw new Error(`Unsupported platform: ${platform}`)
   }
-  
+
   // 构建路径
   const basePath = `${cdnBaseUrl}${config.pathSuffix}/v${version}`
-  
-  // 平台名称映射 - 修复 macOS 文件名格式
+
+  // 平台名称映射
   const platformNames = {
     'Windows': 'windows',
-    'macOS': 'macos',  // 修改这里：从 macos 改为 mac
+    'macOS': 'mac',
     'Linux': 'linux'
   }
-  
+
   // 构建文件名
   let fileName = `${filePrefix}_${platformNames[platform] || platform.toLowerCase()}`
-  
+
   if (fileType) {
     fileName += `_${fileType}`
   }
-  
+
   fileName += `_${architecture}`
-  
+
   fileName += `_${version}`
-  
+
   const fileTypeConfig = config.fileTypes.find(ft => ft.type === fileType)
   if (!fileTypeConfig) {
     throw new Error(`Unsupported file type: ${fileType} for platform: ${platform}`)
   }
-  
+
   fileName += `.${fileTypeConfig.extension}`
-  
+
   return `${basePath}/${fileName}`
 }
 
@@ -104,16 +104,16 @@ function generatePlatformDownloads(platform, version) {
   if (!config) {
     return []
   }
-  
+
   const downloads = []
-  
+
   // 遍历所有架构
   for (const arch of config.architectures) {
     // 遍历所有文件类型
     for (const fileType of config.fileTypes) {
       const archDisplayName = ARCH_DISPLAY_NAMES[platform][arch] || arch
       const fileTypeLabel = fileType.label
-      
+
       // 生成标题
       let title = `${platform}(${archDisplayName})`
       if (fileType.type) {
@@ -121,10 +121,10 @@ function generatePlatformDownloads(platform, version) {
       } else {
         title += `(${fileTypeLabel})`
       }
-      
+
       // 生成URL
       const url = generateDownloadUrl(platform, arch, version, fileType.type)
-      
+
       downloads.push({
         title,
         url,
@@ -135,7 +135,7 @@ function generatePlatformDownloads(platform, version) {
       })
     }
   }
-  
+
   return downloads
 }
 
@@ -146,16 +146,16 @@ function generatePlatformDownloads(platform, version) {
 function getAllDownloads() {
   const versions = (import.meta.env.VITE_HISTORICAL_VERSIONS || '0.0.2,0.0.1').split(',')
   const platforms = Object.keys(PLATFORM_CONFIG)
-  
+
   const result = {}
-  
+
   for (const version of versions) {
     result[version] = {}
     for (const platform of platforms) {
       result[version][platform] = generatePlatformDownloads(platform, version.trim())
     }
   }
-  
+
   return result
 }
 
@@ -167,11 +167,11 @@ function getAllDownloads() {
 function getVersionDownloads(version) {
   const platforms = Object.keys(PLATFORM_CONFIG)
   const result = {}
-  
+
   for (const platform of platforms) {
     result[platform] = generatePlatformDownloads(platform, version)
   }
-  
+
   return result
 }
 

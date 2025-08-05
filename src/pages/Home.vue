@@ -69,7 +69,7 @@ onMounted(async () => {
       <div class="release-container-desc">
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/oses.avif" alt="" />
+            <img :src="ImgDataUrl.functionImg.crossPlatform" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>跨平台桌面应用支持</p>
@@ -81,10 +81,10 @@ onMounted(async () => {
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/ui.png" id="dark-home" alt="" />
+            <img :src="ImgDataUrl.functionImg.uiDarkStyle" id="dark-home" alt="" />
             <img
-              src="../assets/images/function/ui-light.png"
-              id="light-home"
+            :src="ImgDataUrl.functionImg.uiStyle"
+            id="light-home"
               alt=""
             />
           </div>
@@ -95,7 +95,8 @@ onMounted(async () => {
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/baimingdan.png" alt="" />
+            <img src="../assets/images/function/whiteroute-light.png" id="light-home" alt="" />
+            <img src="../assets/images/function/whiteroute-dark.png" id="dark-home" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>可配置白名单机制</p>
@@ -104,7 +105,8 @@ onMounted(async () => {
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/navigate.png" alt="" />
+            <img src="../assets/images/function/navigate-light.png" id="light-home" alt="" />
+            <img src="../assets/images/function/navigate.png" id="dark-home" alt="">
           </div>
           <div class="release-container-desc-box-info">
             <p>强大且易用的导航系统</p>
@@ -115,7 +117,8 @@ onMounted(async () => {
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/safe.png" alt="" />
+            <img id="light-home" src="../assets/images/function/safe-light.png" alt="" />
+            <img id="dark-home" src="../assets/images/function/safe-dark.png" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>隐私与数据安全保障</p>
@@ -124,7 +127,8 @@ onMounted(async () => {
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/develop.png" alt="" />
+            <img src="../assets/images/function/develop-light.png" id="light-home" alt="" />
+            <img src="../assets/images/function/develop-dark.png" id="dark-home" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>开发者友好与快速集成</p>
