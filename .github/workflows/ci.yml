@@ -46,13 +46,39 @@ jobs:
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: zkqiang/tencent-cos-action@v0.1.0
         with:
-          args: upload -r ./dist/ oj-competition-side-client/homepage
+          args: upload -r ./dist/ oj-competition-side-client/homepage --delete --sync --timeout=300
           secret_id: ${{ secrets.COS_SECRET_ID }}
           secret_key: ${{ secrets.COS_SECRET_KEY }}
           bucket: ${{ secrets.COS_BUCKET }}
           region: ${{ secrets.COS_REGION }}
         env: 
           COS_DOMAIN: ${{ secrets.COS_DOMAIN }}
+        continue-on-error: true
+        timeout-minutes: 15
+        id: upload_attempt_1
+        
+      - name: Retry Upload to Tencent COS (if first attempt failed)
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push' && steps.upload_attempt_1.outcome == 'failure'
+        uses: zkqiang/tencent-cos-action@v0.1.0
+        with:
+          args: upload -r ./dist/ oj-competition-side-client/homepage --delete --sync --timeout=600
+          secret_id: ${{ secrets.COS_SECRET_ID }}
+          secret_key: ${{ secrets.COS_SECRET_KEY }}
+          bucket: ${{ secrets.COS_BUCKET }}
+          region: ${{ secrets.COS_REGION }}
+        env: 
+          COS_DOMAIN: ${{ secrets.COS_DOMAIN }}
+        timeout-minutes: 20
+        
+      - name: Final Upload Check and Fallback
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: |
+          echo "Checking upload status..."
+          if [ "${{ steps.upload_attempt_1.outcome }}" = "failure" ]; then
+            echo "⚠️ First upload attempt failed, retry completed"
+          else
+            echo "✅ Upload completed successfully"
+          fi
       - name: Deployment success notification
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: |
