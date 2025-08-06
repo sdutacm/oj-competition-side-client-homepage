@@ -60,6 +60,15 @@ export default defineConfig(({ command, mode }) => {
   return {
     plugins,
     base: '/oj-competition-side-client/',
+    experimental: {
+      renderBuiltUrl(filename) {
+        let cdnUrl = process.env.CDN_URL || '/oj-competition-side-client/';
+        if (!cdnUrl.endsWith('/')) {
+          cdnUrl += '/';
+        }
+        return `${cdnUrl}${filename}`;
+      },
+    },
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),

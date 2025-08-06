@@ -30,6 +30,8 @@ jobs:
         run: npm ci
         
       - name: Build project
+        env:
+          CDN_URL: https://cdn.sdutacm.cn/oj-competition-side-client/homepage
         run: npm run build
         
       - name: Display build info
