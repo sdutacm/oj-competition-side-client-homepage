@@ -62,7 +62,7 @@ export default defineConfig(({ command, mode }) => {
     base: '/oj-competition-side-client/',
     experimental: {
       renderBuiltUrl(filename) {
-        let cdnUrl = process.env.CDN_URL || '/oj-competition-side-client/homepage/';
+        let cdnUrl = process.env.CDN_URL || '/oj-competition-side-client/';
         if (!cdnUrl.endsWith('/')) {
           cdnUrl += '/';
         }
