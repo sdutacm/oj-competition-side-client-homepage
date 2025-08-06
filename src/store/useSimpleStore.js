@@ -15,8 +15,9 @@ export const useReleasesStore = defineStore('releases', () => {
     console.warn('无法读取localStorage:', error);
   }
   
-  const platform = ref(savedPlatform || 'Linux')
-  const architecture = ref(savedArchitecture || 'x64')
+  // 初始化状态
+  const platform = ref(savedPlatform || 'Unknown')
+  const architecture = ref(savedArchitecture || 'x64') // 改为统一使用 x64
   const cdnBaseUrl = ref(import.meta.env.VITE_CDN_BASE_URL || 'https://cdn.sdutacm.cn/oj-competition-side-client')
   
   // 计算属性：完整的平台信息
@@ -30,13 +31,17 @@ export const useReleasesStore = defineStore('releases', () => {
     const arch = architecture.value
     
     if (platformLower.includes('windows')) {
-      return `.exe (${arch})`
+      // Windows 显示统一的架构名称
+      const archDisplay = arch === 'arm64' ? 'arm64' : 'x64'
+      return `.exe (${archDisplay})`
     } else if (platformLower.includes('macos')) {
-      // 统一使用标准架构名称
-      const archDisplay = arch === 'arm64' ? 'arm64' : 'x86_64'
+      // macOS 显示统一的架构名称
+      const archDisplay = arch === 'arm64' ? 'arm64' : 'x64'
       return `.dmg (${archDisplay})`
     } else {
-      return `.AppImage (${arch})`
+      // Linux 保持 x86_64 显示格式
+      const archDisplay = arch === 'arm64' ? 'arm64' : 'x86_64'
+      return `.AppImage (${archDisplay})`
     }
   })
 
@@ -60,10 +65,10 @@ export const useReleasesStore = defineStore('releases', () => {
       return `${baseUrl}/SDUTOJCompetitionSideClient_linux_${linuxArch}_${version}.AppImage`
     } 
     else if (platformLower.includes('windows')) {
-      // Windows系统: 注意路径中有额外的 oj-competition-side-client
+      // Windows系统: 使用统一的路径结构，Windows 文件名使用 x64 而不是 x86_64
       const windowsType = 'installer' // 默认使用installer版本，也可以是portable
-      const baseUrlWindows = `${cdnBaseUrl.value}/oj-competition-side-client/release/v${version}`
-      return `${baseUrlWindows}/SDUTOJCompetitionSideClient_windows_${windowsType}_${arch}_${version}.exe`
+      const windowsArch = arch === 'arm64' ? 'arm64' : 'x64' // Windows 统一使用 x64
+      return `${baseUrl}/SDUTOJCompetitionSideClient_windows_${windowsType}_${windowsArch}_${version}.exe`
     }
     
     // 默认返回Linux版本
@@ -74,7 +79,6 @@ export const useReleasesStore = defineStore('releases', () => {
   const allDownloadUrls = computed(() => {
     const version = newVersion.value
     const baseUrl = `${cdnBaseUrl.value}/release/v${version}`
-    const baseUrlWindows = `${cdnBaseUrl.value}/oj-competition-side-client/release/v${version}`
     
     return {
       mac: {
@@ -87,12 +91,12 @@ export const useReleasesStore = defineStore('releases', () => {
       },
       windows: {
         x64: {
-          installer: `${baseUrlWindows}/SDUTOJCompetitionSideClient_windows_installer_x64_${version}.exe`,
-          portable: `${baseUrlWindows}/SDUTOJCompetitionSideClient_windows_portable_x64_${version}.exe`
+          installer: `${baseUrl}/SDUTOJCompetitionSideClient_windows_installer_x64_${version}.exe`,
+          portable: `${baseUrl}/SDUTOJCompetitionSideClient_windows_portable_x64_${version}.exe`
         },
         arm64: {
-          installer: `${baseUrlWindows}/SDUTOJCompetitionSideClient_windows_installer_arm64_${version}.exe`,
-          portable: `${baseUrlWindows}/SDUTOJCompetitionSideClient_windows_portable_arm64_${version}.exe`
+          installer: `${baseUrl}/SDUTOJCompetitionSideClient_windows_installer_arm64_${version}.exe`,
+          portable: `${baseUrl}/SDUTOJCompetitionSideClient_windows_portable_arm64_${version}.exe`
         }
       }
     }
@@ -102,13 +106,13 @@ export const useReleasesStore = defineStore('releases', () => {
   async function detectSystemAdvanced() {
     const userAgent = navigator.userAgent
     
-    // 检测操作系统
-    if (/Windows NT 10\.0/.test(userAgent)) {
+    // 检测操作系统 - 修正检测顺序，确保 macOS 优先级高于 Linux
+    if (/Macintosh/.test(userAgent)) {
+      platform.value = 'macOS'
+    } else if (/Windows NT 10\.0/.test(userAgent)) {
       platform.value = 'Windows 10'
     } else if (/Windows/.test(userAgent)) {
       platform.value = 'Windows'
-    } else if (/Macintosh/.test(userAgent)) {
-      platform.value = 'macOS'
     } else if (/Linux/.test(userAgent)) {
       platform.value = 'Linux'
     }
@@ -122,12 +126,12 @@ export const useReleasesStore = defineStore('releases', () => {
         const uaData = await navigator.userAgentData.getHighEntropyValues(['architecture'])
         if (uaData.architecture) {
           console.log('Modern API detected architecture:', uaData.architecture)
-          // 标准化架构名称
+          // 标准化架构名称 - 统一使用 x64/arm64
           const arch = uaData.architecture.toLowerCase()
           if (arch.includes('arm') || arch === 'arm64') {
             detectedArch = 'arm64'
           } else if (arch.includes('x86') || arch === 'x86_64' || arch === 'x64') {
-            detectedArch = 'x86_64'
+            detectedArch = 'x64' // 统一使用 x64
           }
         }
       }
@@ -141,22 +145,39 @@ export const useReleasesStore = defineStore('releases', () => {
       console.log('使用现代 API 检测结果:', detectedArch)
     } else {
       // 回退到传统检测方法
+      console.log('=== 回退到传统检测方法 ===');
+      console.log('User Agent:', userAgent);
+      
       if (/Macintosh/.test(userAgent)) {
         // 对于 macOS，M 系列芯片的 User Agent 通常不包含 "Intel"
         const hasIntelKeyword = /Intel/.test(userAgent)
+        console.log('macOS 检测 - 包含 Intel 关键字:', hasIntelKeyword);
+        
         if (!hasIntelKeyword) {
           architecture.value = 'arm64'
-          console.log('传统方法检测为 Apple Silicon')
+          console.log('✅ 传统方法检测为 Apple Silicon (M 系列芯片) - arm64');
         } else {
-          architecture.value = 'x86_64'
-          console.log('传统方法检测为 Intel Mac')
+          architecture.value = 'x64' // 统一使用 x64
+          console.log('✅ 传统方法检测为 Intel Mac - x64');
+        }
+      } else if (/Windows/.test(userAgent)) {
+        // Windows 平台专门处理
+        if (/ARM|aarch64/.test(userAgent)) {
+          architecture.value = 'arm64'
+          console.log('✅ Windows ARM 检测');
+        } else {
+          architecture.value = 'x64' // Windows 统一使用 x64
+          console.log('✅ Windows x64 检测');
         }
       } else if (/ARM|aarch64/.test(userAgent)) {
         architecture.value = 'arm64'
+        console.log('✅ 通用 ARM 检测');
       } else if (/x86_64|Win64|WOW64|x64/.test(userAgent)) {
-        architecture.value = 'x86_64'
+        architecture.value = 'x64' // 统一使用 x64
+        console.log('✅ 通用 x64 检测');
       } else {
-        architecture.value = 'x86_64'
+        architecture.value = 'x64' // 默认 x64
+        console.log('✅ 默认 x64 检测');
       }
     }
     
@@ -178,18 +199,18 @@ export const useReleasesStore = defineStore('releases', () => {
   function detectSystem() {
     const userAgent = navigator.userAgent
     
-    // 检测操作系统
-    if (/Windows NT 10\.0/.test(userAgent)) {
+    // 检测操作系统 - 修正检测顺序，确保 macOS 优先级高于 Linux
+    if (/Macintosh/.test(userAgent)) {
+      platform.value = 'macOS'
+    } else if (/Windows NT 10\.0/.test(userAgent)) {
       platform.value = 'Windows 10'
     } else if (/Windows/.test(userAgent)) {
       platform.value = 'Windows'
-    } else if (/Macintosh/.test(userAgent)) {
-      platform.value = 'macOS'
     } else if (/Linux/.test(userAgent)) {
       platform.value = 'Linux'
     }
     
-    // 更精确的架构检测
+    // 更精确的架构检测 - 统一使用 x64/arm64 命名
     if (/Macintosh/.test(userAgent)) {
       // 对于 macOS，现代检测方法
       // M1/M2/M3/M4 Mac 在 User Agent 中通常不包含 "Intel" 关键字
@@ -200,26 +221,40 @@ export const useReleasesStore = defineStore('releases', () => {
       console.log('=== macOS 架构检测详情 ===');
       console.log('User Agent:', userAgent);
       console.log('包含 Intel 关键字:', hasIntelKeyword);
+      console.log('检测到的平台:', platform.value);
       
       // 如果 User Agent 中没有 "Intel" 关键字，很可能是 Apple Silicon
       if (!hasIntelKeyword) {
         architecture.value = 'arm64'
-        console.log('检测为 Apple Silicon (M 系列芯片)');
+        console.log('✅ 检测为 Apple Silicon (M 系列芯片) - arm64');
       } else {
-        architecture.value = 'x86_64'
-        console.log('检测为 Intel Mac');
+        architecture.value = 'x64' // 统一使用 x64
+        console.log('✅ 检测为 Intel Mac - x64');
       }
     } 
-    // 其他平台的架构检测
+    // Windows 平台架构检测
+    else if (/Windows/.test(userAgent)) {
+      if (/ARM|aarch64/.test(userAgent)) {
+        architecture.value = 'arm64'
+      } else if (/x86_64|Win64|WOW64|x64/.test(userAgent)) {
+        architecture.value = 'x64' // Windows 统一使用 x64
+      } else if (/i[3-6]86|x86/.test(userAgent)) {
+        // 32位系统也归为 x64 (现代 Windows 很少有纯 32 位)
+        architecture.value = 'x64'
+      } else {
+        architecture.value = 'x64' // Windows 默认 x64
+      }
+    }
+    // 其他平台的架构检测 (Linux等)
     else if (/ARM|aarch64/.test(userAgent)) {
       architecture.value = 'arm64'
-    } else if (/x86_64|Win64|WOW64|x64/.test(userAgent)) {
-      architecture.value = 'x86_64'
+    } else if (/x86_64|x64/.test(userAgent)) {
+      architecture.value = 'x64' // 非 Windows 系统使用 x64
     } else if (/i[3-6]86|x86/.test(userAgent)) {
-      architecture.value = 'x86_64'
+      architecture.value = 'x64' // 统一归为 x64
     } else {
-      // 默认设为 x86_64
-      architecture.value = 'x86_64'
+      // 默认设为 x64
+      architecture.value = 'x64'
     }
     
     // 保存检测结果到 localStorage
@@ -244,6 +279,24 @@ export const useReleasesStore = defineStore('releases', () => {
     localStorage.setItem('detectedPlatform', newPlatform)
     localStorage.setItem('detectedArchitecture', newArch)
   }
+
+  // 强制重新检测（清除缓存）
+  function forceRedetect() {
+    // 清除 localStorage 缓存
+    try {
+      localStorage.removeItem('detectedPlatform')
+      localStorage.removeItem('detectedArchitecture')
+    } catch (error) {
+      console.warn('无法清除localStorage:', error)
+    }
+    
+    // 重置为默认值
+    platform.value = 'Unknown'
+    architecture.value = 'x64'
+    
+    // 重新检测
+    return detectSystemAdvanced()
+  }
   
   return {
     newVersion,
@@ -255,6 +308,7 @@ export const useReleasesStore = defineStore('releases', () => {
     allDownloadUrls,
     detectSystem,
     detectSystemAdvanced,
-    setPlatform
+    setPlatform,
+    forceRedetect
   }
 })

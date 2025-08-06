@@ -24,24 +24,15 @@ onMounted(async () => {
   setTimeout(async () => {
     isSystemDetecting.value = true;
     
-    // 如果已经有检测结果，不需要重新检测
-    const savedPlatform = localStorage.getItem('detectedPlatform');
-    const savedArchitecture = localStorage.getItem('detectedArchitecture');
+    // 强制使用 store 的检测逻辑，不要直接从 localStorage 读取
+    console.log('开始系统检测...');
     
-    if (!savedPlatform || !savedArchitecture) {
-      console.log('开始系统检测...');
-      
-      try {
-        await releasesStore.detectSystemAdvanced();
-        console.log('=== 使用现代 API 检测完成 ===');
-      } catch (error) {
-        console.log('现代 API 检测失败，使用传统方法:', error);
-        releasesStore.detectSystem();
-      }
-    } else {
-      console.log('使用缓存的系统检测结果');
-      releasesStore.platform = savedPlatform;
-      releasesStore.architecture = savedArchitecture;
+    try {
+      await releasesStore.detectSystemAdvanced();
+      console.log('=== 使用现代 API 检测完成 ===');
+    } catch (error) {
+      console.log('现代 API 检测失败，使用传统方法:', error);
+      releasesStore.detectSystem();
     }
     
     isSystemDetecting.value = false;
