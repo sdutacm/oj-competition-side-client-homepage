@@ -13,7 +13,8 @@ const routes = [
   },
   {
     path: "/index.html",
-    redirect: "/"
+    component: Home,
+    meta: { title: "首页" }
   },
   {
     path: "/about",
