@@ -1,6 +1,6 @@
 <template>
   <footer class="footer">
-    <p>© 2008-2025 SDUT ACM. All rights reserved.</p>
+    <p>© 2008-2025 SDUTACM. All rights reserved.</p>
   </footer>
 </template>
 

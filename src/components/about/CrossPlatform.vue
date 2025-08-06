@@ -416,7 +416,7 @@ function createBurstEffect() {
         font-size: 2rem;
         font-weight: bold;
         justify-content: start;
-        align-items: flex-end;
+        align-items: center;
       }
 
       & .desc {
@@ -424,6 +424,10 @@ function createBurstEffect() {
         height: 30%;
         padding-left: 2rem;
         padding-right: 2rem;
+
+        @media screen and (min-width: 1024px) {
+          font-size: calc(var(--text-medium-size) * 1.3);
+        }
       }
       & .footer {
         width: 100%;
@@ -554,7 +558,7 @@ function createBurstEffect() {
           padding: 0 1rem;
 
           p {
-            font-size: var(--text-medium-size);
+            font-size: var(--text-large-size);
             line-height: 1.5;
           }
         }
@@ -595,6 +599,7 @@ function createBurstEffect() {
         .tag {
           font-size: 1.2rem;
           padding: 0.5rem;
+          
         }
 
         .desc {

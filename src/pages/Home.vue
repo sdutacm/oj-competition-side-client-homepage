@@ -81,7 +81,7 @@ onMounted(async () => {
       <div class="release-container-desc">
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/oses.avif" alt="" />
+            <img src="../assets/images/function/cross.png" alt="">
           </div>
           <div class="release-container-desc-box-info">
             <p>跨平台桌面应用支持</p>
@@ -413,8 +413,8 @@ onMounted(async () => {
       box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.1),
         0 2px 8px rgba(0, 0, 0, 0.05),
-        inset 0 1px 0 rgba(255, 255, 255, 0.3),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
       user-select: none;
       cursor: pointer;
       position: relative;
@@ -442,30 +442,28 @@ onMounted(async () => {
         }
       }
       
-      // 边缘散射效果
-      &::before {
-        content: '';
-        position: absolute;
-        top: -2px;
-        left: -2px;
-        right: -2px;
-        bottom: -2px;
-        background: linear-gradient(
-          45deg,
-          rgba(255, 255, 255, 0.1) 0%,
-          rgba(255, 255, 255, 0.05) 25%,
-          rgba(255, 255, 255, 0.08) 50%,
-          rgba(255, 255, 255, 0.03) 75%,
-          rgba(255, 255, 255, 0.1) 100%
-        );
-        border-radius: 22px;
-        z-index: -1;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        filter: blur(4px);
-      }
-      
-      // 顶部高光
+        // 边缘散射效果
+        &::before {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          background: linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.03) 0%,
+            rgba(255, 255, 255, 0.01) 25%,
+            rgba(255, 255, 255, 0.02) 50%,
+            rgba(255, 255, 255, 0.01) 75%,
+            rgba(255, 255, 255, 0.03) 100%
+          );
+          border-radius: 22px;
+          z-index: -1;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          filter: blur(4px);
+        }      // 顶部高光
       &::after {
         content: '';
         position: absolute;
@@ -474,8 +472,8 @@ onMounted(async () => {
         width: 100%;
         background: linear-gradient(
           180deg,
-          rgba(255, 255, 255, 0.15) 0%,
-          rgba(255, 255, 255, 0.1) 30%,
+          rgba(255, 255, 255, 0.04) 0%,
+          rgba(255, 255, 255, 0.02) 30%,
           transparent 100%
         );
         border-radius: 20px 20px 0 0;
@@ -487,29 +485,29 @@ onMounted(async () => {
         box-shadow: 
           0 16px 48px rgba(0, 0, 0, 0.15),
           0 8px 16px rgba(0, 0, 0, 0.1),
-          inset 0 1px 0 rgba(255, 255, 255, 0.4),
-          inset 0 -1px 0 rgba(255, 255, 255, 0.15);
-        border-color: rgba(255, 255, 255, 0.3);
+          inset 0 1px 0 rgba(255, 255, 255, 0.15),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.2);
         
         // 激活边缘散射
         &::before {
-          opacity: 1;
+          opacity: 0.5;
         }
         
         .release-container-desc-box-icon {
           // 激活液态玻璃效果
           &::before {
-            opacity: 1;
+            opacity: 0.6;
           }
           
           // 激活高光散射
           &::after {
-            opacity: 0.8;
+            opacity: 0.4;
           }
           
           & img {
-            transform: scale(1.03);
-            filter: brightness(1.08) contrast(1.05) saturate(1.15);
+            transform: scale(1.02);
+            filter: brightness(1.02) contrast(1.01) saturate(1.05);
           }
         }
       }
@@ -543,11 +541,11 @@ onMounted(async () => {
           bottom: -3px;
           background: linear-gradient(
             135deg,
-            rgba(255, 255, 255, 0.2) 0%,
-            rgba(255, 255, 255, 0.05) 25%,
+            rgba(255, 255, 255, 0.06) 0%,
+            rgba(255, 255, 255, 0.02) 25%,
             transparent 50%,
-            rgba(255, 255, 255, 0.05) 75%,
-            rgba(255, 255, 255, 0.15) 100%
+            rgba(255, 255, 255, 0.02) 75%,
+            rgba(255, 255, 255, 0.04) 100%
           );
           z-index: 2;
           pointer-events: none;
@@ -566,9 +564,9 @@ onMounted(async () => {
           height: 50%;
           background: linear-gradient(
             180deg,
-            rgba(255, 255, 255, 0.15) 0%,
-            rgba(255, 255, 255, 0.08) 40%,
-            rgba(255, 255, 255, 0.02) 70%,
+            rgba(255, 255, 255, 0.04) 0%,
+            rgba(255, 255, 255, 0.02) 40%,
+            rgba(255, 255, 255, 0.005) 70%,
             transparent 100%
           );
           border-radius: 15px 15px 0 0;

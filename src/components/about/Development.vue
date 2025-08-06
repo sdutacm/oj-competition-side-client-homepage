@@ -294,104 +294,11 @@ function initInteractiveFeatures() {
     </header>
 
     <main class="dev-main">
-      <!-- GitHub 集成部分 -->
-      <section class="github-section dev-section">
+      <section class="contribute-section dev-section">
         <div class="section-icon">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"
-            />
-          </svg>
-        </div>
-        <div class="section-content">
-          <h2>GitHub 集成</h2>
-          <p>
-            SDUT OJ 竞赛客户端项目托管在 GitHub 上，基于 Electron
-            构建的专业在线评测系统客户端，支持标准的 Git 工作流
-          </p>
-          <div class="code-block">
-            <code
-              >git clone
-              https://github.com/sdutacm/oj-competition-side-client.git</code
-            >
-            <button class="copy-btn">复制</button>
-          </div>
-          <div class="features">
-            <div class="feature-item">
-              <span class="feature-icon">🔀</span>
-              <span>分支管理</span>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">📋</span>
-              <span>Issue 跟踪</span>
-            </div>
-            <div class="feature-item">
-              <span class="feature-icon">🔍</span>
-              <span>代码审查</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- CI/CD 部分 -->
-      <section class="cicd-section dev-section">
-        <div class="section-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="currentColor"
-          >
-            <path
-              d="M400-240v-80h240v80H400Zm-158 0L15-467l57-57 170 170 366-366 57 57-423 423Zm318-160v-80h240v80H560Zm160-160v-80h240v80H720Z"
-            />
-          </svg>
-        </div>
-        <div class="section-content">
-          <h2>自动化构建</h2>
-          <p>
-            配置了完整的 Electron 应用构建流程，支持 Windows、macOS、Linux
-            多平台自动化打包和发布
-          </p>
-          <div class="pipeline-steps">
-            <div class="step">
-              <div class="step-number">1</div>
-              <div class="step-content">
-                <h3>代码检查</h3>
-                <p>Electron 应用代码质量检查</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-number">2</div>
-              <div class="step-content">
-                <h3>跨平台构建</h3>
-                <p>Electron Builder 多平台构建</p>
-              </div>
-            </div>
-            <div class="step">
-              <div class="step-number">3</div>
-              <div class="step-content">
-                <h3>自动发布</h3>
-                <p>GitHub Releases 自动发布分发</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- 贡献指南部分 -->
-      <section class="contribute-section dev-section">
-        <div class="section-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 -960 960 960"
-            width="24px"
-            fill="currentColor"
-          >
-            <path
-              d="M360-240h220q17 0 31.5-8.5T632-272l84-196q2-5 3-10t1-10v-32q0-17-11.5-28.5T680-560H496l24-136q2-10-1-19t-10-16l-29-29-184 200q-8 8-12 18t-4 22v200q0 33 23.5 56.5T360-240ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"
             />
           </svg>
         </div>
@@ -448,7 +355,7 @@ function initInteractiveFeatures() {
 @import url(../../assets/css/inline-style.less);
 .dev-container {
   width: 100vw;
-  min-height: 100vh;
+  min-height: 80vh;
   position: relative;
   left: 0;
   top: 0;
