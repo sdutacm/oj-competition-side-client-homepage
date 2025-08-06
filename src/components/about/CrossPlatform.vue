@@ -318,7 +318,7 @@ function createBurstEffect() {
         <footer class="footer footer-left">
           <img src="../../assets/images/favicon.png" class="oj-client" alt="" />
           <img src="../../assets/images/linux.png" class="linux" alt="" />
-          <img src="../../assets/images/windows.png" class="windows" alt="" />
+          <img src="../../assets/images/Windows.png" class="windows" alt="" />
           <img src="../../assets/images/macos.png" class="macos" alt="" />
         </footer>
       </section>
