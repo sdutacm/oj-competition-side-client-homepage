@@ -1,13 +1,29 @@
 <script setup>
 import gsap from "gsap";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
-import { onMounted, nextTick, onBeforeUnmount } from "vue";
+import { onMounted, nextTick, onBeforeUnmount, computed } from "vue";
 import DownloadButton from "../DownloadButton.vue";
 import ImgDataUrl from "@/utils/imgDataUrl";
+import { detectOS } from "@/utils/systemDetection";
 
 gsap.registerPlugin(ScrollTrigger);
 
 let cleanupFunction = null;
+
+// 根据系统类型生成版本要求文本
+const systemRequirement = computed(() => {
+  const os = detectOS();
+  
+  if (os === "macOS") {
+    return "适用于 macOS 11 或更高版本";
+  } else if (os.includes("Windows")) {
+    return "适用于 Windows 10 或更高版本";
+  } else if (os === "Linux") {
+    return "适用于 Linux 所有主流发行版";
+  } else {
+    return "适用于主流操作系统";
+  }
+});
 
 onMounted(async () => {
   await nextTick();
@@ -209,7 +225,7 @@ function initAnimations() {
           <path d="m256-240-56-56 384-384H240v-80h480v480h-80v-344L256-240Z" />
         </svg>
       </router-link>
-      <small class="header-small">适用于 macOS 11 或更高版本</small>
+      <small class="header-small">{{ systemRequirement }}</small>
     </div>
 
     <div class="scrollBox">
