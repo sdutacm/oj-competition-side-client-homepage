@@ -14,12 +14,12 @@ const routes = [
   {
     path: "/about",
     component: About,
-    meta: { title: "关于" }
+    meta: { title: "探索" }
   }
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory('/oj-competition-side-client/'),
   routes
 });
 

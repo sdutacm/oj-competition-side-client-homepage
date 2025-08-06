@@ -59,8 +59,7 @@ export default defineConfig(({ command, mode }) => {
 
   return {
     plugins,
-    // 设置基础路径为相对路径，这样可以在任何地方部署
-    base: './',
+    base: '/oj-competition-side-client/',
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
@@ -83,7 +82,9 @@ export default defineConfig(({ command, mode }) => {
       host: '0.0.0.0',
       port: 4173,
       open: false,
-      cors: true
+      cors: true,
+      // 确保预览时也使用正确的 base 路径
+      base: '/oj-competition-side-client/'
     },
     build: {
       // 输出目录
