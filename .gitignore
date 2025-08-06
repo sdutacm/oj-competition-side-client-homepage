@@ -7,15 +7,35 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
-.DS_Store
+jspm_packages/
+
+# Build outputs
 dist
 dist-ssr
 coverage
+
+# Environment variables
+.env.local
+.env.*.local
 *.local
 
-/cypress/videos/
-/cypress/screenshots/
+# Cache directories
+.cache
+.temp
+.tmp
+.parcel-cache
+.vite
+.npm
+.eslintcache
+.yarn-integrity
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # Editor directories and files
 .vscode/*
@@ -27,4 +47,33 @@ coverage
 *.sln
 *.sw?
 
+# Testing
+/cypress/videos/
+/cypress/screenshots/
+coverage/
+nyc_output/
+
+# Build analysis
+dist/stats.html
+dist/*.map
+stats.html
+
+# TypeScript
 *.tsbuildinfo
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Temporary folders
+tmp/
+temp/
+
+# Large files and data
+# Uncomment the following lines if you want to ignore large base64 data files
+# **/imgDataUrl.js
+# **/imgDataUrl.ts
+# **/*base64*.js
+# **/*base64*.ts

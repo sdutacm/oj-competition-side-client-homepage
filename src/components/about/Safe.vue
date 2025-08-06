@@ -2,54 +2,56 @@
 import gsap from "gsap";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
 import { onMounted, onUnmounted } from "vue";
+import { showHightLight } from "@/utils/showHighLight";
 
 gsap.registerPlugin(ScrollTrigger);
 
 let mainTimeline;
 
 onMounted(() => {
+  showHightLight('sf');
   // 设置初始状态，只设置一次
-  gsap.set(".sf-content", { 
-    x: "22.6%", 
+  gsap.set(".sf-content", {
+    x: "22.6%",
     scale: 1.1,
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".sf-content-desc", { 
+  gsap.set(".sf-content-desc", {
     opacity: 0,
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".sf-content-desc-footer", { 
+  gsap.set(".sf-content-desc-footer", {
     y: "100%",
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".cookie", { 
-    left: "50%", 
+  gsap.set(".cookie", {
+    left: "50%",
     top: "5%",
     opacity: 1,
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".storage", { 
-    left: "10%", 
+  gsap.set(".storage", {
+    left: "10%",
     top: "50%",
     opacity: 1,
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".logout", { 
-    right: "10%", 
+  gsap.set(".logout", {
+    right: "10%",
     bottom: "10%",
     opacity: 1,
-    force3D: true
+    force3D: true,
   });
-  gsap.set(".sf-content-desc-footer-bg-main-text", { 
+  gsap.set(".sf-content-desc-footer-bg-main-text", {
     opacity: 0,
-    force3D: true
+    force3D: true,
   });
 
   // 创建主时间轴，平衡抖动和布局问题
   mainTimeline = gsap.timeline({
     scrollTrigger: {
       trigger: ".sf-container",
-      start: "top 30%",
+      start: "top 10%",
       end: "top -150%",
       scrub: 1,
       pin: ".sf-container",
@@ -62,61 +64,89 @@ onMounted(() => {
       onRefreshInit: () => {
         // 在刷新初始化时确保状态正确
         gsap.set(".sf-container", { clearProps: "transform" });
-      }
+      },
     },
   });
 
   // 使用更稳定的动画配置
   mainTimeline
-    .to(".sf-content-desc", {
-      duration: 1.2,
-      opacity: 1,
-      ease: "none", // 改回none，配合scrub更稳定
-      force3D: true
-    }, 0)
-    .to(".sf-content", {
-      duration: 1.2,
-      x: "0%",
-      scale: 1,
-      ease: "none", // 改回none，减少抖动
-      force3D: true
-    }, 0)
-    .to(".sf-content-desc-footer", {
-      duration: 0.8,
-      y: "0%",
-      ease: "none",
-      force3D: true
-    }, 0.6)
-    .to(".cookie", {
-      duration: 0.6,
-      opacity: 0,
-      left: "50%",
-      top: "0%",
-      ease: "none",
-      force3D: true
-    }, 1.2)
-    .to(".storage", {
-      duration: 0.6,
-      opacity: 0,
-      left: "0%",
-      top: "50%",
-      ease: "none",
-      force3D: true
-    }, 1.4)
-    .to(".logout", {
-      duration: 0.6,
-      opacity: 0,
-      right: "0%",
-      bottom: "0%",
-      ease: "none",
-      force3D: true
-    }, 1.6)
-    .to(".sf-content-desc-footer-bg-main-text", {
-      duration: 0.6,
-      opacity: 1,
-      ease: "none",
-      force3D: true
-    }, 1.8);
+    .to(
+      ".sf-content-desc",
+      {
+        duration: 1.2,
+        opacity: 1,
+        ease: "none", // 改回none，配合scrub更稳定
+        force3D: true,
+      },
+      0
+    )
+    .to(
+      ".sf-content",
+      {
+        duration: 1.2,
+        x: "0%",
+        scale: 1,
+        ease: "none", // 改回none，减少抖动
+        force3D: true,
+      },
+      0
+    )
+    .to(
+      ".sf-content-desc-footer",
+      {
+        duration: 0.8,
+        y: "0%",
+        ease: "none",
+        force3D: true,
+      },
+      0.6
+    )
+    .to(
+      ".cookie",
+      {
+        duration: 0.6,
+        opacity: 0,
+        left: "50%",
+        top: "0%",
+        ease: "none",
+        force3D: true,
+      },
+      1.2
+    )
+    .to(
+      ".storage",
+      {
+        duration: 0.6,
+        opacity: 0,
+        left: "0%",
+        top: "50%",
+        ease: "none",
+        force3D: true,
+      },
+      1.4
+    )
+    .to(
+      ".logout",
+      {
+        duration: 0.6,
+        opacity: 0,
+        right: "0%",
+        bottom: "0%",
+        ease: "none",
+        force3D: true,
+      },
+      1.6
+    )
+    .to(
+      ".sf-content-desc-footer-bg-main-text",
+      {
+        duration: 0.6,
+        opacity: 1,
+        ease: "none",
+        force3D: true,
+      },
+      1.8
+    );
 });
 
 // 组件卸载时清理
@@ -131,16 +161,27 @@ onUnmounted(() => {
 <template>
   <div class="sf-container">
     <header class="sf-header">
-      <div>我们注重保护您的
-        <div class="sf-header-safe">隐私
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q97-30 162-118.5T718-480H480v-315l-240 90v207q0 7 2 18h238v316Z"/></svg>
-        </div>
+      我们注重保护您的
+      <div class="sf-header-safe">
+        <span class="highlight sf-highlight">隐私</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#1f1f1f"
+        >
+          <path
+            d="M480-80q-139-35-229.5-159.5T160-516v-244l320-120 320 120v244q0 152-90.5 276.5T480-80Zm0-84q97-30 162-118.5T718-480H480v-315l-240 90v207q0 7 2 18h238v316Z"
+          />
+        </svg>
       </div>
     </header>
     <div class="sf-content">
       <div class="sf-content-media">
         <video
-          src="../../assets/video/safe.mov"
+          src="../../assets/video/safe.webm"
+          typeof="video/webm"
           autoplay
           loop
           muted
@@ -154,7 +195,7 @@ onUnmounted(() => {
         <div class="sf-content-desc-content">
           <p>
             我们重视你的隐私和数据安全
-            🛡，当比赛结束之后，点击右上角的系统重置按钮，我们会清空本地的所有数据，并且会为您同步登出
+            🔑，当比赛结束之后，点击右上角的系统重置按钮，我们会清空本地的所有数据，并且会为您同步登出
             🤗
           </p>
         </div>
@@ -172,9 +213,9 @@ onUnmounted(() => {
               <div class="sf-content-desc-footer-bg-main-icon cookie">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="auto"
+                  height="24"
                   viewBox="0 -960 960 960"
-                  width="auto"
+                  width="24"
                   fill="#1f1f1f"
                 >
                   <path
@@ -185,9 +226,7 @@ onUnmounted(() => {
               <div class="sf-content-desc-footer-bg-main-icon storage">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="auto"
                   viewBox="0 -960 960 960"
-                  width="auto"
                   fill="#1f1f1f"
                 >
                   <path
@@ -198,9 +237,7 @@ onUnmounted(() => {
               <div class="sf-content-desc-footer-bg-main-icon logout">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="auto"
                   viewBox="0 -960 960 960"
-                  width="auto"
                   fill="#1f1f1f"
                 >
                   <path
@@ -221,16 +258,17 @@ onUnmounted(() => {
 
 .sf-content {
   width: 100%;
-  height: 90%;
+  height: auto;
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   gap: 1rem;
   padding-top: 2rem;
 
   &-media {
-    width: 40%;
+    width: 45%;
     aspect-ratio: 16/9;
+    flex-shrink: 0;
 
     &-video {
       width: 100%;
@@ -241,8 +279,10 @@ onUnmounted(() => {
     }
   }
   &-desc {
-    width: 40%;
-    aspect-ratio: 16/9;
+    width: 45%;
+    aspect-ratio: 16/9 !important;
+    min-height: 0;
+    max-height: none;
     overflow: hidden;
     border-radius: var(--border-radius);
     background-color: var(--yellow-font-color);
@@ -250,6 +290,14 @@ onUnmounted(() => {
     flex-direction: column;
     padding-left: 1rem;
     padding-right: 1rem;
+    flex-shrink: 0;
+    box-sizing: border-box;
+
+    @media screen and (max-width: 640px) {
+      width: 100% !important;
+      aspect-ratio: 1 !important;
+    }
+
     &-header {
       width: 100%;
       height: 20%;
@@ -257,7 +305,7 @@ onUnmounted(() => {
       justify-content: start;
       align-items: center;
       font-size: var(--text-medium-size);
-      color: var(--text-secondary-color);
+      color: var(--text-color);
     }
 
     &-content {
@@ -269,6 +317,15 @@ onUnmounted(() => {
       line-height: 1.5;
       font-weight: bold;
       font-size: var(--text-large-size);
+
+      @media screen and (max-width: 1300px) {
+        font-size: var(--text-medium-size);
+      }
+
+      @media screen and (max-width: 640px) {
+        font-size: var(--text-medium-size);
+        
+      }
     }
 
     &-footer {
@@ -278,10 +335,11 @@ onUnmounted(() => {
       display: flex;
       justify-content: center;
       align-items: end;
+      // background-color: red;
 
       &-bg {
-        width: 60%;
-        height: 90%;
+        width: 70%;
+        height: 100%; 
         background-color: var(--text-color);
         display: flex;
         flex-direction: column;
@@ -301,20 +359,20 @@ onUnmounted(() => {
           & .red {
             width: 0.5rem;
             aspect-ratio: 1;
-            background-color: red;
+            background-color: #ff5f57;
             border-radius: 50%;
           }
 
           & .yellow {
             width: 0.5rem;
             aspect-ratio: 1;
-            background-color: yellow;
+            background-color: #f3bc2e;
             border-radius: 50%;
           }
           & .green {
             width: 0.5rem;
             aspect-ratio: 1;
-            background-color: green;
+            background-color: #28c840;
             border-radius: 50%;
           }
         }
@@ -354,13 +412,15 @@ onUnmounted(() => {
 }
 
 .sf-header {
-  width: 100%;
-  height: 10%;
+  width: fit-content;
+  height: fit-content;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   font-size: 3rem;
   font-weight: bold;
+  flex-wrap: nowrap;
   color: var(--text-color);
 
   &-safe {
@@ -382,7 +442,132 @@ onUnmounted(() => {
   margin-top: 4rem;
   position: relative;
   z-index: 1;
-  contain: layout; /* 限制布局影响范围 */
-  isolation: isolate; /* 创建新的堆叠上下文 */
+  margin-bottom: 10rem;
+  contain: layout;
+  isolation: isolate;
+
+  @media screen and (max-width: 480px) {
+    margin-top: 10rem !important;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .sf-container {
+    height: auto;
+    min-height: 60vh;
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+    padding: 1rem;
+  }
+  
+  .sf-header {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .sf-content {
+    width: 90% !important;
+    flex-direction: column;
+    gap: 2rem;
+    
+    &-media {
+      width: 100%; // 移动端视频占满宽度
+    }
+    
+    &-desc {
+      width: 100%;
+      
+      &-header {
+        font-size: var(--text-medium-size);
+      }
+      
+      &-content {
+        font-size: var(--text-large-size);
+      }
+      
+      &-footer {
+        &-bg {
+          width: 85%; // 增加移动端宽度
+          
+          &-main {
+            &-text {
+              font-size: var(--text-medium-size);
+            }
+            
+            &-icon {
+              width: 1.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .cookie, .storage, .logout {
+    font-size: 0.8rem !important;
+    padding: 0.3rem 0.6rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .sf-container {
+    padding: 0.5rem;
+    margin-bottom: 3rem;
+    height: 90vh !important;
+  }
+  
+  .sf-header {
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  
+  .sf-content {
+    width: 95% !important;
+    gap: 1rem;
+    
+    &-media {
+      width: 100%;
+    }
+    
+    &-desc {
+      
+      &-header {
+        font-size: var(--text-small-size);
+      }
+      
+      &-content {
+        font-size: var(--text-small-size);
+      }
+      
+      &-footer {
+        &-bg {
+          width: 90%;
+          
+          &-header {
+            
+            .red, .yellow, .green {
+              width: 0.4rem;
+            }
+          }
+          
+          &-main {
+            &-text {
+              font-size: var(--text-small-size);
+            }
+            
+            &-icon {
+              width: 3rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .cookie, .storage, .logout {
+    padding: 0.2rem 0.4rem !important;
+  }
 }
 </style>

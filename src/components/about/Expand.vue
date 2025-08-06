@@ -6,8 +6,6 @@ import { onMounted } from "vue";
 gsap.registerPlugin(ScrollTrigger);
 
 onMounted(() => {
-  gsap.set(".ep-title-content header", { opacity: 0, y: -50 });
-  gsap.set(".ep-title-content p", { opacity: 0, y: -50 });
   gsap.set(".ep-content-svgs-container:nth-child(1)", {
     opacity: 0,
     x: -350,
@@ -34,15 +32,6 @@ onMounted(() => {
     y: 100,
   });
 
-  let tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".ep-container",
-      start: "top center",
-      end: "bottom bottom",
-      scrub: 1,
-    },
-  });
-
   let svgTl = gsap.timeline({
     scrollTrigger: {
       trigger: ".ep-container",
@@ -52,23 +41,12 @@ onMounted(() => {
     },
   });
 
-  tl.to(".ep-title-content header", {
-    duration: 0.5,
-    opacity: 1,
-    y: 0,
-    ease: "linear",
-  }).to(".ep-title-content p", {
-    duration: 0.5,
-    opacity: 1,
-    y: 0,
-    ease: "linear",
-  });
-
   svgTl.to(".ep-content-svgs-container:nth-child(1)", {
     duration: 0.5,
     opacity: 1,
-    x: -400,
-    y: -50,
+    scale: 1.2,
+    x: "-400%", // 增加散开幅度，原来是-150
+    y: "-50%", // 增加散开幅度，原来是-30
     ease: "linear",
   });
   svgTl.to(
@@ -76,8 +54,9 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: 300,
-      y: -200,
+      scale: 1.5,
+      x: "340%", // 增加散开幅度，原来是120
+      y: "-220%", // 增加散开幅度，原来是-80
       ease: "linear",
     },
     "<"
@@ -87,8 +66,8 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: 0,
-      y: -250,
+      x: "-100%",
+      y: "-250%", // 增加散开幅度，原来是-100
       ease: "linear",
     },
     "<"
@@ -98,8 +77,8 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: -100,
-      y: 200,
+      x: "-100%", // 增加散开幅度，原来是-60
+      y: "220%", // 增加散开幅度，原来是80
       ease: "linear",
     },
     "<"
@@ -109,8 +88,9 @@ onMounted(() => {
     {
       duration: 0.5,
       opacity: 1,
-      x: 300,
-      y: 150,
+      scale: 1.2,
+      x: "400%", // 增加散开幅度，原来是120
+      y: "100%", // 增加散开幅度，原来是60
       ease: "linear",
     },
     "<"
@@ -220,12 +200,14 @@ onMounted(() => {
 <style scoped lang="less">
 .ep-container {
   width: 100%;
-  height: 60vh;
+  height: 40vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 10rem;
+  gap: 1rem; // 减少文字和图片之间的间距
   & .ep-title {
-    width: 50%;
+    width: 50%; // 
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -257,11 +239,11 @@ onMounted(() => {
   }
 
   & .ep-content {
-    width: 50%;
+    width: 50%; // 稍微减小宽度
     height: 100%;
     position: relative;
     display: flex;
-    justify-content: start;
+    justify-content:start;
     align-items: center;
 
     &-svgs {
@@ -325,6 +307,104 @@ onMounted(() => {
       width: 70%;
       aspect-ratio: 16/9;
       object-fit: contain;
+    }
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .ep-container {
+    height: auto;
+    min-height: 50vh;
+    flex-direction: column;
+    margin-bottom: 5rem;
+    padding: 2rem 1rem;
+    
+    .ep-title {
+      width: 100%;
+      height: auto;
+      align-items: center;
+      margin-bottom: 1.5rem; // 减少间距
+      
+      &-content {
+        width: 90%;
+        padding: 1rem;
+        text-align: center;
+        
+        header {
+          font-size: 1.8rem;
+        }
+        
+        p {
+          font-size: var(--text-medium-size);
+          margin-top: 1rem;
+        }
+      }
+    }
+    
+    .ep-content {
+      width: 100%;
+      height: 400px;
+      justify-content: center;
+      
+      &-svgs {
+        width: 80%;
+        
+        &-container {
+          width: 3rem;
+          
+          svg {
+            stroke-width: 0.15rem;
+          }
+        }
+      }
+      
+      img {
+        width: 80%;
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .ep-container {
+    padding: 1rem 0.5rem;
+    margin-bottom: 3rem;
+    
+    .ep-title {
+      &-content {
+        width: 95%;
+        padding: 0.5rem;
+        
+        header {
+          font-size: 1.5rem;
+        }
+        
+        p {
+          font-size: var(--text-small-size);
+          margin-top: 0.8rem;
+        }
+      }
+    }
+    
+    .ep-content {
+      height: 300px;
+      
+      &-svgs {
+        width: 90%;
+        
+        &-container {
+          width: 2.5rem;
+          
+          svg {
+            stroke-width: 0.2rem;
+          }
+        }
+      }
+      
+      img {
+        width: 90%;
+      }
     }
   }
 }

@@ -2,10 +2,11 @@
 <html lang="">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/icon.ico" />
+    <link rel="icon" href="./favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./src/assets/css/default.less" />
-    <title>Vite App</title>
+    
+    <title>SDUT OJ 竞赛客户端</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,46 +14,28 @@
       rel="stylesheet"
     />
     <script>
-      (function setRemBase({
-        designWidth = 1440, // 设计稿宽度（如 375 / 750 / 1440）
-        baseSize = 10, // 1rem = width / baseSize，推荐为 10，方便计算
-        minWidth = 320, // 最小限制宽度
-        maxWidth = 1920, // 最大限制宽度
-      } = {}) {
+      (function() {
         const doc = document.documentElement;
-
+        
         function updateRem() {
-          let width = doc.clientWidth;
-
-          // 限制宽度范围（可选）
-          if (width < minWidth) width = minWidth;
-          if (width > maxWidth) width = maxWidth;
-
-          // 设置 font-size
-          const rem = (width / designWidth) * baseSize;
-          doc.style.fontSize = rem + "px";
+          const width = doc.clientWidth;          
+          if (width <= 320) {
+            doc.style.fontSize = "18px";
+          } else if (width >= 1920) {
+            doc.style.fontSize = "20px";
+          } else {
+            doc.style.fontSize = "";
+          }
         }
 
-        // 初次执行
         updateRem();
-
-        // resize 监听（防抖）
+        
         let timer;
         window.addEventListener("resize", () => {
           clearTimeout(timer);
           timer = setTimeout(updateRem, 300);
         });
-
-        // 页面恢复可见（从后台返回）
-        window.addEventListener("pageshow", (e) => {
-          if (e.persisted) updateRem();
-        });
-      })({
-        designWidth: 1440, // 你也可以设成 750、375、1920
-        minWidth: 320,
-        maxWidth: 1920,
-        baseSize: 16,
-      });
+      })();
     </script>
   </head>
   <body>

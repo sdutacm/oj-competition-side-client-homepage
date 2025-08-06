@@ -1,27 +1,23 @@
 <script setup>
 import { ref } from "vue";
 import ReleaseItem from "./ReleaseItem.vue";
-const activeNames = ref(["1"]);
-import { LinuxData, WindowsData, MacOSData } from "@/config/data.js";
-import { versions } from "@/config/data.js";
 import { ElTag } from "element-plus";
+import { getVersions, getVersionDownloads } from "@/utils/downloadUrlGenerator";
+
+const activeNames = ref(["1"]);
+
 const handleChange = (val) => {
   console.log(val);
 };
 
-function genDesc(version, sys) {
-  switch (sys) {
-    case "Windows":
-      return WindowsData.find((item) => item.version === version)?.description || [];
-    case "Linux":
-      return LinuxData.find((item) => item.version === version)?.description || [];
-    case "macOS":
-      return MacOSData.find((item) => item.version === version)?.description || [];
-    default:
-      return [];
-  }
-}
+// 从环境变量获取版本列表
+const versions = getVersions();
 
+// 生成特定版本的描述数据
+function genDesc(version, sys) {
+  const versionDownloads = getVersionDownloads(version);
+  return versionDownloads[sys] || [];
+}
 </script>
 
 <template>
@@ -44,9 +40,9 @@ function genDesc(version, sys) {
         </el-tag>
       </template>
         <div class="release-items">
-          <ReleaseItem system="Windows" :description="genDesc(version, 'Windows')" />
-          <ReleaseItem system="macOS" :description="genDesc(version, 'macOS')" />
-          <ReleaseItem system="Linux" :description="genDesc(version, 'Linux')" />
+          <ReleaseItem system="Windows" :description="genDesc(version, 'Windows')" :version="version" />
+          <ReleaseItem system="macOS" :description="genDesc(version, 'macOS')" :version="version" />
+          <ReleaseItem system="Linux" :description="genDesc(version, 'Linux')" :version="version" />
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -60,6 +56,17 @@ function genDesc(version, sys) {
   width: 60% !important;
   position: relative;
   overflow: hidden;
+  
+  // 移动端适配
+  @media screen and (max-width: 1000px) {
+    width: 90% !important;
+  }
+  
+  // 平板适配
+  @media screen and (min-width: 1001px) and (max-width: 1024px) {
+    width: 80% !important;
+  }
+  
   ::v-deep(.el)-collapse {
     border: none;
   }
@@ -75,6 +82,19 @@ function genDesc(version, sys) {
     font-size: var(--text-large-size);
     height: 4rem;
     position: relative;
+    
+    // 移动端适配
+    @media screen and (max-width: 1000px) {
+      font-size: var(--text-medium-size);
+      height: 3.5rem;
+      padding: 0 1rem;
+    }
+    
+    // 平板适配
+    @media screen and (min-width: 1001px) and (max-width: 1024px) {
+      font-size: var(--text-medium-size);
+      height: 3.8rem;
+    }
   }
   ::v-deep(.el-collapse-item__wrap) {
     border-bottom: none;
@@ -98,5 +118,20 @@ function genDesc(version, sys) {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  
+  // 移动端适配
+  @media screen and (max-width: 1000px) {
+    flex-direction: column;
+    aspect-ratio: auto;
+    gap: 1rem;
+    padding: 1rem 0;
+    align-items: stretch;
+  }
+  
+  // 平板适配
+  @media screen and (min-width: 1001px) and (max-width: 1024px) {
+    aspect-ratio: 2/1;
+    gap: 1rem;
+  }
 }
 </style>

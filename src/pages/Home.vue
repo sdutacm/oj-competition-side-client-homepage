@@ -1,7 +1,48 @@
 <script setup>
+import { onMounted, ref, nextTick } from 'vue';
 import DownloadButton from "@/components/DownloadButton.vue";
 import Release from "@/components/Release.vue";
 import Footer from "@/components/Footer.vue";
+import { useReleasesStore } from "@/store/useSimpleStore";
+
+// 使用简化的 store
+const releasesStore = useReleasesStore();
+
+// 系统检测状态
+const isSystemDetecting = ref(false);
+
+// 读取环境变量
+const appName = import.meta.env.VITE_APP_NAME || "SDUT OJ 竞赛客户端";
+
+onMounted(async () => {
+  // 等待 DOM 完全挂载和渲染
+  await nextTick();
+  
+  console.log('Home 组件已挂载，开始后台系统检测...');
+  
+  // 系统检测立即开始，但不阻塞渲染
+  setTimeout(async () => {
+    isSystemDetecting.value = true;
+    
+    // 强制使用 store 的检测逻辑，不要直接从 localStorage 读取
+    console.log('开始系统检测...');
+    
+    try {
+      await releasesStore.detectSystemAdvanced();
+      console.log('=== 使用现代 API 检测完成 ===');
+    } catch (error) {
+      console.log('现代 API 检测失败，使用传统方法:', error);
+      releasesStore.detectSystem();
+    }
+    
+    isSystemDetecting.value = false;
+    
+    console.log('最终检测结果:');
+    console.log('平台:', releasesStore.platform);
+    console.log('架构:', releasesStore.architecture);
+    console.log('下载格式:', releasesStore.downloadFormat);
+  }, 0); // 立即执行，但在下一个事件循环
+});
 </script>
 
 <template>
@@ -24,11 +65,15 @@ import Footer from "@/components/Footer.vue";
       </div>
       <div class="content-main">
         <img src="../assets/images/favicon.png" class="logo" alt="" />
-        <h1>下载 SDUT OJ 竞赛客户端</h1>
+        <h1>下载 {{ appName }}</h1>
         <div class="btn">
-          <DownloadButton desc="下载 for Linux" />
+          <DownloadButton 
+            :desc="`下载 for ${releasesStore.platform}`" 
+            :download-url="releasesStore.downloadUrl"
+            :platform="releasesStore.platform"
+          />
         </div>
-        <aside class="desc">版本 1.2 for .AppImage (x64)</aside>
+        <aside class="desc">版本 {{ releasesStore.newVersion }} for {{ releasesStore.downloadFormat }}</aside>
       </div>
     </div>
     <div class="release-container">
@@ -36,7 +81,7 @@ import Footer from "@/components/Footer.vue";
       <div class="release-container-desc">
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/oses.avif" alt="" />
+            <img src="../assets/images/function/cross.png" alt="">
           </div>
           <div class="release-container-desc-box-info">
             <p>跨平台桌面应用支持</p>
@@ -62,7 +107,8 @@ import Footer from "@/components/Footer.vue";
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/baimingdan.png" alt="" />
+            <img src="../assets/images/function/whiteroute-light.png" id="light-home" alt="" />
+            <img src="../assets/images/function/whiteroute-dark.png" id="dark-home" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>可配置白名单机制</p>
@@ -71,7 +117,8 @@ import Footer from "@/components/Footer.vue";
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/navigate.png" alt="" />
+            <img src="../assets/images/function/navigate-light.png" id="light-home" alt="" />
+            <img src="../assets/images/function/navigate.png" id="dark-home" alt="">
           </div>
           <div class="release-container-desc-box-info">
             <p>强大且易用的导航系统</p>
@@ -82,7 +129,8 @@ import Footer from "@/components/Footer.vue";
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/safe.png" alt="" />
+            <img id="light-home" src="../assets/images/function/safe-light.png" alt="" />
+            <img id="dark-home" src="../assets/images/function/safe-dark.png" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>隐私与数据安全保障</p>
@@ -91,7 +139,8 @@ import Footer from "@/components/Footer.vue";
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img src="../assets/images/function/develop.png" alt="" />
+            <img src="../assets/images/function/develop-light.png" id="light-home" alt="" />
+            <img src="../assets/images/function/develop-dark.png" id="dark-home" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>开发者友好与快速集成</p>
@@ -121,8 +170,16 @@ import Footer from "@/components/Footer.vue";
   & .content {
     width: 100%;
     aspect-ratio: 3/1;
-    @media screen and (max-width: 768px) {
+    @media screen and (max-width: 1024px) {
       aspect-ratio: 3/2;
+    }
+    
+    @media screen and (max-width: 640px) {
+      aspect-ratio: 4/3; // 更小屏幕使用更高的比例
+    }
+    
+    @media screen and (max-width: 480px) {
+      aspect-ratio: 1/1; // 极小屏幕使用正方形比例
     }
 
     display: flex;
@@ -154,6 +211,18 @@ import Footer from "@/components/Footer.vue";
         width: 80%;
         z-index: 1;
         transform: translateY(40%);
+
+        @media screen and (max-width: 1000px) {
+          width: 90%;
+        }
+
+        @media screen and (max-width: 640px) {
+          width: 95%;
+        }
+
+        @media screen and (max-width: 480px) {
+          width: 100%;
+        }
       }
     }
 
@@ -166,22 +235,69 @@ import Footer from "@/components/Footer.vue";
       align-items: center;
       gap: 1rem;
       z-index: 4;
+      
+      @media screen and (max-width: 1000px) {
+        width: 80%;
+        height: 85%;
+        gap: 0.8rem;
+      }
+      
+      @media screen and (max-width: 640px) {
+        width: 90%;
+        height: 80%;
+        gap: 0.6rem;
+      }
+      
+      @media screen and (max-width: 480px) {
+        width: 95%;
+        height: 75%;
+        gap: 0.5rem;
+      }
 
       & .logo {
         display: block;
         width: 15%;
+        
+        @media screen and (max-width: 1000px) {
+          width: 20%;
+        }
+        
+        @media screen and (max-width: 640px) {
+          width: 25%;
+        }
+        
+        @media screen and (max-width: 480px) {
+          width: 30%;
+        }
       }
 
       & h1 {
-        font-size: var(--text-large-size);
+        font-size: 3rem;
         color: var(--text-color);
         font-weight: 800;
+        text-align: center;
+
+        @media screen and (max-width: 1024px) {
+          // font-size: 2.5rem;
+          white-space: nowrap;
+        }
+        
+        @media screen and (max-width: 640px) {
+          font-size: var(--text-medium-size);
+        }
+        
+        @media screen and (max-width: 480px) {
+          font-size: calc(var(--text-large-size) * 0.9);
+        }
       }
 
       & .btn {
-        width: 20%;
-        height: 3rem;
+        width: auto; // 改为自适应宽度
+        height: auto; // 改为自适应高度
+        min-width: fit-content; // 确保至少适应内容
         position: relative;
+        display: flex; // 添加flex布局
+        justify-content: center; // 居中对齐
         &-info {
           position: absolute;
           width: 70%;
@@ -200,6 +316,17 @@ import Footer from "@/components/Footer.vue";
         font-size: var(--text-small-size);
         color: var(--text-nav-color);
         text-align: center;
+        
+        @media screen and (max-width: 640px) {
+          font-size: calc(var(--text-small-size) * 0.9);
+          height: auto;
+          padding: 0.5rem;
+        }
+        
+        @media screen and (max-width: 480px) {
+          font-size: calc(var(--text-small-size) * 0.8);
+          padding: 0.3rem;
+        }
       }
     }
   }
@@ -223,6 +350,20 @@ import Footer from "@/components/Footer.vue";
     font-weight: 700;
     margin-top: 1rem;
     color: var(--text-color);
+    
+    // 移动端适配
+    @media screen and (max-width: 1000px) {
+      width: 90%;
+      height: 3rem;
+      font-size: var(--text-large-size);
+      margin-top: 2rem;
+    }
+    
+    // 平板适配
+    @media screen and (min-width: 1001px) and (max-width: 1024px) {
+      width: 80%;
+      font-size: var(--text-large-size);
+    }
   }
   &-desc {
     width: 60%;
@@ -233,21 +374,140 @@ import Footer from "@/components/Footer.vue";
     grid-column-gap: 2rem;
     grid-row-gap: 2rem;
     margin-top: 2rem;
+    
+    // 移动端适配
+    @media screen and (max-width: 1000px) {
+      width: 90%;
+      aspect-ratio: auto;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(6, auto);
+      grid-column-gap: 0;
+      grid-row-gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    // 平板适配
+    @media screen and (min-width: 1001px) and (max-width: 1024px) {
+      width: 80%;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      grid-column-gap: 1.5rem;
+      grid-row-gap: 1.5rem;
+    }
     &-box {
-      border-radius: var(--border-radius);
+      border-radius: 20px;
       overflow: hidden;
-      background-color: var(--bg-secondary-color);
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0.02) 50%,
+        rgba(255, 255, 255, 0.08) 100%
+      );
+      backdrop-filter: blur(20px) saturate(150%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: var(--box-shadow);
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 2px 8px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(255, 255, 255, 0.08);
       user-select: none;
       cursor: pointer;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      
+      // 移动端适配
+      @media screen and (max-width: 1000px) {
+        flex-direction: row;
+        height: 120px;
+        padding: 1rem;
+        border-radius: 15px;
+        
+        // 移动端悬停效果调整
+        &:hover {
+          transform: translateY(-2px);
+        }
+      }
+      
+      // 平板适配
+      @media screen and (min-width: 1001px) and (max-width: 1024px) {
+        border-radius: 18px;
+        
+        &:hover {
+          transform: translateY(-3px);
+        }
+      }
+      
+        // 边缘散射效果
+        &::before {
+          content: '';
+          position: absolute;
+          top: -2px;
+          left: -2px;
+          right: -2px;
+          bottom: -2px;
+          background: linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.03) 0%,
+            rgba(255, 255, 255, 0.01) 25%,
+            rgba(255, 255, 255, 0.02) 50%,
+            rgba(255, 255, 255, 0.01) 75%,
+            rgba(255, 255, 255, 0.03) 100%
+          );
+          border-radius: 22px;
+          z-index: -1;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          filter: blur(4px);
+        }      // 顶部高光
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        height: 40%;
+        width: 100%;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.04) 0%,
+          rgba(255, 255, 255, 0.02) 30%,
+          transparent 100%
+        );
+        border-radius: 20px 20px 0 0;
+        pointer-events: none;
+        z-index: 1;
+      }
       &:hover {
+        transform: translateY(-4px);
+        box-shadow: 
+          0 16px 48px rgba(0, 0, 0, 0.15),
+          0 8px 16px rgba(0, 0, 0, 0.1),
+          inset 0 1px 0 rgba(255, 255, 255, 0.15),
+          inset 0 -1px 0 rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.2);
+        
+        // 激活边缘散射
+        &::before {
+          opacity: 0.5;
+        }
+        
         .release-container-desc-box-icon {
+          // 激活液态玻璃效果
+          &::before {
+            opacity: 0.6;
+          }
+          
+          // 激活高光散射
+          &::after {
+            opacity: 0.4;
+          }
+          
           & img {
-            transform: scale(1.1);
+            transform: scale(1.02);
+            filter: brightness(1.02) contrast(1.01) saturate(1.05);
           }
         }
       }
@@ -256,12 +516,78 @@ import Footer from "@/components/Footer.vue";
         width: 100%;
         height: 60%;
         overflow: hidden;
+        position: relative;
+        
+        // 移动端适配
+        @media screen and (max-width: 1000px) {
+          width: 80px;
+          height: 80px;
+          flex-shrink: 0;
+          border-radius: 12px;
+        }
+        
+        // 平板适配
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          border-radius: 12px;
+        }
+        
+        // 主要液态玻璃层
+        &::before {
+          content: '';
+          position: absolute;
+          top: -3px;
+          left: -3px;
+          right: -3px;
+          bottom: -3px;
+          background: linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.06) 0%,
+            rgba(255, 255, 255, 0.02) 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.02) 75%,
+            rgba(255, 255, 255, 0.04) 100%
+          );
+          z-index: 2;
+          pointer-events: none;
+          opacity: 0;
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+          filter: blur(1px);
+        }
+        
+        // 高光散射效果
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 50%;
+          background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.04) 0%,
+            rgba(255, 255, 255, 0.02) 40%,
+            rgba(255, 255, 255, 0.005) 70%,
+            transparent 100%
+          );
+          border-radius: 15px 15px 0 0;
+          z-index: 3;
+          opacity: 0;
+          transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+          pointer-events: none;
+        }
+        
         & img {
           width: 100%;
           height: 100%;
-          // width: 100%;
           object-fit: cover;
-          transition: transform 0.3s ease;
+          transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+          position: relative;
+          z-index: 1;
+          
+          // 移动端适配
+          @media screen and (max-width: 1000px) {
+            border-radius: 12px;
+          }
         }
       }
 
@@ -270,6 +596,23 @@ import Footer from "@/components/Footer.vue";
         height: 40%;
         display: flex;
         flex-direction: column;
+        position: relative;
+        z-index: 2;
+        padding: 0.5rem;
+        
+        // 移动端适配
+        @media screen and (max-width: 1000px) {
+          width: calc(100% - 80px);
+          height: auto;
+          padding: 0 0 0 1rem;
+          justify-content: center;
+        }
+        
+        // 平板适配
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          padding: 0.8rem;
+        }
+        
         & p {
           width: 100%;
           height: 30%;
@@ -278,6 +621,23 @@ import Footer from "@/components/Footer.vue";
           display: flex;
           justify-content: center;
           align-items: center;
+          font-weight: 600;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          
+          // 移动端适配
+          @media screen and (max-width: 1000px) {
+            height: auto;
+            font-size: var(--text-medium-size);
+            justify-content: flex-start;
+            align-items: flex-start;
+            margin-bottom: 0.3rem;
+            line-height: 1.2;
+          }
+          
+          // 平板适配
+          @media screen and (min-width: 1001px) and (max-width: 1024px) {
+            font-size: var(--text-medium-size);
+          }
         }
         & small {
           width: 100%;
@@ -286,25 +646,93 @@ import Footer from "@/components/Footer.vue";
           padding-right: 1rem;
           font-size: var(--text-small-size);
           color: var(--text-secondary-color);
+          line-height: 1.4;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          
+          // 移动端适配
+          @media screen and (max-width: 1000px) {
+            height: auto;
+            padding: 0;
+            font-size: var(--text-small-size);
+            text-align: left;
+            align-items: flex-start;
+            line-height: 1.3;
+          }
+          
+          // 平板适配
+          @media screen and (min-width: 1001px) and (max-width: 1024px) {
+            padding: 0.5rem;
+            font-size: var(--text-small-size);
+          }
         }
       }
       &:nth-child(1) {
         grid-area: 1 / 1 / 2 / 2;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 1 / 1 / 2 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 1 / 1 / 2 / 2;
+        }
       }
       &:nth-child(2) {
         grid-area: 1 / 2 / 2 / 3;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 2 / 1 / 3 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 1 / 2 / 2 / 3;
+        }
       }
       &:nth-child(3) {
         grid-area: 1 / 3 / 2 / 4;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 3 / 1 / 4 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 2 / 1 / 3 / 2;
+        }
       }
       &:nth-child(4) {
         grid-area: 2 / 1 / 3 / 2;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 4 / 1 / 5 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 2 / 2 / 3 / 3;
+        }
       }
       &:nth-child(5) {
         grid-area: 2 / 2 / 3 / 3;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 5 / 1 / 6 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 3 / 1 / 4 / 2;
+        }
       }
       &:nth-child(6) {
         grid-area: 2 / 3 / 3 / 4;
+        
+        @media screen and (max-width: 1000px) {
+          grid-area: 6 / 1 / 7 / 2;
+        }
+        
+        @media screen and (min-width: 1001px) and (max-width: 1024px) {
+          grid-area: 3 / 2 / 4 / 3;
+        }
       }
     }
     // height;
@@ -320,6 +748,20 @@ import Footer from "@/components/Footer.vue";
     font-weight: bold;
     color: var(--text-color);
     margin-top: 3rem;
+    
+    // 移动端适配
+    @media screen and (max-width: 1000px) {
+      width: 90%;
+      font-size: var(--text-large-size);
+      margin-top: 2rem;
+    }
+    
+    // 平板适配
+    @media screen and (min-width: 1001px) and (max-width: 1024px) {
+      width: 80%;
+      font-size: var(--text-large-size);
+      margin-top: 2.5rem;
+    }
   }
 }
 </style>

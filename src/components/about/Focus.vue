@@ -1,7 +1,9 @@
 <script setup>
 import { onMounted } from "vue";
+import { showHightLight } from "@/utils/showHighLight";
 
 onMounted(() => {
+  showHightLight("fc");
   const whiteRoute = document.querySelector(".w-d");
   let whiteRouteHide = false;
   const WhiteHeaderAndText = [...document.querySelectorAll(".w-h")];
@@ -67,31 +69,31 @@ onMounted(() => {
       redirectRouteHide = true;
     }
   });
-  const titleObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("fc-header-show");
-      } else {
-        entry.target.classList.remove("fc-header-show");
-      }
-    });
-  });
-  const title = document.querySelector(".fc-header");
-  if (title) titleObserver.observe(title);
 });
 </script>
 
 <template>
   <div class="fc-container">
-    <header class="fc-header">为您提供更加
+    <header class="fc-header">
+      为您提供更加
       <div class="fc-header-focus">
-        专注
-    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1f1f1f"><path d="M440-42v-80q-125-14-214.5-103.5T122-440H42v-80h80q14-125 103.5-214.5T440-838v-80h80v80q125 14 214.5 103.5T838-520h80v80h-80q-14 125-103.5 214.5T520-122v80h-80Zm40-158q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Zm0-120q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T560-480q0-33-23.5-56.5T480-560q-33 0-56.5 23.5T400-480q0 33 23.5 56.5T480-400Zm0-80Z"/></svg>
-
+        <span class="highlight fc-highlight">专注</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#1f1f1f"
+        >
+          <path
+            d="M440-42v-80q-125-14-214.5-103.5T122-440H42v-80h80q14-125 103.5-214.5T440-838v-80h80v80q125 14 214.5 103.5T838-520h80v80h-80q-14 125-103.5 214.5T520-122v80h-80Zm40-158q116 0 198-82t82-198q0-116-82-198t-198-82q-116 0-198 82t-82 198q0 116 82 198t198 82Zm0-120q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm0-80q33 0 56.5-23.5T560-480q0-33-23.5-56.5T480-560q-33 0-56.5 23.5T400-480q0 33 23.5 56.5T480-400Zm0-80Z"
+          />
+        </svg>
       </div>
-      的比赛环境</header>
+      的比赛环境
+    </header>
     <div class="fc-content">
-      <div class="fc-content-desc w-d" style="color: #fff;">
+      <div class="fc-content-desc w-d" style="color: #fff">
         <header class="fc-content-desc-header w-h">路由白名单拦截</header>
         <div class="fc-content-desc-text w-h">
           <p>
@@ -135,8 +137,8 @@ onMounted(() => {
           </main>
         </div>
       </div>
-      <div class="fc-content-desc redirect-route" style="color: #000;">
-        <header class="fc-content-desc-header r-h" >重定向拦截</header>
+      <div class="fc-content-desc redirect-route" style="color: #000">
+        <header class="fc-content-desc-header r-h">重定向拦截</header>
         <div class="fc-content-desc-text r-h">
           <p>拦截非法的重定向跳转，但您仍可以在合法页面尽情探索！</p>
         </div>
@@ -228,6 +230,14 @@ onMounted(() => {
     align-items: center;
     position: relative;
     background-color: var(--bg-primary-color);
+    @media screen and (max-width: 1024px) {
+      width: 90%;
+    }
+
+    @media screen and (max-width: 640px) {
+      width: 90%;
+      height: 70%;
+    }
 
     &::after {
       content: "😲";
@@ -274,11 +284,14 @@ onMounted(() => {
         width: 80%;
         aspect-ratio: 4/3;
         color: var(--text-color);
-        border-radius: var(--border-radius);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        @media screen and (max-width: 1024px) {
+          width: 70%;
+          height: 70%;
+        }
         &-title {
           width: 100%;
           height: 20%;
@@ -286,6 +299,15 @@ onMounted(() => {
           justify-content: start;
           align-items: center;
           font-size: var(--text-medium-size);
+
+          @media screen and (max-width: 1024px) {
+            font-size: var(--text-large-size);
+          }
+
+          @media screen and (max-width: 640px) {
+            height: fit-content;
+            font-size: calc(var(--text-small-size));
+          }
         }
 
         &-subtitle {
@@ -295,12 +317,20 @@ onMounted(() => {
           flex-direction: column;
           justify-content: center;
           align-items: center;
+          @media screen and (max-width: 640px) {
+            height: fit-content;
+          
+          }
           & p {
             width: 100%;
             height: fit-content;
             display: flex;
             justify-content: start;
             font-size: var(--text-small-size);
+
+            @media screen and (max-width: 640px) {
+              font-size: calc(var(--text-small-size) - 2px);
+            }
           }
         }
 
@@ -311,6 +341,11 @@ onMounted(() => {
           justify-content: center;
           align-items: center;
           font-size: var(--text-small-size);
+
+          @media screen and (max-width: 640px) {
+            height: fit-content;
+            font-size: calc(var(--text-small-size) );
+          }
         }
 
         &-button {
@@ -324,6 +359,12 @@ onMounted(() => {
           font-size: var(--text-small-size);
           border-radius: 3rem;
           margin-top: 1rem;
+
+          @media screen and (max-width: 640px) {
+            height: fit-content;
+            padding: 0.5rem 1rem;
+            font-size: calc(var(--text-small-size) - 2px);
+          }
         }
       }
     }
@@ -335,6 +376,12 @@ onMounted(() => {
     line-height: 1.5;
     color: #000;
     font-size: var(--text-medium-size);
+
+    @media screen and (max-width: 640px) {
+      width: 90%;
+      height: fit-content;
+      font-size: calc(var(--text-small-size) - 2px);
+    }
   }
 }
 
@@ -346,7 +393,11 @@ onMounted(() => {
   align-items: center;
   position: relative;
   color: #000;
-
+  @media screen {
+    @media (max-width: 640px) {
+      height: 20rem;
+    }
+  }
   &-icon {
     position: absolute;
     width: 20%;
@@ -354,23 +405,59 @@ onMounted(() => {
     top: 5%;
     transition: transform 0.5s ease;
     transform-origin: center center;
+
+    @media screen and (max-width: 640px) {
+      width: 30%;
+      left: 5%;
+      top: 10%;
+      
+    }
   }
 
   &-indicator {
     width: 60%;
     height: 25%;
     position: absolute;
-    border-radius: var(--border-radius);
+    border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #000;
+    font-size: 14px;
+    @media screen and (max-width: 1024px) {
+      width: 50%;
+      height: fit-content;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+    }
+
+    @media (max-width: 640px) {
+      width: fit-content;
+      height: fit-content !important;
+      padding: 1rem;
+      font-size: var(--text-small-size);
+    }
+
     &:nth-child(1) {
       background-color: white;
       transform: translate(-10%, 20%) scale(1);
       z-index: 1;
-      box-shadow: var(--box-shadow);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
       transition: all 0.5s ease;
+
+      @media screen and (max-width: 1024px) {
+        transform: translate(-10%, 300%) scale(1) !important;
+      }
+
+
+      @media (max-width: 640px) {
+        transform: translate(0%, 100%) scale(1) !important;
+        background-color: white !important;
+        background: white !important;
+        z-index: 10 !important;
+        font-size: var(--text-medium-size) !important;
+      }
+
       &::after {
         content: "😵‍💫";
         position: absolute;
@@ -378,12 +465,31 @@ onMounted(() => {
         bottom: 0;
         font-size: 3rem;
         transform: translate(20%, 50%) rotate(10deg);
+
+        @media (max-width: 640px) {
+          font-size: 24px !important;
+        }
       }
     }
+
     &:nth-child(2) {
       background-color: rgba(227, 227, 227, 0.837);
-
+      background: rgba(227, 227, 227, 0.837);
       transform: translate(10%, -50%);
+
+      @media  screen and (max-width: 1024px) {
+        transform: translate(10%, 200%) scale(1) !important;        
+      }
+
+      @media screen and (max-width: 640px) {
+        font-size: var(--text-medium-size) ;
+        transform: translate(10%, 10%) scale(1) !important;
+        
+      }
+
+      @media (max-width: 640px) {
+        background-color: rgba(227, 227, 227, 0.837) !important;
+      }
     }
   }
 }
@@ -396,8 +502,7 @@ onMounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: var(--text-color);
-  font-size: var(--text-medium-size);
+  color: #fff;
   left: 0;
   top: 0;
   gap: 2rem;
@@ -405,9 +510,13 @@ onMounted(() => {
   transform: translateY(5rem);
   transition: all 0.5s ease;
 
+  @media screen and (max-width: 640px) {
+    gap: 1rem;
+  }
+
   &-header {
-    width: 65%;
-    aspect-ratio: 4/3;
+    width: 60%;
+    height: 50%;
     background-color: var(--blue-bg-color);
     border-radius: var(--border-radius);
     display: flex;
@@ -416,15 +525,19 @@ onMounted(() => {
     align-items: center;
     position: relative;
     padding-left: 1rem;
+
+    @media screen and (max-width: 640px) {
+      width: 90%;
+    }
     &-title {
       width: 100%;
       height: 20%;
       display: flex;
       justify-content: start;
       align-items: center;
-      font-size: var(--text-medium-size);
       font-weight: 700;
-      color: #000;
+      color: #fff;
+      font-size: var(--text-medium-size);
     }
 
     &-subtitle {
@@ -434,12 +547,17 @@ onMounted(() => {
       flex-direction: column;
       justify-content: center;
       align-items: center;
+
+      @media screen and (max-width: 640px) {
+        height: fit-content;
+        font-size: var(--text-small-size);
+      }
       &-text {
         width: 100%;
         height: fit-content;
         display: flex;
         justify-content: start;
-        color: #000;
+        color: #fff;
         font-size: var(--text-small-size);
       }
     }
@@ -451,12 +569,12 @@ onMounted(() => {
       justify-content: start;
       align-items: center;
       font-size: var(--text-small-size);
-      color: #000;
+      color: #fff;
     }
 
     &-button {
       width: 70%;
-      height: 10%;
+      height: 20%;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -465,6 +583,12 @@ onMounted(() => {
       font-size: var(--text-small-size);
       border-radius: 3rem;
       margin-top: 2rem;
+
+      @media screen and (max-width: 640px) {
+        height: fit-content;
+        margin: 1rem;
+        padding: 0.5rem 0;
+      }
     }
   }
 
@@ -473,6 +597,12 @@ onMounted(() => {
     height: fit-content;
     font-size: var(--text-medium-size);
     line-height: 1.5;
+
+    @media screen and (max-width: 640px) {
+      width: 90%;
+      font-size: var(--text-small-size);
+      line-height: 1.4;
+    }
   }
 }
 
@@ -491,16 +621,31 @@ onMounted(() => {
     align-items: start;
     padding-left: 3rem;
     gap: 1rem;
+
+    @media screen and (min-width: 1024px) and (max-height: 1000px) {
+      height: 30rem;
+      
+    }
+    @media screen and (max-width: 640px) {
+      height: 15rem;
+    }
   }
 
   &-indicator {
-    width: 55%;
-    aspect-ratio: 4/1;
+    width: fit-content;
+    height: fit-content;
+    padding: 1rem;
     background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: var(--border-radius);
+
+    @media screen and (min-width: 1024px) and (max-height: 1000px) {
+      width: 80%;
+      height: 10%;
+    }
+
     transition: all 0.5s ease;
     &:nth-child(1) {
       transition-delay: 0.2s;
@@ -509,12 +654,22 @@ onMounted(() => {
       transition-delay: 0.1s;
     }
     &-large {
-      width: 60%;
-      aspect-ratio: 3/1;
       position: absolute;
       top: 45%;
       left: 30%;
+      padding: 1rem;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+
+      @media screen and (min-width: 1024px) and (max-height: 1000px) {
+        top: 25% !important;
+        left: 20%;
+      }
+      white-space: nowrap;
+
+      @media screen and (max-width: 640px) {
+        left: 20%;
+        top: 65% !important;
+      }
 
       & img {
         display: block;
@@ -564,6 +719,7 @@ onMounted(() => {
   flex-direction: column;
   align-items: center;
   background-color: var(--bg-primary-color);
+  margin-bottom: 5rem;
 }
 
 .fc-header {
@@ -575,9 +731,6 @@ onMounted(() => {
   color: var(--text-color);
   justify-content: center;
   align-items: center;
-  transform: translateY(2rem);
-  opacity: 0;
-  transition: all 0.5s ease;
 
   &-focus {
     .inline-style(
@@ -603,10 +756,9 @@ onMounted(() => {
   &-desc {
     height: 90%;
     aspect-ratio: 1;
-    padding: 1rem;
+    padding: 1.5rem;
     user-select: none;
     cursor: pointer;
-    overflow: hidden;
     position: relative;
 
     &:nth-child(1) {
@@ -624,6 +776,11 @@ onMounted(() => {
       color: var(--text-color);
       background-color: var(--blue-bg-color);
 
+      @media screen and (max-width: 640px) {
+        // margin-top: 2rem; 
+        aspect-ratio: 2/2.5;       
+      }
+
       &:hover {
         .redirect-route-container-icon {
           transform: rotate(-10deg) scale(1.1);
@@ -632,7 +789,6 @@ onMounted(() => {
         .redirect-route-container {
           &-indicator:nth-child(1) {
             transform: scale(1.1) translate(-10%, 20%);
-            // background-color: var(--blue-bg-color);
           }
         }
       }
@@ -642,7 +798,7 @@ onMounted(() => {
     &-header {
       font-size: var(--text-medium-size);
       width: 100%;
-      height: 10%;
+      height: 15%; // 增加header高度
       display: flex;
       justify-content: start;
       align-items: center;
@@ -650,21 +806,112 @@ onMounted(() => {
     }
 
     &-text {
+      // background-color: red;
       font-size: var(--text-large-size);
       width: 100%;
-      height: 30%;
-      line-height: 1.5;
+      height: 35%; 
+      line-height: 1.5; 
       font-weight: 700;
       transition: all 0.5s ease;
       transition-delay: 0.1s;
+      display: flex;
+      align-items: flex-start; // 文字从顶部开始
     }
 
     &-footer {
       width: 100%;
-      height: 60%;
+      height: 50%; // 减少footer高度给文字更多空间
       display: flex;
       transition: all 0.5s ease;
-      // background-color: red;
+    }
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .white-route-indicator-large {
+    top: 100%;
+  }
+
+  .fc-container {
+    height: auto;
+    min-height: 50vh;
+    flex-direction: column;
+    margin-bottom: 4rem;
+    padding: 2rem 1rem;
+  }
+
+  .fc-header {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+  }
+
+  .fc-content {
+    width: 95%;
+    gap: 1.5rem;
+    flex-direction: column; // 确保垂直排列
+
+    &-desc {
+      width: 90%;
+      aspect-ratio: 4/3;
+      padding: 1rem;
+
+      &-header {
+        font-size: var(--text-medium-size);
+        height: auto;
+        padding: 0.5rem 0;
+      }
+
+      &-text {
+        font-size: var(--text-large-size);
+        height: auto;
+        margin-bottom: 1rem;
+        line-height: 1.4;
+      }
+
+      &-footer {
+        height: auto;
+        min-height: 200px; // 增加最小高度，原来是180px
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .fc-container {
+    padding: 1rem 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .fc-header {
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .fc-content {
+    width: 98%;
+    gap: 1rem;
+
+    &-desc {
+      width: 95%;
+      aspect-ratio: 1/1;
+      padding: 0.8rem;
+
+      &-header {
+        font-size: var(--text-small-size);
+        padding: 0.3rem 0;
+      }
+
+      &-text {
+        font-size: var(--text-medium-size);
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+      }
+
+      &-footer {
+        min-height: 180px;
+      }
     }
   }
 }

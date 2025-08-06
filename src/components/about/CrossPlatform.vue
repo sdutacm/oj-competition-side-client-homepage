@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, nextTick } from "vue";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/src/ScrollTrigger";
+import { showHightLight } from "@/utils/showHighLight";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,8 +11,24 @@ let animations = [];
 onMounted(async () => {
   await nextTick();
 
+  // 延迟等待DOM完全渲染和路由过渡完成
+  setTimeout(() => {
+    initObservers();
+    initAnimations();
+  }, 300);
+});
+
+function initObservers() {
   const oj3Logo = document.querySelector(".sdutoj3-img");
   const oj3Text = document.querySelector(".sdutoj3-text");
+  const container = document.querySelector(".content");
+
+  // 确保元素存在再创建 Observer
+  if (!oj3Logo || !oj3Text || !container) {
+    console.warn("Elements not found, retrying...");
+    setTimeout(initObservers, 100);
+    return;
+  }
 
   const containerObserver = new IntersectionObserver(
     (entries) => {
@@ -25,28 +42,38 @@ onMounted(async () => {
         }
       });
     },
-    { threshold: 0.5 }
+    { threshold: 0.1 }
   );
 
-  const container = document.querySelector(".content");
-  if (container) {
-    containerObserver.observe(container);
-  }
+  containerObserver.observe(container);
 
-  setTimeout(() => {
-    initAnimations();
-  }, 100);
-});
+  // 保存 observer 引用以便清理
+  animations.containerObserver = containerObserver;
+
+  showHightLight("cp");
+}
 
 onUnmounted(() => {
+  // 清理 IntersectionObserver
+  if (animations.containerObserver) {
+    animations.containerObserver.disconnect();
+  }
+
   // 清理所有GSAP动画和ScrollTrigger实例
   animations.forEach((anim) => {
-    if (anim.scrollTrigger) {
+    if (anim && typeof anim === "object" && anim.scrollTrigger) {
       anim.scrollTrigger.kill();
     }
-    anim.kill();
+    if (anim && typeof anim.kill === "function") {
+      anim.kill();
+    }
   });
   ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+  // 清理粒子效果
+  document.querySelectorAll(".burst-particle").forEach((particle) => {
+    particle.remove();
+  });
 });
 
 function initAnimations() {
@@ -112,7 +139,6 @@ function initAnimations() {
 }
 
 function playBurstAnimation() {
-  // OJ客户端轻微缩放效果 - 更快速
   gsap.to(".oj-client", {
     scale: 1.05,
     duration: 0.15,
@@ -125,8 +151,8 @@ function playBurstAnimation() {
   gsap.to(".linux", {
     scale: 1,
     opacity: 1,
-    x: -120,
-    y: -80,
+    x: "-100%",
+    y: "-50%",
     rotation: -15,
     duration: 0.5,
     ease: "ease",
@@ -136,8 +162,8 @@ function playBurstAnimation() {
   gsap.to(".windows", {
     scale: 1,
     opacity: 1,
-    x: 120,
-    y: -80,
+    x: "100%",
+    y: "-50%",
     rotation: 15,
     duration: 0.5,
     ease: "ease",
@@ -148,7 +174,7 @@ function playBurstAnimation() {
     scale: 1,
     opacity: 1,
     x: 0,
-    y: -140,
+    y: "-100%",
     rotation: 0,
     duration: 0.5,
     ease: "ease",
@@ -208,16 +234,13 @@ function reverseBurstAnimation() {
 }
 
 function createBurstEffect() {
-  // 清理之前的粒子
   document.querySelectorAll(".burst-particle").forEach((particle) => {
     particle.remove();
   });
 
-  // 创建简单的爆发效果
   const container = document.querySelector(".footer");
   if (!container) return;
 
-  // 创建更多小光点，更快速
   for (let i = 0; i < 8; i++) {
     const particle = document.createElement("div");
     particle.className = "burst-particle";
@@ -270,12 +293,10 @@ function createBurstEffect() {
   <div class="cp-container">
     <header class="title">
       <div class="title-cross">
-        探索
+        <span class="highlight cp-highlight">探索</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          height="auto"
           viewBox="0 -960 960 960"
-          width="auto"
           fill="#1f1f1f"
         >
           <path
@@ -291,13 +312,13 @@ function createBurstEffect() {
         <div class="desc">
           <p>
             基于 Electron 框架和 electron-builder 构建，同时支持 Windows、macOS
-            和 Linux 系统，确保用户在不同平台上都能获得一致的体验
+            和 Linux 系统，确保用户在不同平台上都能获得一致的体验。
           </p>
         </div>
         <footer class="footer footer-left">
           <img src="../../assets/images/favicon.png" class="oj-client" alt="" />
           <img src="../../assets/images/linux.png" class="linux" alt="" />
-          <img src="../../assets/images/windows.png" class="windows" alt="" />
+          <img src="../../assets/images/Windows.png" class="windows" alt="" />
           <img src="../../assets/images/macos.png" class="macos" alt="" />
         </footer>
       </section>
@@ -306,7 +327,7 @@ function createBurstEffect() {
         <div class="desc">
           <p>
             基于 SDUT Online Judge 3
-            的强大技术力支撑，提供流畅的用户体验和极高的响应速度
+            的强大技术力支撑，提供流畅的用户体验和极高的响应速度。
           </p>
         </div>
         <footer class="footer">
@@ -341,7 +362,16 @@ function createBurstEffect() {
   position: relative;
   display: flex;
   flex-direction: column;
-  margin-top: 5%;
+  margin-top: 10rem;
+
+  @media screen and (min-width: 1024px) and (max-height: 1000px) {
+    margin-top: 30rem;
+  }
+
+  @media screen and (max-width: 480px) {
+    margin-top: 20rem !important;
+  }
+
   & .title {
     position: relative;
     width: 100%;
@@ -352,7 +382,7 @@ function createBurstEffect() {
     align-items: center;
     font-size: 3rem;
     font-weight: bold;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     &-cross {
       .inline-style(
         var(--blue-bg-color),
@@ -373,24 +403,31 @@ function createBurstEffect() {
       aspect-ratio: 4/3;
       border-radius: 2rem;
       overflow: hidden;
+
+      @media screen and (min-width: 1024px) and (max-height: 1000px) {
+         height: 100%;  
+      }
+
       & .tag {
         width: 100%;
         height: 20%;
-        // background-color: green;
         display: flex;
         padding-left: 2rem;
         font-size: 2rem;
         font-weight: bold;
         justify-content: start;
-        align-items: flex-end;
+        align-items: center;
       }
 
       & .desc {
         width: 100%;
         height: 30%;
-        // background-color: blue;
         padding-left: 2rem;
         padding-right: 2rem;
+
+        @media screen and (min-width: 1024px) {
+          font-size: calc(var(--text-medium-size) * 1.3);
+        }
       }
       & .footer {
         width: 100%;
@@ -400,10 +437,13 @@ function createBurstEffect() {
         align-items: center;
         position: relative;
         overflow: visible;
-        padding-bottom: 1rem;
 
         &-left {
           align-items: end;
+
+          @media screen and (max-width: 640px) {
+            align-items: center;
+          }
         }
 
         & img {
@@ -412,6 +452,10 @@ function createBurstEffect() {
           position: absolute;
           transition: transform 0.2s ease;
           will-change: transform;
+
+          @media screen and (max-width: 1000px) and (min-height: 1000px) {
+            width: 6rem !important;
+          }
         }
 
         & p {
@@ -422,22 +466,22 @@ function createBurstEffect() {
         }
 
         .oj-client {
-          z-index: 6;
+          z-index: 2;
           filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
         }
 
         .linux {
-          z-index: 5;
+          z-index: 1;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
         .windows {
-          z-index: 5;
+          z-index: 1;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
         .macos {
-          z-index: 5;
+          z-index: 1;
           filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
         }
 
@@ -474,6 +518,111 @@ function createBurstEffect() {
     position: absolute;
     border-radius: 50%;
     pointer-events: none;
+  }
+}
+
+/* 响应式设计 */
+@media (max-width: 1000px) {
+  .cp-container {
+    height: auto;
+    min-height: 70vh;
+    margin-top: 2rem;
+    padding: 1rem;
+
+    .title {
+      height: auto;
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .content {
+      flex-direction: column;
+      height: auto;
+      gap: 2rem;
+
+      .section {
+        width: 90%;
+        height: auto;
+        min-height: 300px;
+
+        .tag {
+          padding-left: 1rem;
+          font-size: 1.5rem;
+          height: auto;
+          padding-top: 1rem;
+          padding-bottom: 0.5rem;
+        }
+
+        .desc {
+          padding: 0 1rem;
+
+          p {
+            font-size: var(--text-large-size);
+            line-height: 1.5;
+          }
+        }
+
+        .footer {
+          height: 200px;
+
+          img {
+            width: 3rem;
+          }
+
+          p {
+            font-size: 1.2rem;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) and (min-height: 1000px) {
+  .cp-container {
+    padding: 0.5rem;
+    margin-top: 10rem;
+    .title {
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    .content {
+      gap: 1rem;
+
+      .section {
+        width: 95%;
+        min-height: 250px;
+        border-radius: 1rem;
+
+        .tag {
+          font-size: 1.2rem;
+          padding: 0.5rem;
+          
+        }
+
+        .desc {
+          padding: 0 0.5rem;
+
+          p {
+            font-size: var(--text-medium-size);
+          }
+        }
+
+        .footer {
+          // height: 150px;
+
+          img {
+            width: 10rem;
+          }
+
+          p {
+            font-size: 1rem;
+          }
+        }
+      }
+    }
   }
 }
 </style>
