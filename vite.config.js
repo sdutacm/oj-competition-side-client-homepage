@@ -59,7 +59,7 @@ export default defineConfig(({ command, mode }) => {
 
   return {
     plugins,
-    base: '/oj-competition-side-client/homepage/',
+    base: '/oj-competition-side-client/',
     experimental: {
       renderBuiltUrl(filename) {
         let cdnUrl = process.env.CDN_URL || '/oj-competition-side-client/homepage/';
