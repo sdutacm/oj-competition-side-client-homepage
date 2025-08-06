@@ -313,7 +313,13 @@ function initInteractiveFeatures() {
               <span class="step-emoji">🍴</span>
               <div class="step-text">
                 <h4>Fork 项目</h4>
-                <p>从 sdutacm/oj-competition-side-client Fork 项目</p>
+                <div class="code-block">
+                  <code
+                    >git clone
+                    git@github.com:sdutacm/oj-competition-side-client.git</code
+                  >
+                  <button class="copy-btn">复制</button>
+                </div>
               </div>
             </div>
             <div class="contribute-step">
