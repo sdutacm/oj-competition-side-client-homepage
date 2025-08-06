@@ -42,11 +42,18 @@ jobs:
           echo "Build contents:"
           ls -la dist/
           
+      - name: Check COS upload options
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: |
+          echo "Available upload options:"
+          echo "We'll use: upload -r ./dist/ oj-competition-side-client/homepage --delete --sync"
+          echo "This will recursively upload, delete old files, and sync changes"
+          
       - name: Upload to Tencent COS
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         uses: zkqiang/tencent-cos-action@v0.1.0
         with:
-          args: upload -r ./dist/ oj-competition-side-client/homepage --delete --sync --timeout=300
+          args: upload -r ./dist/ oj-competition-side-client/homepage --delete --sync
           secret_id: ${{ secrets.COS_SECRET_ID }}
           secret_key: ${{ secrets.COS_SECRET_KEY }}
           bucket: ${{ secrets.COS_BUCKET }}
@@ -61,7 +68,7 @@ jobs:
         if: github.ref == 'refs/heads/master' && github.event_name == 'push' && steps.upload_attempt_1.outcome == 'failure'
         uses: zkqiang/tencent-cos-action@v0.1.0
         with:
-          args: upload -r ./dist/ oj-competition-side-client/homepage --delete --sync --timeout=600
+          args: upload -r ./dist/ oj-competition-side-client/homepage --delete --sync
           secret_id: ${{ secrets.COS_SECRET_ID }}
           secret_key: ${{ secrets.COS_SECRET_KEY }}
           bucket: ${{ secrets.COS_BUCKET }}
