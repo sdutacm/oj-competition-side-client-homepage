@@ -1,35 +1,56 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref, nextTick } from 'vue';
 import DownloadButton from "@/components/DownloadButton.vue";
 import Release from "@/components/Release.vue";
 import Footer from "@/components/Footer.vue";
 import { useReleasesStore } from "@/store/useSimpleStore";
-import ImgDataUrl from '@/utils/imgDataUrl';
 
 // 使用简化的 store
 const releasesStore = useReleasesStore();
+
+// 系统检测状态
+const isSystemDetecting = ref(false);
 
 // 读取环境变量
 const appName = import.meta.env.VITE_APP_NAME || "SDUT OJ 竞赛客户端";
 
 onMounted(async () => {
-  // 清除旧的检测结果，强制重新检测
-  localStorage.removeItem('detectedPlatform');
-  localStorage.removeItem('detectedArchitecture');
+  // 等待 DOM 完全挂载和渲染
+  await nextTick();
   
-  // 只使用高级检测方法，如果失败再使用传统方法
-  try {
-    await releasesStore.detectSystemAdvanced();
-    console.log('=== 使用现代 API 检测完成 ===');
-  } catch (error) {
-    console.log('现代 API 检测失败，使用传统方法:', error);
-    releasesStore.detectSystem();
-  }
+  console.log('Home 组件已挂载，开始后台系统检测...');
   
-  console.log('最终检测结果:');
-  console.log('平台:', releasesStore.platform);
-  console.log('架构:', releasesStore.architecture);
-  console.log('下载格式:', releasesStore.downloadFormat);
+  // 系统检测立即开始，但不阻塞渲染
+  setTimeout(async () => {
+    isSystemDetecting.value = true;
+    
+    // 如果已经有检测结果，不需要重新检测
+    const savedPlatform = localStorage.getItem('detectedPlatform');
+    const savedArchitecture = localStorage.getItem('detectedArchitecture');
+    
+    if (!savedPlatform || !savedArchitecture) {
+      console.log('开始系统检测...');
+      
+      try {
+        await releasesStore.detectSystemAdvanced();
+        console.log('=== 使用现代 API 检测完成 ===');
+      } catch (error) {
+        console.log('现代 API 检测失败，使用传统方法:', error);
+        releasesStore.detectSystem();
+      }
+    } else {
+      console.log('使用缓存的系统检测结果');
+      releasesStore.platform = savedPlatform;
+      releasesStore.architecture = savedArchitecture;
+    }
+    
+    isSystemDetecting.value = false;
+    
+    console.log('最终检测结果:');
+    console.log('平台:', releasesStore.platform);
+    console.log('架构:', releasesStore.architecture);
+    console.log('下载格式:', releasesStore.downloadFormat);
+  }, 0); // 立即执行，但在下一个事件循环
 });
 </script>
 
@@ -39,20 +60,20 @@ onMounted(async () => {
       <div class="content-mask">
         <div class="content-mask-real"></div>
         <img
-          :src="ImgDataUrl.lightHome"
+          src="../assets/images/light-home.png"
           class="light-home"
           id="light-home"
           alt=""
         />
         <img
-          :src="ImgDataUrl.darkHome"
+          src="../assets/images/dark-home.png"
           class="light-home"
           id="dark-home"
           alt=""
         />
       </div>
       <div class="content-main">
-        <img :src="ImgDataUrl.logo" class="logo" alt="" />
+        <img src="../assets/images/favicon.png" class="logo" alt="" />
         <h1>下载 {{ appName }}</h1>
         <div class="btn">
           <DownloadButton 
@@ -69,7 +90,7 @@ onMounted(async () => {
       <div class="release-container-desc">
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img :src="ImgDataUrl.functionImg.crossPlatform" alt="" />
+            <img src="../assets/images/function/oses.avif" alt="" />
           </div>
           <div class="release-container-desc-box-info">
             <p>跨平台桌面应用支持</p>
@@ -81,10 +102,10 @@ onMounted(async () => {
         </div>
         <div class="release-container-desc-box">
           <div class="release-container-desc-box-icon">
-            <img :src="ImgDataUrl.functionImg.uiDarkStyle" id="dark-home" alt="" />
+            <img src="../assets/images/function/ui.png" id="dark-home" alt="" />
             <img
-            :src="ImgDataUrl.functionImg.uiStyle"
-            id="light-home"
+              src="../assets/images/function/ui-light.png"
+              id="light-home"
               alt=""
             />
           </div>

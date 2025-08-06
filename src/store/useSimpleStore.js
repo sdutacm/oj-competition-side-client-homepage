@@ -6,8 +6,14 @@ export const useReleasesStore = defineStore('releases', () => {
   const newVersion = ref(import.meta.env.VITE_APP_VERSION || '1.2.0')
   
   // 从 localStorage 读取保存的系统信息，如果没有则使用默认值
-  const savedPlatform = localStorage.getItem('detectedPlatform')
-  const savedArchitecture = localStorage.getItem('detectedArchitecture')
+  // 这里使用同步方式读取，避免阻塞渲染
+  let savedPlatform, savedArchitecture;
+  try {
+    savedPlatform = localStorage.getItem('detectedPlatform');
+    savedArchitecture = localStorage.getItem('detectedArchitecture');
+  } catch (error) {
+    console.warn('无法读取localStorage:', error);
+  }
   
   const platform = ref(savedPlatform || 'Linux')
   const architecture = ref(savedArchitecture || 'x64')
