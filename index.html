@@ -36,30 +36,6 @@
           timer = setTimeout(updateRem, 300);
         });
       })();
-      
-      // 添加 URL 访问检测和修复机制
-      (function() {
-        // 如果当前 URL 以目录结尾但没有 index.html，且页面正常加载了
-        const currentPath = window.location.pathname;
-        const baseUrl = window.location.origin + '/oj-competition-side-client/';
-        
-        // 如果是通过 index.html 访问的，确保浏览器历史记录正确
-        if (currentPath === '/oj-competition-side-client/index.html') {
-          // 不立即重定向，而是在页面加载完成后替换历史记录
-          window.addEventListener('load', function() {
-            if (window.history && window.history.replaceState) {
-              window.history.replaceState(null, null, '/oj-competition-side-client/');
-            }
-          });
-        }
-        
-        // 添加一个提示信息，告知用户正确的访问方式
-        if (window.location.hostname === 'cdn.sdutacm.cn') {
-          console.log('🔍 访问提示：');
-          console.log('如果直接访问目录 URL 出现下载问题，请使用：');
-          console.log('https://cdn.sdutacm.cn/oj-competition-side-client/index.html');
-        }
-      })();
     </script>
   </head>
   <body>
