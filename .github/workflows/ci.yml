@@ -51,7 +51,8 @@ jobs:
           secret_key: ${{ secrets.COS_SECRET_KEY }}
           bucket: ${{ secrets.COS_BUCKET }}
           region: ${{ secrets.COS_REGION }}
-          
+        env: 
+          COS_DOMAIN: ${{ secrets.COS_DOMAIN }}
       - name: Deployment success notification
         if: github.ref == 'refs/heads/master' && github.event_name == 'push'
         run: |

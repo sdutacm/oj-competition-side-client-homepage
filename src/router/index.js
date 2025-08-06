@@ -12,11 +12,6 @@ const routes = [
     meta: { title: "首页" }
   },
   {
-    path: "/index.html",
-    component: Home,
-    meta: { title: "首页" }
-  },
-  {
     path: "/about",
     component: About,
     meta: { title: "探索" }
