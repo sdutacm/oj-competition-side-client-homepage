@@ -312,7 +312,7 @@ function createBurstEffect() {
         <div class="desc">
           <p>
             基于 Electron 框架和 electron-builder 构建，同时支持 Windows、macOS
-            和 Linux 系统，确保用户在不同平台上都能获得一致的体验
+            和 Linux 系统，确保用户在不同平台上都能获得一致的体验。
           </p>
         </div>
         <footer class="footer footer-left">
@@ -327,7 +327,7 @@ function createBurstEffect() {
         <div class="desc">
           <p>
             基于 SDUT Online Judge 3
-            的强大技术力支撑，提供流畅的用户体验和极高的响应速度
+            的强大技术力支撑，提供流畅的用户体验和极高的响应速度。
           </p>
         </div>
         <footer class="footer">

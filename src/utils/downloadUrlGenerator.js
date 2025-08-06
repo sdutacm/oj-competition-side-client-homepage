@@ -115,11 +115,11 @@ function generatePlatformDownloads(platform, version) {
       const fileTypeLabel = fileType.label
 
       // 生成标题
-      let title = `${platform}(${archDisplayName})`
+      let title = `${platform} ${archDisplayName}`
       if (fileType.type) {
-        title += `(${fileTypeLabel})`
+        title += ` ${fileTypeLabel}`
       } else {
-        title += `(${fileTypeLabel})`
+        title += ` ${fileTypeLabel}`
       }
 
       // 生成URL
