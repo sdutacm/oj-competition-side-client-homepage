@@ -19,7 +19,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory('/oj-competition-side-client/'),
+  history: createWebHistory('/oj-competition-side-client/homepage/'),
   routes
 });
 
