@@ -6,12 +6,12 @@
 
 **✅ 推荐访问地址：**
 ```
-https://cdn.sdutacm.cn/oj-competition-side-client/index.html
+https://cdn.sdutacm.cn/oj-competition-side-client/homepage/index.html
 ```
 
 **❌ 目前有问题的地址：**
 ```
-https://cdn.sdutacm.cn/oj-competition-side-client/
+https://cdn.sdutacm.cn/oj-competition-side-client/homepage/
 ```
 
 ## 🔧 问题说明
@@ -57,7 +57,7 @@ https://cdn.sdutacm.cn/oj-competition-side-client/
 
 ## 📱 使用建议
 
-1. **书签收藏**：请收藏 `https://cdn.sdutacm.cn/oj-competition-side-client/index.html`
+1. **书签收藏**：请收藏 `https://cdn.sdutacm.cn/oj-competition-side-client/homepage/index.html`
 2. **分享链接**：分享给他人时使用完整的 index.html 链接
 3. **页面导航**：使用页面内的按钮和链接进行导航，避免手动修改地址栏
 

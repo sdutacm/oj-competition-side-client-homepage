@@ -1,8 +1,10 @@
 {
   "name": "oj-competition-side-client-homepage",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
+  "description": "SDUT OJ Competition Side Client 官网",
+  "author": "sdutacm",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
