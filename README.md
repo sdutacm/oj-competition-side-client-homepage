@@ -23,8 +23,8 @@ SDUT Online Judge 竞赛客户端官方主页，基于 Vue 3 + Vite 构建的现
 
 ## 📋 环境要求
 
-- Node.js >= 16.0.0
-- npm >= 7.0.0
+- Node.js >= 20.0.0
+- npm >= 8.0.0
 
 ## 🚀 快速开始
 
@@ -121,4 +121,4 @@ src/
 
 欢迎提交 Issue 和 Pull Request！
 
-*© 2008-2025 SDUT ACM. All rights reserved.*
+*© 2008-2025 SDUTACM. All rights reserved.*
