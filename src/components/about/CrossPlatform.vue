@@ -296,9 +296,7 @@ function createBurstEffect() {
         <span class="highlight cp-highlight">探索</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          height="auto"
           viewBox="0 -960 960 960"
-          width="auto"
           fill="#1f1f1f"
         >
           <path
@@ -370,6 +368,10 @@ function createBurstEffect() {
     margin-top: 30rem;
   }
 
+  @media screen and (max-width: 480px) {
+    margin-top: 20rem !important;
+  }
+
   & .title {
     position: relative;
     width: 100%;
@@ -380,7 +382,7 @@ function createBurstEffect() {
     align-items: center;
     font-size: 3rem;
     font-weight: bold;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     &-cross {
       .inline-style(
         var(--blue-bg-color),
@@ -409,7 +411,6 @@ function createBurstEffect() {
       & .tag {
         width: 100%;
         height: 20%;
-        // background-color: green;
         display: flex;
         padding-left: 2rem;
         font-size: 2rem;
@@ -421,7 +422,6 @@ function createBurstEffect() {
       & .desc {
         width: 100%;
         height: 30%;
-        // background-color: blue;
         padding-left: 2rem;
         padding-right: 2rem;
       }
@@ -436,6 +436,10 @@ function createBurstEffect() {
 
         &-left {
           align-items: end;
+
+          @media screen and (max-width: 640px) {
+            align-items: center;
+          }
         }
 
         & img {
@@ -444,6 +448,10 @@ function createBurstEffect() {
           position: absolute;
           transition: transform 0.2s ease;
           will-change: transform;
+
+          @media screen and (max-width: 1000px) and (min-height: 1000px) {
+            width: 6rem !important;
+          }
         }
 
         & p {
@@ -566,55 +574,6 @@ function createBurstEffect() {
     }
   }
 }
-
-// @media (max-width: 1000px) and (min-height: 1000px) {
-//   .cp-container {
-//     height: auto;
-//     min-height: 80vh;
-//     margin-top: 5rem;
-
-//     .title {
-//       font-size: 3rem;
-//       margin-bottom: 1rem;
-//       text-align: center;
-//     }
-
-//     .content {
-//       gap: 1rem;
-
-//       .section {
-//         width: 95%;
-//         min-height: 250px;
-
-//         .tag {
-//           font-size: 1.2rem;
-//           padding: 0.5rem;
-//         }
-
-//         .desc {
-//           padding: 0 0.5rem;
-
-//           p {
-//             font-size: var(--text-large-size);
-//           }
-//         }
-
-//         .footer {
-//           height: 150px;
-
-//           img {
-//             width: 4rem;
-//           }
-
-//           p {
-//             font-size: 1rem;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-
 
 @media (max-width: 640px) and (min-height: 1000px) {
   .cp-container {

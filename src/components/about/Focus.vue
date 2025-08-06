@@ -405,6 +405,13 @@ onMounted(() => {
     top: 5%;
     transition: transform 0.5s ease;
     transform-origin: center center;
+
+    @media screen and (max-width: 640px) {
+      width: 30%;
+      left: 5%;
+      top: 10%;
+      
+    }
   }
 
   &-indicator {
@@ -444,10 +451,11 @@ onMounted(() => {
 
 
       @media (max-width: 640px) {
-        transform: translate(-5%, 20%) scale(1) !important;
+        transform: translate(0%, 100%) scale(1) !important;
         background-color: white !important;
         background: white !important;
         z-index: 10 !important;
+        font-size: var(--text-medium-size) !important;
       }
 
       &::after {
@@ -471,6 +479,12 @@ onMounted(() => {
 
       @media  screen and (max-width: 1024px) {
         transform: translate(10%, 200%) scale(1) !important;        
+      }
+
+      @media screen and (max-width: 640px) {
+        font-size: var(--text-medium-size) ;
+        transform: translate(10%, 10%) scale(1) !important;
+        
       }
 
       @media (max-width: 640px) {
@@ -628,8 +642,8 @@ onMounted(() => {
     border-radius: var(--border-radius);
 
     @media screen and (min-width: 1024px) and (max-height: 1000px) {
-      width: 60%;
-      height: 20%;
+      width: 80%;
+      height: 10%;
     }
 
     transition: all 0.5s ease;
@@ -647,7 +661,7 @@ onMounted(() => {
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 
       @media screen and (min-width: 1024px) and (max-height: 1000px) {
-        top: 40% !important;
+        top: 25% !important;
         left: 20%;
       }
       white-space: nowrap;

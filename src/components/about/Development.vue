@@ -468,6 +468,10 @@ function initInteractiveFeatures() {
   -webkit-transform: translateZ(0);
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+
+  @media screen and (max-width: 480px) {
+    margin-top: 20rem;
+  }
 }
 
 .dev-header {
@@ -786,7 +790,7 @@ function initInteractiveFeatures() {
 /* 响应式设计 */
 @media (max-width: 1000px) {
   .dev-header h1 {
-    font-size: 2rem;
+    font-size: 3rem;
   }
 
   .dev-main {

@@ -213,9 +213,9 @@ onUnmounted(() => {
               <div class="sf-content-desc-footer-bg-main-icon cookie">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="auto"
+                  height="24"
                   viewBox="0 -960 960 960"
-                  width="auto"
+                  width="24"
                   fill="#1f1f1f"
                 >
                   <path
@@ -226,9 +226,7 @@ onUnmounted(() => {
               <div class="sf-content-desc-footer-bg-main-icon storage">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="auto"
                   viewBox="0 -960 960 960"
-                  width="auto"
                   fill="#1f1f1f"
                 >
                   <path
@@ -239,9 +237,7 @@ onUnmounted(() => {
               <div class="sf-content-desc-footer-bg-main-icon logout">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  height="auto"
                   viewBox="0 -960 960 960"
-                  width="auto"
                   fill="#1f1f1f"
                 >
                   <path
@@ -447,8 +443,12 @@ onUnmounted(() => {
   position: relative;
   z-index: 1;
   margin-bottom: 10rem;
-  contain: layout; /* 限制布局影响范围 */
-  isolation: isolate; /* 创建新的堆叠上下文 */
+  contain: layout;
+  isolation: isolate;
+
+  @media screen and (max-width: 480px) {
+    margin-top: 10rem !important;
+  }
 }
 
 /* 响应式设计 */
