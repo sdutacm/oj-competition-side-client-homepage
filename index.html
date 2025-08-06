@@ -13,22 +13,16 @@
       rel="stylesheet"
     />
     <script>
-      // 简化版本：只在特定情况下调整字体，主要让CSS媒体查询控制
       (function() {
         const doc = document.documentElement;
         
         function updateRem() {
-          const width = doc.clientWidth;
-          
-          // 只在极端情况下干预，大部分情况让CSS媒体查询处理
+          const width = doc.clientWidth;          
           if (width <= 320) {
-            // 极小屏幕强制设置最小字体
             doc.style.fontSize = "18px";
           } else if (width >= 1920) {
-            // 超大屏幕设置合适字体
             doc.style.fontSize = "20px";
           } else {
-            // 其他情况移除内联样式，让CSS媒体查询生效
             doc.style.fontSize = "";
           }
         }
