@@ -110,7 +110,7 @@ export const useReleasesStore = defineStore('releases', () => {
     if (/Macintosh/.test(userAgent)) {
       platform.value = 'macOS'
     } else if (/Windows NT 10\.0/.test(userAgent)) {
-      platform.value = 'Windows 10'
+      platform.value = 'Windows'
     } else if (/Windows/.test(userAgent)) {
       platform.value = 'Windows'
     } else if (/Linux/.test(userAgent)) {
@@ -203,7 +203,7 @@ export const useReleasesStore = defineStore('releases', () => {
     if (/Macintosh/.test(userAgent)) {
       platform.value = 'macOS'
     } else if (/Windows NT 10\.0/.test(userAgent)) {
-      platform.value = 'Windows 10'
+      platform.value = 'Windows'
     } else if (/Windows/.test(userAgent)) {
       platform.value = 'Windows'
     } else if (/Linux/.test(userAgent)) {
